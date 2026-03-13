@@ -180,12 +180,16 @@ function runMigrations() {
                 user_type ENUM('jogador','admin') NOT NULL DEFAULT 'jogador',
                 league ENUM('ELITE','NEXT','RISE','ROOKIE') NOT NULL,
                 email_verified TINYINT(1) NOT NULL DEFAULT 0,
+                approved TINYINT(1) NOT NULL DEFAULT 1,
+                approved_at DATETIME NULL,
+                approved_by INT NULL,
                 verification_token VARCHAR(64) DEFAULT NULL,
                 reset_token VARCHAR(64) DEFAULT NULL,
                 reset_token_expiry DATETIME DEFAULT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_user_league (league),
-                INDEX idx_user_phone (phone)
+                INDEX idx_user_phone (phone),
+                INDEX idx_user_approved (approved)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
         ],
         'create_divisions' => [
@@ -537,6 +541,24 @@ function runMigrations() {
         }
     } catch (PDOException $e) {
         $errors[] = "ajuste_users_phone: " . $e->getMessage();
+    }
+
+    try {
+        $hasApproved = $pdo->query("SHOW COLUMNS FROM users LIKE 'approved'")->fetch();
+        if (!$hasApproved) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN approved TINYINT(1) NOT NULL DEFAULT 1 AFTER email_verified");
+            $pdo->exec("ALTER TABLE users ADD INDEX idx_user_approved (approved)");
+        }
+        $hasApprovedAt = $pdo->query("SHOW COLUMNS FROM users LIKE 'approved_at'")->fetch();
+        if (!$hasApprovedAt) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN approved_at DATETIME NULL AFTER approved");
+        }
+        $hasApprovedBy = $pdo->query("SHOW COLUMNS FROM users LIKE 'approved_by'")->fetch();
+        if (!$hasApprovedBy) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN approved_by INT NULL AFTER approved_at");
+        }
+    } catch (PDOException $e) {
+        $errors[] = "ajuste_users_approved: " . $e->getMessage();
     }
 
     try {

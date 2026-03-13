@@ -24,12 +24,16 @@ CREATE TABLE IF NOT EXISTS users (
     user_type ENUM('jogador','admin') NOT NULL DEFAULT 'jogador',
     league ENUM('ELITE','NEXT','RISE','ROOKIE') NOT NULL,
     email_verified TINYINT(1) NOT NULL DEFAULT 0,
+    approved TINYINT(1) NOT NULL DEFAULT 1,
+    approved_at DATETIME NULL,
+    approved_by INT NULL,
     verification_token VARCHAR(64) DEFAULT NULL,
     reset_token VARCHAR(64) DEFAULT NULL,
     reset_token_expiry DATETIME DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_user_league (league),
-    INDEX idx_user_phone (phone)
+    INDEX idx_user_phone (phone),
+    INDEX idx_user_approved (approved)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS divisions (
