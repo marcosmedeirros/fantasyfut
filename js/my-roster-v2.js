@@ -1,11 +1,19 @@
 // my-roster-v2.js - Tabela + Time Titular
 const api = async (path, options = {}) => {
-  const res = await fetch(`/api/${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
-  let body = {};
-  try { body = await res.json(); } catch {}
+  const doFetch = async (url) => {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+    let body = {};
+    try { body = await res.json(); } catch { body = {}; }
+    return { res, body };
+  };
+
+  let { res, body } = await doFetch(`/api/${path}`);
+  if (res.status === 404) {
+    ({ res, body } = await doFetch(`/public/api/${path}`));
+  }
   if (!res.ok) throw body;
   return body;
 };
@@ -42,15 +50,6 @@ function convertToBase64(file) {
   });
 }
 
-function normalizeRoleKey(role) {
-  const normalized = (role || '').toString().trim().toLowerCase();
-  if (normalized === 'titular') return 'Titular';
-  if (normalized === 'banco') return 'Banco';
-  if (normalized === 'g-league' || normalized === 'gleague' || normalized === 'g league') return 'G-League';
-  return 'Outro';
-}
-
-const roleOrder = { 'Titular': 0, 'Banco': 1, 'Outro': 2, 'G-League': 3 };
 const starterPositionOrder = { GK: 0, DEF: 1, MID: 2, ATT: 3 };
 const positionLabels = {
   GK: 'Goleiro',
@@ -66,9 +65,8 @@ const lineupConfig = [
 ];
 
 let allPlayers = [];
-let currentSort = { field: 'role', ascending: true };
+let currentSort = { field: 'position', ascending: true };
 let currentSearch = '';
-let currentRoleFilter = '';
 let editPhotoFile = null;
 
 const DEFAULT_FA_LIMITS = { waiversUsed: 0, waiversMax: 3, signingsUsed: 0, signingsMax: 3 };
@@ -106,12 +104,10 @@ function updateFreeAgencyCounters() {
 
 function applyFilters(players) {
   const term = currentSearch.trim().toLowerCase();
-  const roleFilter = currentRoleFilter;
   return players.filter(p => {
-    const roleOk = !roleFilter || normalizeRoleKey(p.role) === normalizeRoleKey(roleFilter);
-    if (!term) return roleOk;
+    if (!term) return true;
     const hay = `${p.name} ${p.position}`.toLowerCase();
-    return roleOk && hay.includes(term);
+    return hay.includes(term);
   });
 }
 
@@ -120,7 +116,7 @@ function sortPlayers(field) {
     currentSort.ascending = !currentSort.ascending;
   } else {
     currentSort.field = field;
-    currentSort.ascending = field !== 'role';
+    currentSort.ascending = true;
   }
   renderPlayers(allPlayers);
 }
@@ -131,10 +127,6 @@ function renderPlayers(players) {
     let aVal = a[currentSort.field];
     let bVal = b[currentSort.field];
 
-    if (currentSort.field === 'role') {
-      aVal = roleOrder[aVal] ?? 999;
-      bVal = roleOrder[bVal] ?? 999;
-    }
     if (currentSort.field === 'trade') {
       aVal = a.available_for_trade ? 1 : 0;
       bVal = b.available_for_trade ? 1 : 0;
@@ -148,24 +140,9 @@ function renderPlayers(players) {
     if (aVal > bVal) return currentSort.ascending ? 1 : -1;
 
     // Em caso de empate por função, ordenar por posição base do futebol
-    if (currentSort.field === 'role' && a.role === 'Titular' && b.role === 'Titular') {
-      const aPos = starterPositionOrder[a.position] ?? 999;
-      const bPos = starterPositionOrder[b.position] ?? 999;
-      if (aPos !== bPos) {
-        return currentSort.ascending ? aPos - bPos : bPos - aPos;
-      }
-    }
     return 0;
   });
 
-  const starters = sorted
-    .filter(p => normalizeRoleKey(p.role) === 'Titular')
-    .sort((a, b) => {
-      const pa = starterPositionOrder[a.position] ?? 999;
-      const pb = starterPositionOrder[b.position] ?? 999;
-      if (pa !== pb) return pa - pb;
-      return Number(b.ovr) - Number(a.ovr);
-    });
   renderBenchList(allPlayers);
   renderLineupField(allPlayers);
 
@@ -249,13 +226,26 @@ function renderLineupField(players) {
   });
 }
 
+function getLineupSelectedIds() {
+  const state = loadLineupState();
+  const selected = new Set();
+  Object.values(state || {}).forEach(group => {
+    if (!group) return;
+    Object.values(group).forEach(id => {
+      if (id) selected.add(String(id));
+    });
+  });
+  return selected;
+}
+
 function renderBenchList(players) {
   const listEl = document.getElementById('bench-list');
   const emptyEl = document.getElementById('bench-empty');
   if (!listEl || !emptyEl) return;
   listEl.innerHTML = '';
+  const selected = getLineupSelectedIds();
   const bench = players
-    .filter(p => normalizeRoleKey(p.role) === 'Banco')
+    .filter(p => !selected.has(String(p.id)))
     .sort((a, b) => Number(b.ovr) - Number(a.ovr))
     .slice(0, 5);
   if (bench.length === 0) {
@@ -362,7 +352,7 @@ function renderPlayersMobileCards(players) {
                onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'">
           <div>
             <div class="text-white fw-bold">${p.name}</div>
-            <div class="text-light-gray small">${p.position} • ${normalizeRoleKey(p.role)}</div>
+            <div class="text-light-gray small">${p.position}</div>
           </div>
         </div>
         <div class="text-end">
@@ -415,7 +405,6 @@ function renderPlayersTable(players) {
       <td>${p.position}</td>
       <td><span style="color:${getOvrColor(p.ovr)};" class="fw-bold">${p.ovr}</span></td>
       <td>${p.age}</td>
-      <td>${normalizeRoleKey(p.role)}</td>
       <td>
         ${p.available_for_trade ? '<span class="badge bg-success">Disponível</span>' : '<span class="badge bg-secondary">Indisp.</span>'}
       </td>
@@ -462,7 +451,7 @@ async function loadPlayers() {
   try {
     const data = await api(`players.php?team_id=${teamId}`);
     allPlayers = data.players || [];
-    currentSort = { field: 'role', ascending: true };
+    currentSort = { field: 'position', ascending: true };
     renderPlayers(allPlayers);
     if (statusEl) statusEl.style.display = 'none';
   } catch (err) {
@@ -485,10 +474,6 @@ document.addEventListener('DOMContentLoaded', () => {
     currentSearch = (e.target.value || '').toLowerCase();
     renderPlayers(allPlayers);
   });
-  document.getElementById('players-role-filter')?.addEventListener('change', (e) => {
-    currentRoleFilter = e.target.value || '';
-    renderPlayers(allPlayers);
-  });
   document.querySelector('#players-table thead')?.addEventListener('click', (e) => {
     const th = e.target.closest('th.sortable');
     if (th && th.dataset.sort) sortPlayers(th.dataset.sort);
@@ -505,6 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveLineupState(state);
     bootstrap.Modal.getInstance(document.getElementById('lineupPickerModal')).hide();
     renderLineupField(allPlayers);
+    renderBenchList(allPlayers);
   });
 
   document.getElementById('lineup-clear-btn')?.addEventListener('click', () => {
@@ -518,6 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveLineupState(state);
     bootstrap.Modal.getInstance(document.getElementById('lineupPickerModal')).hide();
     renderLineupField(allPlayers);
+    renderBenchList(allPlayers);
   });
 
   const editPhotoInput = document.getElementById('edit-foto-adicional');
@@ -559,7 +546,6 @@ document.addEventListener('DOMContentLoaded', () => {
       name: (formData.get('name') || '').toString().trim(),
       age: parseInt(formData.get('age') || '0', 10),
       position: (formData.get('position') || '').toString().trim(),
-      role: (formData.get('role') || 'Titular').toString(),
       ovr: parseInt(formData.get('ovr') || '0', 10),
       available_for_trade: formData.get('available_for_trade') ? 1 : 0
     };
@@ -629,7 +615,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('edit-age').value = player.age;
         document.getElementById('edit-position').value = player.position;
         document.getElementById('edit-ovr').value = player.ovr;
-        document.getElementById('edit-role').value = player.role;
         document.getElementById('edit-available').checked = !!player.available_for_trade;
         new bootstrap.Modal(document.getElementById('editPlayerModal')).show();
       }
@@ -698,7 +683,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('edit-age').value = player.age;
         document.getElementById('edit-position').value = player.position;
         document.getElementById('edit-ovr').value = player.ovr;
-        document.getElementById('edit-role').value = player.role;
         document.getElementById('edit-available').checked = !!player.available_for_trade;
         new bootstrap.Modal(document.getElementById('editPlayerModal')).show();
       }
@@ -742,7 +726,6 @@ document.addEventListener('DOMContentLoaded', () => {
       age: document.getElementById('edit-age').value,
       position: document.getElementById('edit-position').value,
       ovr: document.getElementById('edit-ovr').value,
-      role: document.getElementById('edit-role').value,
       available_for_trade: document.getElementById('edit-available').checked ? 1 : 0
     };
     if (editPhotoFile) {

@@ -406,13 +406,6 @@ if ($teamId) {
                   <option value="ATT">Atacante</option>
                 </select>
               </div>
-              <div class="col-md-3">
-                <label class="form-label text-white">Função</label>
-                <select class="form-select bg-dark text-white border-orange" name="role" required>
-                  <option value="Titular">Titular</option>
-                  <option value="Banco">Banco</option>
-                </select>
-              </div>
               <div class="col-md-2">
                 <label class="form-label text-white">OVR</label>
                 <input type="number" class="form-control bg-dark text-white border-orange" name="ovr" min="40" max="99" required>
@@ -440,7 +433,6 @@ if ($teamId) {
         <h5 class="mb-0 text-white"><i class="bi bi-list-ul me-2 text-orange"></i>Jogadores</h5>
         <div class="d-flex gap-2 align-items-center">
           <select id="sort-select" class="form-select form-select-sm bg-dark text-white border-orange" style="width: auto;">
-            <option value="role">Ordenar: Função</option>
             <option value="name">Ordenar: Nome</option>
             <option value="ovr">Ordenar: OVR</option>
             <option value="position">Ordenar: Posição</option>
@@ -461,12 +453,6 @@ if ($teamId) {
           <div class="d-flex flex-column flex-md-row gap-2 justify-content-between align-items-start align-items-md-center mb-2">
             <div class="d-flex gap-2 align-items-center">
               <input type="text" id="players-search" class="form-control form-control-sm bg-dark text-white border-orange" placeholder="Buscar por nome/posição..." style="min-width: 220px;" />
-              <select id="players-role-filter" class="form-select form-select-sm bg-dark text-white border-orange">
-                <option value="">Todas as funções</option>
-                <option value="Titular">Titular</option>
-                <option value="Banco">Banco</option>
-                <option value="Outro">Outro</option>
-              </select>
             </div>
             <small class="text-light-gray">Clique nos cabeçalhos para ordenar</small>
           </div>
@@ -478,7 +464,6 @@ if ($teamId) {
                   <th scope="col" data-sort="position" class="sortable">Posição</th>
                   <th scope="col" data-sort="ovr" class="sortable">OVR</th>
                   <th scope="col" data-sort="age" class="sortable">Idade</th>
-                  <th scope="col" data-sort="role" class="sortable">Função</th>
                   <th scope="col">Transferência</th>
                   <th scope="col" class="text-end">Ações</th>
                 </tr>
@@ -532,14 +517,6 @@ if ($teamId) {
             <div class="col-md-2">
               <label class="form-label text-white fw-bold">OVR</label>
               <input type="number" id="edit-ovr" class="form-control bg-dark text-white border-orange" min="40" max="99" required>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label text-white fw-bold">Função</label>
-              <select id="edit-role" class="form-select bg-dark text-white border-orange" required>
-                <option value="Titular">Titular</option>
-                <option value="Banco">Banco</option>
-                <option value="Outro">Outro</option>
-              </select>
             </div>
             <div class="col-md-4 d-flex align-items-center">
               <div class="form-check mt-4">
