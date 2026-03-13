@@ -7,6 +7,17 @@ requireAuth();
 $user = getUserSession();
 $pdo = db();
 
+function tableExists(PDO $pdo, string $table): bool
+{
+    try {
+        $stmt = $pdo->prepare('SHOW TABLES LIKE ?');
+        $stmt->execute([$table]);
+        return $stmt->rowCount() > 0;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 $stmtSettings = $pdo->prepare('SELECT cap_min, cap_max, max_trades FROM league_settings WHERE league = ?');
 $stmtSettings->execute([$user['league']]);
 $leagueSettings = $stmtSettings->fetch(PDO::FETCH_ASSOC) ?: ['cap_min' => 0, 'cap_max' => 0, 'max_trades' => 3];
@@ -50,14 +61,18 @@ $stmtTeam = $pdo->prepare('
 $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch();
 
+$hasPunishments = tableExists($pdo, 'team_punishments');
+$punishmentsSelect = $hasPunishments
+    ? '(SELECT COUNT(*) FROM team_punishments tp WHERE tp.team_id = t.id AND tp.reverted_at IS NULL)'
+    : '0';
 $stmt = $pdo->prepare('
     SELECT t.id, t.city, t.name, t.mascot, t.photo_url, t.user_id, t.tapas,
              u.name AS owner_name, u.phone AS owner_phone, u.photo_url AS owner_photo,
-             (SELECT COUNT(*) FROM team_punishments tp WHERE tp.team_id = t.id AND tp.reverted_at IS NULL) as punicoes_count
+             ' . $punishmentsSelect . ' as punicoes_count
     FROM teams t
     INNER JOIN users u ON u.id = t.user_id
     WHERE t.league = ?
-    ORDER BY t.city ASC, t.name ASC
+    ORDER BY t.name ASC
 ');
 $stmt->execute([$user['league']]);
 $teams = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
@@ -126,7 +141,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
         <div class="text-center mb-4">
             <img src="<?= htmlspecialchars($team['photo_url'] ?? '/img/default-team.png') ?>" 
                  alt="<?= htmlspecialchars($team['name'] ?? 'Time') ?>" class="team-avatar">
-            <h5 class="text-white mb-1"><?= htmlspecialchars(($team['city'] ?? '') . ' ' . ($team['name'] ?? 'Sem time')) ?></h5>
+            <h5 class="text-white mb-1"><?= htmlspecialchars($team['name'] ?? 'Sem time') ?></h5>
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
