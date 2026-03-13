@@ -159,6 +159,17 @@ if ($teamId) {
       text-align: center;
       color: var(--FUT-text);
     }
+    .lineup-slot .lineup-btn {
+      width: 100%;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .lineup-slot .lineup-btn:focus-visible .lineup-player,
+    .lineup-slot .lineup-btn:hover .lineup-player {
+      box-shadow: 0 0 0 2px rgba(254, 66, 67, 0.45);
+    }
     .lineup-player .name {
       font-weight: 600;
       font-size: 0.9rem;
@@ -340,12 +351,25 @@ if ($teamId) {
       <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
           <h5 class="mb-0 text-white"><i class="bi bi-diagram-3 me-2 text-orange"></i>Campinho do Time</h5>
-          <small class="text-light-gray">Escale seus 11 titulares e visualize a formação base 4-4-2.</small>
+          <small class="text-light-gray">Clique em cada posição para selecionar o jogador (formação base 4-4-2).</small>
         </div>
       </div>
       <div class="card-body">
         <div id="lineup-field" class="soccer-field"></div>
         <div id="lineup-legend" class="lineup-legend">Formação base: 4-4-2 (ajuste os titulares por posição).</div>
+      </div>
+    </div>
+
+    <div class="card bg-dark-panel border-orange mb-4">
+      <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-0 text-white"><i class="bi bi-person-gear me-2 text-orange"></i>Banco (5)</h5>
+          <small class="text-light-gray">Os 5 melhores jogadores marcados como Banco.</small>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="bench-empty" class="text-center text-light-gray">Sem jogadores no banco.</div>
+        <div id="bench-list" class="list-group list-group-flush"></div>
       </div>
     </div>
 
@@ -376,16 +400,6 @@ if ($teamId) {
                 <label class="form-label text-white">Posição</label>
                 <select class="form-select bg-dark text-white border-orange" name="position" required>
                   <option value="">Selecione</option>
-                  <option value="GK">Goleiro</option>
-                  <option value="DEF">Defensor</option>
-                  <option value="MID">Meio-campista</option>
-                  <option value="ATT">Atacante</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label text-white">Posição Secundária</label>
-                <select class="form-select bg-dark text-white border-orange" name="secondary_position">
-                  <option value="">Nenhuma</option>
                   <option value="GK">Goleiro</option>
                   <option value="DEF">Defensor</option>
                   <option value="MID">Meio-campista</option>
@@ -473,8 +487,6 @@ if ($teamId) {
             </table>
           </div>
         </div>
-        <!-- Grid de Cards Responsivo (desktop) -->
-        <div id="players-grid" class="roster-sections" style="display: none;"></div>
         <!-- Cards de edição (mobile) -->
         <div id="players-mobile-cards" class="roster-mobile-cards"></div>
       </div>
@@ -518,16 +530,6 @@ if ($teamId) {
               </select>
             </div>
             <div class="col-md-2">
-              <label class="form-label text-white fw-bold">Pos. Sec.</label>
-              <select id="edit-secondary-position" class="form-select bg-dark text-white border-orange">
-                <option value="">Nenhuma</option>
-                <option value="GK">Goleiro</option>
-                <option value="DEF">Defensor</option>
-                <option value="MID">Meio-campista</option>
-                <option value="ATT">Atacante</option>
-              </select>
-            </div>
-            <div class="col-md-2">
               <label class="form-label text-white fw-bold">OVR</label>
               <input type="number" id="edit-ovr" class="form-control bg-dark text-white border-orange" min="40" max="99" required>
             </div>
@@ -550,6 +552,29 @@ if ($teamId) {
         <div class="modal-footer border-top border-orange">
           <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button class="btn btn-orange" id="btn-save-edit"><i class="bi bi-save2 me-1"></i> Salvar Mudanças</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lineup Picker Modal -->
+  <div class="modal fade" id="lineupPickerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark-panel border-orange">
+        <div class="modal-header border-bottom border-orange">
+          <h5 class="modal-title text-white"><i class="bi bi-person-check me-2 text-orange"></i>Selecionar Jogador</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="lineup-position-key" />
+          <input type="hidden" id="lineup-slot-index" />
+          <label class="form-label text-white fw-bold" for="lineup-player-select">Jogador</label>
+          <select id="lineup-player-select" class="form-select bg-dark text-white border-orange"></select>
+          <small class="text-light-gray d-block mt-2">Apenas jogadores da mesma posição.</small>
+        </div>
+        <div class="modal-footer border-top border-orange">
+          <button class="btn btn-outline-light" id="lineup-clear-btn" type="button">Limpar</button>
+          <button class="btn btn-orange" id="lineup-apply-btn" type="button">Aplicar</button>
         </div>
       </div>
     </div>

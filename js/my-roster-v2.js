@@ -110,7 +110,7 @@ function applyFilters(players) {
   return players.filter(p => {
     const roleOk = !roleFilter || normalizeRoleKey(p.role) === normalizeRoleKey(roleFilter);
     if (!term) return roleOk;
-    const hay = `${p.name} ${p.position} ${p.secondary_position || ''}`.toLowerCase();
+    const hay = `${p.name} ${p.position}`.toLowerCase();
     return roleOk && hay.includes(term);
   });
 }
@@ -158,83 +158,16 @@ function renderPlayers(players) {
     return 0;
   });
 
-  // Renderizar Time Titular (grid) + Banco (lista lateral)
-  const grid = document.getElementById('players-grid');
-  if (grid) {
-    grid.innerHTML = '';
-    const titulares = sorted.filter(p => normalizeRoleKey(p.role) === 'Titular');
-    titulares.sort((a, b) => {
+  const starters = sorted
+    .filter(p => normalizeRoleKey(p.role) === 'Titular')
+    .sort((a, b) => {
       const pa = starterPositionOrder[a.position] ?? 999;
       const pb = starterPositionOrder[b.position] ?? 999;
       if (pa !== pb) return pa - pb;
       return Number(b.ovr) - Number(a.ovr);
     });
-    const starters = titulares.slice(0, 11);
-    const benchAll = sorted
-      .filter(p => normalizeRoleKey(p.role) === 'Banco')
-      .sort((a, b) => Number(b.ovr) - Number(a.ovr));
-    const bench = benchAll.slice(0, 5);
-
-    const row = document.createElement('div');
-    row.className = 'row g-3';
-
-    const colLeft = document.createElement('div');
-    colLeft.className = 'col-12 col-lg-8';
-    const startersSection = document.createElement('div');
-    startersSection.className = 'roster-section';
-    startersSection.innerHTML = '<h5>Time Titular (11)</h5>';
-    if (starters.length === 0) {
-      startersSection.innerHTML += '<div class="text-center text-light-gray">Sem jogadores marcados como Titular.</div>';
-    } else {
-      const list = document.createElement('div');
-      list.className = 'row g-3';
-      starters.forEach(p => {
-        const ovrColor = getOvrColor(p.ovr);
-        const photoUrl = getPlayerPhotoUrl(p);
-        const col = document.createElement('div');
-        col.className = 'col-12 col-sm-6 col-md-4';
-        const card = document.createElement('div');
-        card.className = 'card border-orange h-100 roster-card text-center';
-        card.innerHTML = `
-          <div class=\"card-body p-3 d-flex flex-column gap-3 align-items-center\">\n            <img src=\"${photoUrl}\" alt=\"${p.name}\" style=\"width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 2px solid var(--fba-orange); background: #1a1a1a;\" onerror=\"this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'\">\n            <div class=\"text-center\">\n              <h6 class=\"text-white mb-1 fw-bold\" style=\"font-size: 1.05rem;\">${p.name}</h6>\n              <div class=\"d-flex justify-content-center gap-2 flex-wrap small\">\n                <span class=\"badge bg-secondary\">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</span>\n              </div>\n            </div>\n            <div class=\"text-center\">\n              <div class=\"fw-bold\" style=\"font-size: 1.8rem; line-height: 1; color: ${ovrColor};\">${p.ovr}</div>\n              <small class=\"text-light-gray\">${p.age} anos</small>\n            </div>\n          </div>`;
-        col.appendChild(card);
-        list.appendChild(col);
-      });
-      startersSection.appendChild(list);
-    }
-    colLeft.appendChild(startersSection);
-
-    const colRight = document.createElement('div');
-    colRight.className = 'col-12 col-lg-4';
-    const benchSection = document.createElement('div');
-    benchSection.className = 'roster-section';
-    benchSection.innerHTML = '<h5>Banco (5)</h5>';
-    if (bench.length === 0) {
-      benchSection.innerHTML += '<div class="text-center text-light-gray">Sem jogadores no banco.</div>';
-    } else {
-      const ul = document.createElement('ul');
-      ul.className = 'list-group list-group-flush';
-      bench.forEach(p => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item bg-transparent text-white d-flex justify-content-between align-items-center px-0';
-        li.innerHTML = `
-          <span>${p.name} <small class=\"text-light-gray\">(${p.position}${p.secondary_position ? '/' + p.secondary_position : ''})</small></span>
-          <span class=\"fw-bold\" style=\"color:${getOvrColor(p.ovr)}\">${p.ovr}</span>`;
-        ul.appendChild(li);
-      });
-      benchSection.appendChild(ul);
-    }
-    colRight.appendChild(benchSection);
-
-    row.appendChild(colLeft);
-    row.appendChild(colRight);
-    grid.appendChild(row);
-
-    renderLineupField(starters);
-
-    document.getElementById('players-status').style.display = 'none';
-    grid.style.display = '';
-  }
+  renderBenchList(allPlayers);
+  renderLineupField(allPlayers);
 
   renderPlayersMobileCards(sorted);
 
@@ -251,13 +184,17 @@ function renderPlayers(players) {
   }
 }
 
-function renderLineupField(starters) {
+function renderLineupField(players) {
   const field = document.getElementById('lineup-field');
   if (!field) return;
   field.innerHTML = '';
 
+  const playersById = new Map(allPlayers.map(p => [String(p.id), p]));
+  const lineupState = loadLineupState();
+  const usedIds = new Set();
+
   const byPosition = { GK: [], DEF: [], MID: [], ATT: [] };
-  starters.forEach((player) => {
+  (players || []).forEach((player) => {
     if (byPosition[player.position]) {
       byPosition[player.position].push(player);
     }
@@ -271,26 +208,135 @@ function renderLineupField(starters) {
     const rowEl = document.createElement('div');
     rowEl.className = 'lineup-row';
     for (let i = 0; i < row.slots; i += 1) {
-      const player = (byPosition[row.key] || [])[i] || null;
+      const slotKey = String(i);
+      const pickedId = lineupState[row.key]?.[slotKey] ?? null;
+      let player = pickedId ? playersById.get(String(pickedId)) : null;
+      if (!player) {
+        const list = (byPosition[row.key] || []).filter(p => !usedIds.has(String(p.id)));
+        player = list[0] || null;
+      }
+      if (player) {
+        usedIds.add(String(player.id));
+      }
       const slot = document.createElement('div');
       slot.className = 'lineup-slot';
       if (player) {
         slot.innerHTML = `
-          <div class="lineup-player">
-            <div class="name">${player.name}</div>
-            <div class="meta">${positionLabels[player.position] || player.position} · OVR ${player.ovr}</div>
-          </div>`;
+          <button class="lineup-btn" type="button" data-pos="${row.key}" data-slot="${i}">
+            <div class="lineup-player">
+              <div class="name">${player.name}</div>
+              <div class="meta">${positionLabels[player.position] || player.position} · OVR ${player.ovr}</div>
+            </div>
+          </button>`;
       } else {
         slot.innerHTML = `
-          <div class="lineup-player lineup-placeholder">
-            <div class="name">${row.label}</div>
-            <div class="meta">Sem titular</div>
-          </div>`;
+          <button class="lineup-btn" type="button" data-pos="${row.key}" data-slot="${i}">
+            <div class="lineup-player lineup-placeholder">
+              <div class="name">${row.label}</div>
+              <div class="meta">Sem titular</div>
+            </div>
+          </button>`;
       }
       rowEl.appendChild(slot);
     }
     field.appendChild(rowEl);
   });
+
+  field.querySelectorAll('.lineup-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openLineupPicker(btn.dataset.pos, parseInt(btn.dataset.slot, 10));
+    });
+  });
+}
+
+function renderBenchList(players) {
+  const listEl = document.getElementById('bench-list');
+  const emptyEl = document.getElementById('bench-empty');
+  if (!listEl || !emptyEl) return;
+  listEl.innerHTML = '';
+  const bench = players
+    .filter(p => normalizeRoleKey(p.role) === 'Banco')
+    .sort((a, b) => Number(b.ovr) - Number(a.ovr))
+    .slice(0, 5);
+  if (bench.length === 0) {
+    emptyEl.style.display = 'block';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  bench.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'list-group-item bg-transparent text-white d-flex justify-content-between align-items-center px-0';
+    item.innerHTML = `
+      <span>${p.name} <small class="text-light-gray">(${p.position})</small></span>
+      <span class="fw-bold" style="color:${getOvrColor(p.ovr)}">${p.ovr}</span>`;
+    listEl.appendChild(item);
+  });
+}
+
+function getLineupStorageKey() {
+  return `fut_lineup_${window.__TEAM_ID__ || 'guest'}`;
+}
+
+function loadLineupState() {
+  try {
+    const raw = localStorage.getItem(getLineupStorageKey());
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveLineupState(state) {
+  try {
+    localStorage.setItem(getLineupStorageKey(), JSON.stringify(state));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function openLineupPicker(positionKey, slotIndex) {
+  const modalEl = document.getElementById('lineupPickerModal');
+  const selectEl = document.getElementById('lineup-player-select');
+  if (!modalEl || !selectEl) return;
+  const pos = positionKey;
+  const lineupState = loadLineupState();
+  const currentId = lineupState[pos]?.[String(slotIndex)] ?? '';
+  const usedIds = new Set();
+  Object.values(lineupState).forEach(arr => {
+    if (!arr) return;
+    Object.values(arr).forEach(id => {
+      if (id) usedIds.add(String(id));
+    });
+  });
+
+  selectEl.innerHTML = '';
+  const emptyOption = document.createElement('option');
+  emptyOption.value = '';
+  emptyOption.textContent = 'Sem jogador';
+  selectEl.appendChild(emptyOption);
+
+  allPlayers
+    .filter(p => p.position === pos)
+    .sort((a, b) => Number(b.ovr) - Number(a.ovr))
+    .forEach(player => {
+      const idStr = String(player.id);
+      const option = document.createElement('option');
+      option.value = idStr;
+      option.textContent = `${player.name} • OVR ${player.ovr}`;
+      if (idStr === String(currentId)) {
+        option.selected = true;
+      }
+      if (usedIds.has(idStr) && idStr !== String(currentId)) {
+        option.disabled = true;
+      }
+      selectEl.appendChild(option);
+    });
+
+  document.getElementById('lineup-position-key').value = pos;
+  document.getElementById('lineup-slot-index').value = String(slotIndex);
+  new bootstrap.Modal(modalEl).show();
 }
 
 function renderPlayersMobileCards(players) {
@@ -316,7 +362,7 @@ function renderPlayersMobileCards(players) {
                onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'">
           <div>
             <div class="text-white fw-bold">${p.name}</div>
-            <div class="text-light-gray small">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''} • ${normalizeRoleKey(p.role)}</div>
+            <div class="text-light-gray small">${p.position} • ${normalizeRoleKey(p.role)}</div>
           </div>
         </div>
         <div class="text-end">
@@ -362,11 +408,11 @@ function renderPlayersTable(players) {
                onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'">
           <div class="d-flex flex-column">
             <span class="fw-semibold">${p.name}</span>
-            <small class="text-light-gray">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</small>
+            <small class="text-light-gray">${p.position}</small>
           </div>
         </div>
       </td>
-      <td>${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</td>
+      <td>${p.position}</td>
       <td><span style="color:${getOvrColor(p.ovr)};" class="fw-bold">${p.ovr}</span></td>
       <td>${p.age}</td>
       <td>${normalizeRoleKey(p.role)}</td>
@@ -399,14 +445,12 @@ function updateRosterStats() {
 async function loadPlayers() {
   const teamId = window.__TEAM_ID__;
   const statusEl = document.getElementById('players-status');
-  const gridEl = document.getElementById('players-grid');
   const mobileCardsEl = document.getElementById('players-mobile-cards');
   if (!teamId) {
     if (statusEl) {
       statusEl.innerHTML = '<div class="alert alert-warning text-center"><i class="bi bi-exclamation-triangle me-2"></i>Você ainda não possui um time.</div>';
       statusEl.style.display = 'block';
     }
-    if (gridEl) gridEl.style.display = 'none';
     if (mobileCardsEl) mobileCardsEl.style.display = 'none';
     return;
   }
@@ -414,7 +458,6 @@ async function loadPlayers() {
     statusEl.innerHTML = '<div class="spinner-border text-orange" role="status"></div><p class="text-light-gray mt-2">Carregando jogadores...</p>';
     statusEl.style.display = 'block';
   }
-  if (gridEl) gridEl.style.display = 'none';
   if (mobileCardsEl) mobileCardsEl.style.display = 'none';
   try {
     const data = await api(`players.php?team_id=${teamId}`);
@@ -449,6 +492,32 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#players-table thead')?.addEventListener('click', (e) => {
     const th = e.target.closest('th.sortable');
     if (th && th.dataset.sort) sortPlayers(th.dataset.sort);
+  });
+
+  document.getElementById('lineup-apply-btn')?.addEventListener('click', () => {
+    const pos = document.getElementById('lineup-position-key').value;
+    const slotIndex = document.getElementById('lineup-slot-index').value;
+    const selectEl = document.getElementById('lineup-player-select');
+    if (!pos || slotIndex === '' || !selectEl) return;
+    const state = loadLineupState();
+    if (!state[pos]) state[pos] = {};
+    state[pos][String(slotIndex)] = selectEl.value || null;
+    saveLineupState(state);
+    bootstrap.Modal.getInstance(document.getElementById('lineupPickerModal')).hide();
+    renderLineupField(allPlayers);
+  });
+
+  document.getElementById('lineup-clear-btn')?.addEventListener('click', () => {
+    const pos = document.getElementById('lineup-position-key').value;
+    const slotIndex = document.getElementById('lineup-slot-index').value;
+    if (!pos || slotIndex === '') return;
+    const state = loadLineupState();
+    if (state[pos]) {
+      delete state[pos][String(slotIndex)];
+    }
+    saveLineupState(state);
+    bootstrap.Modal.getInstance(document.getElementById('lineupPickerModal')).hide();
+    renderLineupField(allPlayers);
   });
 
   const editPhotoInput = document.getElementById('edit-foto-adicional');
@@ -490,7 +559,6 @@ document.addEventListener('DOMContentLoaded', () => {
       name: (formData.get('name') || '').toString().trim(),
       age: parseInt(formData.get('age') || '0', 10),
       position: (formData.get('position') || '').toString().trim(),
-      secondary_position: (formData.get('secondary_position') || '').toString().trim() || null,
       role: (formData.get('role') || 'Titular').toString(),
       ovr: parseInt(formData.get('ovr') || '0', 10),
       available_for_trade: formData.get('available_for_trade') ? 1 : 0
@@ -560,7 +628,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editPreview) editPreview.src = getPlayerPhotoUrl(player);
         document.getElementById('edit-age').value = player.age;
         document.getElementById('edit-position').value = player.position;
-        document.getElementById('edit-secondary-position').value = player.secondary_position || '';
         document.getElementById('edit-ovr').value = player.ovr;
         document.getElementById('edit-role').value = player.role;
         document.getElementById('edit-available').checked = !!player.available_for_trade;
@@ -630,7 +697,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editPreview) editPreview.src = getPlayerPhotoUrl(player);
         document.getElementById('edit-age').value = player.age;
         document.getElementById('edit-position').value = player.position;
-        document.getElementById('edit-secondary-position').value = player.secondary_position || '';
         document.getElementById('edit-ovr').value = player.ovr;
         document.getElementById('edit-role').value = player.role;
         document.getElementById('edit-available').checked = !!player.available_for_trade;
@@ -675,7 +741,6 @@ document.addEventListener('DOMContentLoaded', () => {
       name: document.getElementById('edit-name').value,
       age: document.getElementById('edit-age').value,
       position: document.getElementById('edit-position').value,
-      secondary_position: document.getElementById('edit-secondary-position').value || null,
       ovr: document.getElementById('edit-ovr').value,
       role: document.getElementById('edit-role').value,
       available_for_trade: document.getElementById('edit-available').checked ? 1 : 0
