@@ -210,7 +210,7 @@ if ($method === 'POST') {
     $name = trim($body['name'] ?? '');
     $age = (int) ($body['age'] ?? 0);
     $position = trim($body['position'] ?? '');
-    $role = $body['role'] ?? 'Titular';
+    $role = 'Titular';
     $ovr = (int) ($body['ovr'] ?? 0);
     $availableForTrade = isset($body['available_for_trade']) ? (int) ((bool) $body['available_for_trade']) : 0;
 
@@ -238,26 +238,6 @@ if ($method === 'POST') {
     $teamLeague = strtoupper((string)$stmtLeague->fetchColumn());
     if ($teamLeague !== 'ELITE') {
         jsonResponse(403, ['error' => 'Adi��o de jogador dispon�vel apenas para a liga ELITE.']);
-    }
-
-    // Validar limitadores de fun��o
-    $roleCountStmt = $pdo->prepare('SELECT role, COUNT(*) as count FROM players WHERE team_id = ? GROUP BY role');
-    $roleCountStmt->execute([$teamId]);
-    $roleCounts = [];
-    while ($row = $roleCountStmt->fetch()) {
-        $roleCounts[$row['role']] = (int)$row['count'];
-    }
-    
-    $titularCount = $roleCounts['Titular'] ?? 0;
-    $bancoCount = $roleCounts['Banco'] ?? 0;
-    $gleagueCount = $roleCounts['G-League'] ?? 0;
-    
-    // Validar limites
-    if ($role === 'Titular' && $titularCount >= 11) {
-        jsonResponse(409, ['error' => 'Limite de Titulares atingido (m�ximo 11).']);
-    }
-    if ($role === 'Banco' && $bancoCount >= 5) {
-        jsonResponse(409, ['error' => 'Limite de Banco atingido (m�ximo 5).']);
     }
 
     $prospectiveCap = capWithCandidate($pdo, $teamId, $ovr);
@@ -305,7 +285,7 @@ if ($method === 'PUT') {
     $position = isset($body['position']) ? trim($body['position']) : $player['position'];
     $secondaryPosition = isset($body['secondary_position']) ? trim($body['secondary_position']) : ($player['secondary_position'] ?? '');
     $seasonsInLeague = isset($body['seasons_in_league']) ? (int)$body['seasons_in_league'] : (int)($player['seasons_in_league'] ?? 0);
-    $role = isset($body['role']) ? $body['role'] : $player['role'];
+    $role = $player['role'];
     $ovr = isset($body['ovr']) ? (int)$body['ovr'] : (int)$player['ovr'];
     $availableForTrade = isset($body['available_for_trade']) ? (int)((bool)$body['available_for_trade']) : (int)$player['available_for_trade'];
     $hasFotoAdicionalField = array_key_exists('foto_adicional', $body);
@@ -349,27 +329,6 @@ if ($method === 'PUT') {
         jsonResponse(422, ['error' => 'Campos obrigat�rios: nome, idade, posi��o, ovr.']);
     }
 
-    // Validar limitadores de fun��o se mudou o role
-    if ($role !== $player['role']) {
-        $roleCountStmt = $pdo->prepare('SELECT role, COUNT(*) as count FROM players WHERE team_id = ? AND id <> ? GROUP BY role');
-        $roleCountStmt->execute([(int)$player['team_id'], $playerId]);
-        $roleCounts = [];
-        while ($row = $roleCountStmt->fetch()) {
-            $roleCounts[$row['role']] = (int)$row['count'];
-        }
-        
-        $titularCount = $roleCounts['Titular'] ?? 0;
-        $bancoCount = $roleCounts['Banco'] ?? 0;
-        $gleagueCount = $roleCounts['G-League'] ?? 0;
-        
-        if ($role === 'Titular' && $titularCount >= 11) {
-            jsonResponse(409, ['error' => 'Limite de Titulares atingido (m�ximo 11).']);
-        }
-        if ($role === 'Banco' && $bancoCount >= 5) {
-            jsonResponse(409, ['error' => 'Limite de Banco atingido (m�ximo 5).']);
-        }
-    }
-
     // CAP check: recalcular considerando o novo OVR substituindo o anterior
     $ovrsStmt = $pdo->prepare('SELECT ovr FROM players WHERE team_id = ? AND id <> ? ORDER BY ovr DESC LIMIT 8');
     $ovrsStmt->execute([(int)$player['team_id'], $playerId]);
@@ -403,7 +362,6 @@ if ($method === 'PUT') {
         'name' => $name,
         'age' => $age,
         'position' => $position,
-        'role' => $role,
         'ovr' => $ovr,
         'available_for_trade' => $availableForTrade,
     ];
