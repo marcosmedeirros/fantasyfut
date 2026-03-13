@@ -3,9 +3,9 @@
 return [
     'db' => [
         'host' => getenv('FUT_DB_HOST') ?: 'localhost',
-    'name' => getenv('FUT_DB_NAME') ?: 'u289267434_FUTbrasilbanco',
-    'user' => getenv('FUT_DB_USER') ?: 'u289267434_FUTbrasilbanco',
-    'pass' => getenv('FUT_DB_PASS') ?: 'FUTbrasil@2025',
+        'name' => getenv('FUT_DB_NAME') ?: 'u289267434_futfantasy',
+        'user' => getenv('FUT_DB_USER') ?: 'u289267434_futfantasy',
+        'pass' => getenv('FUT_DB_PASS') ?: 'Zonete@13',
         'charset' => 'utf8mb4',
     ],
     'mail' => [
