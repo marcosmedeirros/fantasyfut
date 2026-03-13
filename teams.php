@@ -18,6 +18,17 @@ function tableExists(PDO $pdo, string $table): bool
     }
 }
 
+function columnExists(PDO $pdo, string $table, string $column): bool
+{
+    try {
+        $stmt = $pdo->prepare('SHOW COLUMNS FROM ' . $table . ' LIKE ?');
+        $stmt->execute([$column]);
+        return $stmt->rowCount() > 0;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 $stmtSettings = $pdo->prepare('SELECT cap_min, cap_max, max_trades FROM league_settings WHERE league = ?');
 $stmtSettings->execute([$user['league']]);
 $leagueSettings = $stmtSettings->fetch(PDO::FETCH_ASSOC) ?: ['cap_min' => 0, 'cap_max' => 0, 'max_trades' => 3];
@@ -65,8 +76,10 @@ $hasPunishments = tableExists($pdo, 'team_punishments');
 $punishmentsSelect = $hasPunishments
     ? '(SELECT COUNT(*) FROM team_punishments tp WHERE tp.team_id = t.id AND tp.reverted_at IS NULL)'
     : '0';
+$hasTapas = columnExists($pdo, 'teams', 'tapas');
+$tapasSelect = $hasTapas ? 't.tapas' : '0';
 $stmt = $pdo->prepare('
-    SELECT t.id, t.city, t.name, t.mascot, t.photo_url, t.user_id, t.tapas,
+    SELECT t.id, t.city, t.name, t.mascot, t.photo_url, t.user_id, ' . $tapasSelect . ' AS tapas,
              u.name AS owner_name, u.phone AS owner_phone, u.photo_url AS owner_photo,
              ' . $punishmentsSelect . ' as punicoes_count
     FROM teams t

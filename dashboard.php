@@ -658,7 +658,7 @@ try {
         <div class="text-center mb-4">
             <img src="<?= htmlspecialchars($team['photo_url'] ?? '/img/default-team.png') ?>" 
                  alt="<?= htmlspecialchars($team['name']) ?>" class="team-avatar">
-            <h5 class="text-white mb-1"><?= htmlspecialchars($team['city'] . ' ' . $team['name']) ?></h5>
+            <h5 class="text-white mb-1"><?= htmlspecialchars($team['name']) ?></h5>
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
