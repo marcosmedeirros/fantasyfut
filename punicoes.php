@@ -20,7 +20,7 @@ $team = $stmtTeam->fetch();
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
   <title>Punições - Admin</title>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0a0a0c">
+  <meta name="theme-color" content="#FE4243">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/styles.css" />
