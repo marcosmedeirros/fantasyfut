@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * API do Leilao de Jogadores
  * Sistema de trocas via leilao
@@ -561,7 +561,7 @@ function cadastrarLeilao($pdo, $body, $user_id) {
             $stmtTemp = $pdo->prepare("UPDATE leilao_jogadores SET temp_name = ?, temp_position = ?, temp_age = ?, temp_ovr = ?, is_temp_player = 1 WHERE id = ?");
             $stmtTemp->execute([$tempPlayer['name'], $tempPlayer['position'], $tempPlayer['age'], $tempPlayer['ovr'], $leilaoId]);
         } catch (Throwable $e) {
-            // ignora caso as colunas temporárias não existam por algum motivo
+            // ignora caso as colunas tempor�rias n�o existam por algum motivo
         }
     }
     
@@ -662,7 +662,7 @@ function enviarProposta($pdo, $body, $team_id) {
         return;
     }
 
-    // Se o leilão não tem time (jogador criado), não aceitar picks
+    // Se o leil�o n�o tem time (jogador criado), n�o aceitar picks
     if (!empty($pick_ids) && empty($leilao['team_id'])) {
         echo json_encode(['success' => false, 'error' => 'Este leilao nao aceita picks (jogador sem time).']);
         return;
@@ -865,3 +865,4 @@ function recusarProposta($pdo, $body, $team_id, $is_admin) {
     
     echo json_encode(['success' => true]);
 }
+

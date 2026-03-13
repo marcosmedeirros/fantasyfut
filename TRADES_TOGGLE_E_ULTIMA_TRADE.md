@@ -1,4 +1,4 @@
-# 🎯 Sistema de Controle de Trades + Última Trade no Dashboard
+﻿# 🎯 Sistema de Controle de Trades + Última Trade no Dashboard
 
 ## ✅ Implementações Concluídas
 
@@ -145,7 +145,7 @@ COMMENT 'Se 1, trades estão ativas na liga; se 0, desativadas';
 ### **Cores e Ícones:**
 - 🟢 Verde: Trades ativas
 - 🔴 Vermelho: Trades desativadas/alerta
-- 🟠 Laranja: Botões de ação (padrão FBA)
+- 🟠 Laranja: Botões de ação (padrão FUT)
 - 🔒 Cadeado: Bloqueio visual
 - ↔️ Setas: Troca/transferência
 
@@ -271,3 +271,5 @@ O sistema agora oferece:
 4. **UX melhorada** com feedback visual claro
 
 **Tudo pronto para uso!** 🚀
+
+

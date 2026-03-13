@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 /**
- * API para Histórico e Pontos de Temporada
+ * API para Hist�rico e Pontos de Temporada
  * 
  * Endpoints:
- * - get_history: Busca histórico de todas as temporadas
- * - save_history: Salva histórico (Campeão, Vice, MVP, DPOY, MIP, 6º Homem, ROY)
+ * - get_history: Busca hist�rico de todas as temporadas
+ * - save_history: Salva hist�rico (Campe�o, Vice, MVP, DPOY, MIP, 6� Homem, ROY)
  * - get_teams_for_points: Lista times por liga para registro de pontos
  * - save_season_points: Salva pontos dos times na temporada
  * - get_ranking: Busca ranking (soma de pontos)
@@ -51,15 +51,15 @@ if (!$action && is_array($jsonPayload) && isset($jsonPayload['action'])) {
     $action = $jsonPayload['action'];
 }
 
-// Obter usuário atual
+// Obter usu�rio atual
 $user = getUserSession();
 
-// Verificar se é admin para ações protegidas
+// Verificar se � admin para a��es protegidas
 $adminActions = ['save_history', 'delete_history', 'save_season_points', 'save_ranking_totals'];
 if (in_array($action, $adminActions)) {
     if (!$user || ($user['user_type'] ?? 'jogador') !== 'admin') {
         http_response_code(403);
-        echo json_encode(['success' => false, 'error' => 'Acesso negado. Apenas administradores podem realizar esta ação.']);
+        echo json_encode(['success' => false, 'error' => 'Acesso negado. Apenas administradores podem realizar esta a��o.']);
         exit;
     }
 }
@@ -106,7 +106,7 @@ function ensureRankingPointsColumn(PDO $pdo): void {
         $pdo->exec("ALTER TABLE teams ADD COLUMN ranking_points INT NOT NULL DEFAULT 0 AFTER name");
     }
 }
-// Garante que a coluna teams.ranking_titles exista para sobrescrita manual de títulos
+// Garante que a coluna teams.ranking_titles exista para sobrescrita manual de t�tulos
 function ensureRankingTitlesColumn(PDO $pdo): void {
     $stmt = $pdo->prepare("SHOW COLUMNS FROM teams LIKE 'ranking_titles'");
     $stmt->execute();
@@ -116,12 +116,12 @@ function ensureRankingTitlesColumn(PDO $pdo): void {
 }
 
 try {
-    // Verificar tabelas para ações que precisam delas
+    // Verificar tabelas para a��es que precisam delas
     $tableActions = ['get_history', 'save_history', 'delete_history', 'get_ranking', 'save_season_points', 'get_season_points', 'get_teams_for_points'];
     if (in_array($action, $tableActions) && !checkTablesExist($pdo)) {
         echo json_encode([
             'success' => false, 
-            'error' => 'Tabelas não encontradas. Execute a migração acessando: /migrate-history-points.php'
+            'error' => 'Tabelas n�o encontradas. Execute a migra��o acessando: /migrate-history-points.php'
         ]);
         exit;
     }
@@ -129,7 +129,7 @@ try {
     switch ($action) {
         
         // =====================================================
-        // HISTÓRICO
+        // HIST�RICO
         // =====================================================
         
         case 'get_history':
@@ -207,14 +207,14 @@ try {
             break;
             
         case 'save_history':
-            // Admin já verificado no início
+            // Admin j� verificado no in�cio
             
             $data = is_array($jsonPayload) ? $jsonPayload : null;
             
             $seasonId = $data['season_id'] ?? null;
             
             if (!$seasonId) {
-                throw new Exception('ID da temporada é obrigatório');
+                throw new Exception('ID da temporada � obrigat�rio');
             }
             
             // Buscar dados da temporada com sprint
@@ -228,15 +228,15 @@ try {
             $season = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$season) {
-                throw new Exception('Temporada não encontrada');
+                throw new Exception('Temporada n�o encontrada');
             }
             
-            // Verificar se já existe histórico para esta temporada
+            // Verificar se j� existe hist�rico para esta temporada
             $stmt = $pdo->prepare("SELECT id FROM season_history WHERE season_id = ?");
             $stmt->execute([$seasonId]);
             $existing = $stmt->fetch();
             
-            // Garantir colunas ROY (para projetos que ainda não possuem)
+            // Garantir colunas ROY (para projetos que ainda n�o possuem)
             ensureSeasonHistoryRoyColumns($pdo);
 
             $historyData = [
@@ -302,22 +302,22 @@ try {
             $stmt = $pdo->prepare($sql);
             $stmt->execute($historyData);
             
-            echo json_encode(['success' => true, 'message' => 'Histórico salvo com sucesso']);
+            echo json_encode(['success' => true, 'message' => 'Hist�rico salvo com sucesso']);
             break;
             
         case 'delete_history':
-            // Admin já verificado no início
+            // Admin j� verificado no in�cio
             
             $seasonId = $_REQUEST['season_id'] ?? null;
             
             if (!$seasonId) {
-                throw new Exception('ID da temporada é obrigatório');
+                throw new Exception('ID da temporada � obrigat�rio');
             }
             
             $stmt = $pdo->prepare("DELETE FROM season_history WHERE season_id = ?");
             $stmt->execute([$seasonId]);
             
-            echo json_encode(['success' => true, 'message' => 'Histórico excluído com sucesso']);
+            echo json_encode(['success' => true, 'message' => 'Hist�rico exclu�do com sucesso']);
             break;
             
         // =====================================================
@@ -329,7 +329,7 @@ try {
             $league = $_REQUEST['league'] ?? null;
             
             if (!$league) {
-                throw new Exception('Liga é obrigatória');
+                throw new Exception('Liga � obrigat�ria');
             }
             
             // Buscar times da liga
@@ -351,7 +351,7 @@ try {
             break;
             
         case 'save_season_points':
-            // Admin já verificado no início
+            // Admin j� verificado no in�cio
             
             $data = is_array($jsonPayload) ? $jsonPayload : null;
             
@@ -360,7 +360,7 @@ try {
             $teamPoints = $data['team_points'] ?? [];
             
             if (!$seasonId || !$league) {
-                throw new Exception('ID da temporada e liga são obrigatórios');
+                throw new Exception('ID da temporada e liga s�o obrigat�rios');
             }
             
             // Buscar dados da temporada com sprint
@@ -374,7 +374,7 @@ try {
             $season = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$season) {
-                throw new Exception('Temporada não encontrada');
+                throw new Exception('Temporada n�o encontrada');
             }
             
             $sprintNumber = $season['sprint_number'] ?? 1;
@@ -516,7 +516,7 @@ try {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute($params);
             } elseif ($hasTeamRankingPoints) {
-                // 2) Caso não exista coluna, usar soma do total_points da tabela team_ranking_points (automático)
+                // 2) Caso n�o exista coluna, usar soma do total_points da tabela team_ranking_points (autom�tico)
                 $sql = "SELECT 
                             t.id as team_id,
                             CONCAT(t.city, ' ', t.name) as team_name,
@@ -581,14 +581,14 @@ try {
             break;
 
         case 'save_ranking_totals':
-            // Admin já verificado no início
+            // Admin j� verificado no in�cio
             // Edita diretamente o total de pontos de ranking por time (teams.ranking_points)
             $payload = is_array($jsonPayload) ? $jsonPayload : null;
             $league = $payload['league'] ?? null;
             $teamPoints = $payload['team_points'] ?? [];
 
             if (!$league || !is_array($teamPoints)) {
-                throw new Exception('Liga e lista de pontos são obrigatórias');
+                throw new Exception('Liga e lista de pontos s�o obrigat�rias');
             }
 
             // Garante coluna
@@ -656,7 +656,7 @@ try {
             break;
             
         default:
-            throw new Exception('Ação não reconhecida: ' . $action);
+            throw new Exception('A��o n�o reconhecida: ' . $action);
     }
     
 } catch (Exception $e) {
@@ -666,3 +666,4 @@ try {
         'error' => $e->getMessage()
     ]);
 }
+

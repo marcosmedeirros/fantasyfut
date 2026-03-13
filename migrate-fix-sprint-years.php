@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
  * Migration: Corrigir anos zerados nas temporadas
- * Fórmula: season.year = sprints.start_year + seasons.season_number - 1
+ * F�rmula: season.year = sprints.start_year + seasons.season_number - 1
  */
 
 require_once __DIR__ . '/backend/db.php';
@@ -19,7 +19,7 @@ try {
     if (count($sprints) > 0) {
         echo "<p>Encontrados " . count($sprints) . " sprints sem start_year:</p>";
         
-        // Definir start_year padrão por liga
+        // Definir start_year padr�o por liga
         $defaultYears = [
             'ELITE' => 2016,
             'NEXT' => 2017,
@@ -32,12 +32,12 @@ try {
             $pdo->prepare("UPDATE sprints SET start_year = ? WHERE id = ?")->execute([$startYear, $sprint['id']]);
             echo "<li>Sprint #{$sprint['id']} ({$sprint['league']}) -> start_year = {$startYear}</li>";
         }
-        echo "<p style='color: green;'>✅ Sprints corrigidos!</p>";
+        echo "<p style='color: green;'>? Sprints corrigidos!</p>";
     } else {
-        echo "<p style='color: green;'>✅ Todos os sprints já têm start_year definido.</p>";
+        echo "<p style='color: green;'>? Todos os sprints j� t�m start_year definido.</p>";
     }
     
-    // 2. Corrigir seasons.year baseado na fórmula
+    // 2. Corrigir seasons.year baseado na f�rmula
     echo "<h3>2. Corrigindo seasons.year...</h3>";
     $stmt = $pdo->query("
         SELECT s.id, s.season_number, s.year, s.league, sp.start_year,
@@ -57,9 +57,9 @@ try {
             echo "<li>Temporada #{$season['id']} ({$season['league']} T{$season['season_number']}): {$season['year']} -> {$expectedYear}</li>";
         }
         echo "</ul>";
-        echo "<p style='color: green;'>✅ Temporadas corrigidas!</p>";
+        echo "<p style='color: green;'>? Temporadas corrigidas!</p>";
     } else {
-        echo "<p style='color: green;'>✅ Todos os anos das temporadas estão corretos.</p>";
+        echo "<p style='color: green;'>? Todos os anos das temporadas est�o corretos.</p>";
     }
     
     // 3. Mostrar resumo
@@ -79,8 +79,9 @@ try {
     }
     echo "</table>";
     
-    echo "<h2 style='color: green;'>✅ Migration concluída!</h2>";
+    echo "<h2 style='color: green;'>? Migration conclu�da!</h2>";
     
 } catch (Exception $e) {
-    echo "<p style='color: red;'>❌ Erro: " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p style='color: red;'>? Erro: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
+

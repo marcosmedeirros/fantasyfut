@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -60,21 +60,21 @@ try {
     // Se o erro é sobre coluna 'league' não existir, retorna mensagem específica
     if (strpos($e->getMessage(), "Unknown column 'league'") !== false) {
         jsonResponse(500, [
-            'error' => 'Schema do banco desatualizado. Execute a migração: https://fbabrasil.com.br/backend/migrate.php',
+            'error' => 'Schema do banco desatualizado. Execute a migração: https://FUTbrasil.com.br/backend/migrate.php',
             'technical' => $e->getMessage()
         ]);
     }
     // Tabela users não existe
     if (strpos($e->getMessage(), 'Base table or view not found') !== false && strpos($e->getMessage(), 'users') !== false) {
         jsonResponse(500, [
-            'error' => 'Tabela users ausente. Execute a migração: https://fbabrasil.com.br/backend/migrate.php',
+            'error' => 'Tabela users ausente. Execute a migração: https://FUTbrasil.com.br/backend/migrate.php',
             'technical' => $e->getMessage()
         ]);
     }
     // Coluna password_hash/email_verified ausente
     if (strpos($e->getMessage(), "Unknown column 'password_hash'") !== false || strpos($e->getMessage(), "Unknown column 'email_verified'") !== false) {
         jsonResponse(500, [
-            'error' => 'Schema do banco desatualizado. Execute a migração: https://fbabrasil.com.br/backend/migrate.php',
+            'error' => 'Schema do banco desatualizado. Execute a migração: https://FUTbrasil.com.br/backend/migrate.php',
             'technical' => $e->getMessage()
         ]);
     }
@@ -97,3 +97,5 @@ try {
     error_log('Erro no login.php: ' . $e->getMessage());
     jsonResponse(500, ['error' => 'Erro interno do servidor.', 'details' => $e->getMessage()]);
 }
+
+

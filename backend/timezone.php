@@ -1,16 +1,16 @@
-<?php
+﻿<?php
 /**
- * Configuração de Timezone para todo o sistema
- * Garante que todas as datas e horários usem o fuso horário de São Paulo/Brasília
+ * Configura��o de Timezone para todo o sistema
+ * Garante que todas as datas e hor�rios usem o fuso hor�rio de S�o Paulo/Bras�lia
  * 
- * Este arquivo deve ser incluído no início de todos os scripts PHP que manipulam datas/horários.
+ * Este arquivo deve ser inclu�do no in�cio de todos os scripts PHP que manipulam datas/hor�rios.
  */
 
-// Define timezone padrão para todo o sistema: São Paulo/Brasília (UTC-3)
+// Define timezone padr�o para todo o sistema: S�o Paulo/Bras�lia (UTC-3)
 date_default_timezone_set('America/Sao_Paulo');
 
 /**
- * Retorna o DateTime atual no timezone de Brasília
+ * Retorna o DateTime atual no timezone de Bras�lia
  * @return DateTime
  */
 function getBrasiliaDateTime(): DateTime {
@@ -18,7 +18,7 @@ function getBrasiliaDateTime(): DateTime {
 }
 
 /**
- * Retorna a data/hora atual no formato MySQL (Y-m-d H:i:s) no timezone de Brasília
+ * Retorna a data/hora atual no formato MySQL (Y-m-d H:i:s) no timezone de Bras�lia
  * @return string
  */
 function getBrasiliaDateTimeString(): string {
@@ -26,7 +26,7 @@ function getBrasiliaDateTimeString(): string {
 }
 
 /**
- * Converte uma string de data/hora para o timezone de Brasília
+ * Converte uma string de data/hora para o timezone de Bras�lia
  * @param string $dateTimeString
  * @return DateTime
  */
@@ -36,15 +36,15 @@ function convertToBrasiliaDateTime(string $dateTimeString): DateTime {
         $dt->setTimezone(new DateTimeZone('America/Sao_Paulo'));
         return $dt;
     } catch (Exception $e) {
-        // Se falhar, retorna data/hora atual de Brasília
+        // Se falhar, retorna data/hora atual de Bras�lia
         return getBrasiliaDateTime();
     }
 }
 
 /**
- * Formata uma data/hora para exibição no padrão brasileiro
+ * Formata uma data/hora para exibi��o no padr�o brasileiro
  * @param string $dateTimeString
- * @param string $format (padrão: 'd/m/Y H:i')
+ * @param string $format (padr�o: 'd/m/Y H:i')
  * @return string
  */
 function formatBrasiliaDateTime(string $dateTimeString, string $format = 'd/m/Y H:i'): string {
@@ -55,3 +55,4 @@ function formatBrasiliaDateTime(string $dateTimeString, string $format = 'd/m/Y 
         return $dateTimeString;
     }
 }
+

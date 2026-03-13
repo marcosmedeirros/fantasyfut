@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Define timezone padrão para todo o sistema: São Paulo/Brasília
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -196,7 +196,7 @@ function sendVerificationEmail(string $email, string $token): bool
 {
     $config = loadConfig();
     $verifyUrl = rtrim($config['mail']['verify_base_url'], '?') . '?token=' . urlencode($token);
-    $subject = 'Verifique seu e-mail (FBA)';
+    $subject = 'Verifique seu e-mail (FUT)';
     $message = "Clique para verificar seu e-mail: {$verifyUrl}";
     if (!empty($config['mail']['smtp']['host'])) {
         return sendViaSmtp($email, $subject, $message, $config);
@@ -222,7 +222,7 @@ function buildPasswordResetUrl(string $token): string
         $resetBase = $scheme . '://' . $_SERVER['HTTP_HOST'] . '/reset-password.php';
     }
     if (!$resetBase) {
-        $resetBase = 'https://fbabrasil.com.br/reset-password.php';
+        $resetBase = 'https://FUTbrasil.com.br/reset-password.php';
     }
 
     if (str_contains($resetBase, '{token}')) {
@@ -239,12 +239,12 @@ function sendPasswordResetEmail(string $email, string $token, string $name): boo
 {
     $config = loadConfig();
     $resetUrl = buildPasswordResetUrl($token);
-    $subject = 'Recuperação de Senha - FBA Manager';
+    $subject = 'Recuperação de Senha - FUT Manager';
     
     $message = "
 Olá {$name},
 
-Recebemos uma solicitação para redefinir sua senha do FBA Manager Control.
+Recebemos uma solicitação para redefinir sua senha do FUT Manager Control.
 
 Clique no link abaixo para criar uma nova senha:
 {$resetUrl}
@@ -254,7 +254,7 @@ Este link expira em 1 hora.
 Se você não solicitou esta alteração, ignore este e-mail.
 
 Atenciosamente,
-Equipe FBA Manager
+Equipe FUT Manager
     ";
 
     if (!empty($config['mail']['smtp']['host'])) {
@@ -598,3 +598,5 @@ function formatBrazilianPhone(?string $phone): ?string
 
     return '+' . $digits;
 }
+
+

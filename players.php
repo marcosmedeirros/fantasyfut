@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 require_once __DIR__ . '/backend/helpers.php';
@@ -12,14 +12,14 @@ $stmtTeam = $pdo->prepare('SELECT t.* FROM teams t WHERE t.user_id = ? LIMIT 1')
 $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch(PDO::FETCH_ASSOC);
 
-$whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas franquias na FBA?');
+$whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas franquias na FUT?');
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-    <title>Jogadores - FBA Manager</title>
+    <title>Jogadores - FUT Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -118,11 +118,10 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                             <label for="playersPositionFilter" class="form-label">Posicao</label>
                             <select id="playersPositionFilter" class="form-select">
                                 <option value="">Todas</option>
-                                <option value="PG">PG</option>
-                                <option value="SG">SG</option>
-                                <option value="SF">SF</option>
-                                <option value="PF">PF</option>
-                                <option value="C">C</option>
+                                <option value="GK">GK</option>
+                                <option value="DEF">DEF</option>
+                                <option value="MID">MID</option>
+                                <option value="ATT">ATT</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -164,7 +163,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                     </div>
                     <div class="table-responsive" id="playersTableWrap" style="display:none;">
                         <table class="table table-dark table-hover mb-0">
-                            <thead style="background: var(--fba-brand); color: #000;">
+                            <thead style="background: var(--FUT-brand); color: #000;">
                                 <tr>
                                     <th>Jogador</th>
                                     <th>OVR</th>
@@ -260,7 +259,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                     <div class="player-card-header">
                         <div class="d-flex align-items-center gap-2">
                             <img src="${photoUrl}" alt="${p.name}" 
-                                 style="width: 44px; height: 44px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;"
+                                 style="width: 44px; height: 44px; object-fit: cover; border-radius: 50%; border: 1px solid var(--FUT-orange); background: #1a1a1a;"
                                  onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'">
                             <div>
                                 <strong>${p.name}</strong>
@@ -347,7 +346,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
                                             <img src="${photoUrl}" alt="${p.name}"
-                                                 style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;"
+                                                 style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--FUT-orange); background: #1a1a1a;"
                                                  onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'">
                                             <strong>${p.name}</strong>
                                         </div>
@@ -550,3 +549,5 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
     <script src="/js/sidebar.js"></script>
 </body>
 </html>
+
+

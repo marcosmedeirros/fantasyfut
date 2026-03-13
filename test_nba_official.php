@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'backend/nba_official.php';
 
 echo "=== Testando API Oficial da NBA ===\n\n";
@@ -8,7 +8,7 @@ $data = nbaOfficialFetchAllPlayers(true, '2024-25');
 
 if ($data) {
     $totalPlayers = count($data['resultSets'][0]['rowSet'] ?? []);
-    echo "✅ Sucesso! Total de jogadores ativos: $totalPlayers\n\n";
+    echo "? Sucesso! Total de jogadores ativos: $totalPlayers\n\n";
     
     // Mostrar primeiros 5 jogadores
     echo "Primeiros 5 jogadores:\n";
@@ -23,11 +23,11 @@ if ($data) {
     }
     echo "\n";
 } else {
-    echo "❌ Erro ao buscar jogadores\n\n";
+    echo "? Erro ao buscar jogadores\n\n";
     exit(1);
 }
 
-echo "2. Testando busca por nome específico...\n";
+echo "2. Testando busca por nome espec�fico...\n";
 $testNames = [
     'LeBron James',
     'Stephen Curry',
@@ -41,10 +41,11 @@ foreach ($testNames as $name) {
     $result = nbaOfficialFetchPlayerIdByName($name);
     
     if ($result) {
-        echo "  ✅ ID: {$result['id']} | Nome oficial: {$result['name']}\n";
+        echo "  ? ID: {$result['id']} | Nome oficial: {$result['name']}\n";
     } else {
-        echo "  ❌ Não encontrado\n";
+        echo "  ? N�o encontrado\n";
     }
 }
 
-echo "\n=== Teste concluído ===\n";
+echo "\n=== Teste conclu�do ===\n";
+

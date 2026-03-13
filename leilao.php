@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once 'backend/config.php';
 require_once 'backend/db.php';
@@ -64,7 +64,7 @@ if ($is_admin) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leilao - FBA Brasil</title>
+    <title>Leilao - FUT Brasil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -299,11 +299,10 @@ if ($is_admin) {
                                         <div class="col-md-2">
                                             <label for="auctionPlayerPosition" class="form-label">Posição</label>
                                             <select id="auctionPlayerPosition" class="form-select">
-                                                <option value="PG">PG</option>
-                                                <option value="SG">SG</option>
-                                                <option value="SF">SF</option>
-                                                <option value="PF">PF</option>
-                                                <option value="C">C</option>
+                                                <option value="GK">GK</option>
+                                                <option value="DEF">DEF</option>
+                                                <option value="MID">MID</option>
+                                                <option value="ATT">ATT</option>
                                             </select>
                                         </div>
                                         <div class="col-md-1">
@@ -407,3 +406,5 @@ if ($is_admin) {
     <script src="js/leilao.js"></script>
 </body>
 </html>
+
+

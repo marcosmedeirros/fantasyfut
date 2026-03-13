@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
@@ -17,8 +17,9 @@ $duplicates = $stmt->fetchAll();
 
 echo json_encode([
     'success' => true,
-    'message' => 'Verificação de duplicatas',
+    'message' => 'Verifica��o de duplicatas',
     'duplicates' => $duplicates,
     'total' => count($duplicates)
 ]);
 ?>
+

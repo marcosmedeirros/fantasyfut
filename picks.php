@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -78,15 +78,15 @@ foreach ($picks as $pick) {
 <head>
     <meta charset="UTF-8" />
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-    <title>Minhas Picks - FBA Manager</title>
+    <title>Minhas Picks - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -111,7 +111,7 @@ foreach ($picks as $pick) {
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <ul class="sidebar-menu">
             <li>
@@ -196,7 +196,7 @@ foreach ($picks as $pick) {
             </li>
         </ul>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -358,3 +358,5 @@ foreach ($picks as $pick) {
     <!-- Sem JS de adição/edição/exclusão de picks -->
 </body>
 </html>
+
+

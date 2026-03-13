@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/helpers.php';
 
-// Define timezone padrão para todo o sistema: São Paulo/Brasília
+// Define timezone padr�o para todo o sistema: S�o Paulo/Bras�lia
 date_default_timezone_set('America/Sao_Paulo');
 
 function db(): PDO
@@ -18,7 +18,7 @@ function db(): PDO
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
 
-    // Definir timezone no MySQL também
+    // Definir timezone no MySQL tamb�m
     $pdo->exec("SET time_zone = '-03:00'");
 
     ensureSchema($pdo, $config['db']['name']);
@@ -28,12 +28,13 @@ function db(): PDO
 
 function ensureSchema(PDO $pdo, string $dbName): void
 {
-    // Carrega e executa migrações automáticas
+    // Carrega e executa migra��es autom�ticas
     require_once __DIR__ . '/migrations.php';
     
     try {
         runMigrations();
     } catch (Exception $e) {
-        error_log('Erro ao executar migrações: ' . $e->getMessage());
+        error_log('Erro ao executar migra��es: ' . $e->getMessage());
     }
 }
+

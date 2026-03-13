@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/db.php';
 
 try {
@@ -7,7 +7,7 @@ try {
     // Ler e executar o script SQL
     $sql = file_get_contents(__DIR__ . '/sql/add_secondary_position.sql');
     
-    // Dividir por ponto e vírgula e executar cada comando
+    // Dividir por ponto e v�rgula e executar cada comando
     $statements = array_filter(array_map('trim', explode(';', $sql)));
     
     foreach ($statements as $statement) {
@@ -15,7 +15,7 @@ try {
             try {
                 $pdo->exec($statement);
             } catch (PDOException $e) {
-                // Ignorar erro se coluna/tabela já existe
+                // Ignorar erro se coluna/tabela j� existe
                 if (strpos($e->getMessage(), 'Duplicate column') === false && 
                     strpos($e->getMessage(), 'already exists') === false) {
                     throw $e;
@@ -24,7 +24,7 @@ try {
         }
     }
     
-    echo "<h1>Migração executada com sucesso!</h1>";
+    echo "<h1>Migra��o executada com sucesso!</h1>";
     echo "<p>Campos adicionados:</p>";
     echo "<ul>";
     echo "<li>secondary_position em players</li>";
@@ -37,6 +37,7 @@ try {
     echo "<p><a href='/'>Voltar ao Dashboard</a></p>";
     
 } catch (Exception $e) {
-    echo "<h1>Erro na migração</h1>";
+    echo "<h1>Erro na migra��o</h1>";
     echo "<p>" . htmlspecialchars($e->getMessage()) . "</p>";
 }
+

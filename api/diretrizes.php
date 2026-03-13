@@ -1,5 +1,5 @@
-<?php
-// Define timezone padrão para todo o sistema: São Paulo/Brasília
+﻿<?php
+// Define timezone padr�o para todo o sistema: S�o Paulo/Bras�lia
 date_default_timezone_set('America/Sao_Paulo');
 
 session_start();
@@ -12,7 +12,7 @@ require_once dirname(__DIR__) . '/backend/helpers.php';
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autenticado']);
     exit;
 }
 
@@ -22,7 +22,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 function buildDeadlineDateTime(?string $date, ?string $time = null): string {
     if (!$date) {
-        throw new Exception('Data do prazo obrigatória');
+        throw new Exception('Data do prazo obrigat�ria');
     }
 
     $time = $time ?: '23:59';
@@ -39,7 +39,7 @@ function buildDeadlineDateTime(?string $date, ?string $time = null): string {
     }
 
     if (!$dateTime) {
-        throw new Exception('Formato de data/hora inválido');
+        throw new Exception('Formato de data/hora inv�lido');
     }
 
     return $dateTime->format('Y-m-d H:i:s');
@@ -57,7 +57,7 @@ function formatDeadlineRow(?array $deadline): ?array {
         $deadline['deadline_date_display'] = $dateTime->format('d/m/Y H:i');
         $deadline['deadline_timezone'] = 'America/Sao_Paulo';
     } catch (Exception $e) {
-        // Ignorar falha de formatação e retornar dados originais
+        // Ignorar falha de formata��o e retornar dados originais
     }
 
     return $deadline;
@@ -67,20 +67,20 @@ function formatDeadlineRow(?array $deadline): ?array {
 if ($method === 'GET') {
     $action = $_GET['action'] ?? 'active_deadline';
 
-    // Buscar time do usuário (não exigido para admin listar prazos)
+    // Buscar time do usu�rio (n�o exigido para admin listar prazos)
     $stmtTeam = $pdo->prepare('SELECT id, league FROM teams WHERE user_id = ? LIMIT 1');
     $stmtTeam->execute([$user['id']]);
     $team = $stmtTeam->fetch();
 
     if (!$team && !in_array($action, ['list_deadlines_admin', 'view_all_directives_admin'])) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Usuário sem time']);
+        echo json_encode(['success' => false, 'error' => 'Usu�rio sem time']);
         exit;
     }
 
     switch ($action) {
         case 'active_deadline':
-            // Buscar prazo ativo para a liga do time (somente se ainda não expirou - usando horário de Brasília)
+            // Buscar prazo ativo para a liga do time (somente se ainda n�o expirou - usando hor�rio de Bras�lia)
             $nowBrasilia = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d H:i:s');
             $stmt = $pdo->prepare("SELECT * FROM directive_deadlines WHERE league = ? AND is_active = 1 AND deadline_date > ? ORDER BY deadline_date ASC LIMIT 1");
             $stmt->execute([$team['league'], $nowBrasilia]);
@@ -93,7 +93,7 @@ if ($method === 'GET') {
             $deadlineId = $_GET['deadline_id'] ?? null;
             if (!$deadlineId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'deadline_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'deadline_id obrigat�rio']);
                 exit;
             }
 
@@ -166,7 +166,7 @@ if ($method === 'GET') {
             $fallback = false;
             if (!$deadlineId && !$all) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'deadline_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'deadline_id obrigat�rio']);
                 exit;
             }
             if ($all && $league) {
@@ -307,13 +307,13 @@ if ($method === 'GET') {
                 $directives = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
 
-            // Anexar minutos por jogador para cada diretriz (admin visualização)
+            // Anexar minutos por jogador para cada diretriz (admin visualiza��o)
             if ($directives) {
                 $directiveIds = array_column($directives, 'id');
                 if (!empty($directiveIds)) {
                     $placeholders = implode(',', array_fill(0, count($directiveIds), '?'));
                     
-                    // Buscar minutagem com nome e posição do jogador
+                    // Buscar minutagem com nome e posi��o do jogador
                     $stmtMin = $pdo->prepare("
                         SELECT dpm.directive_id, dpm.player_id, dpm.minutes_per_game, 
                                p.name as player_name, p.position as player_position,
@@ -384,7 +384,7 @@ if ($method === 'GET') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -394,14 +394,14 @@ if ($method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $action = $data['action'] ?? 'submit_directive';
 
-    // Buscar time (não exigido para criar prazo)
+    // Buscar time (n�o exigido para criar prazo)
     $stmtTeam = $pdo->prepare('SELECT id, league FROM teams WHERE user_id = ? LIMIT 1');
     $stmtTeam->execute([$user['id']]);
     $team = $stmtTeam->fetch();
 
     if (!$team && $action !== 'create_deadline') {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Usuário sem time']);
+        echo json_encode(['success' => false, 'error' => 'Usu�rio sem time']);
         exit;
     }
 
@@ -410,18 +410,18 @@ if ($method === 'POST') {
             $deadlineId = $data['deadline_id'] ?? null;
             if (!$deadlineId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'deadline_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'deadline_id obrigat�rio']);
                 exit;
             }
 
-            // Verificar se o prazo ainda está válido (não expirou - usando horário de Brasília)
+            // Verificar se o prazo ainda est� v�lido (n�o expirou - usando hor�rio de Bras�lia)
             $nowBrasilia = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d H:i:s');
             $stmtCheckDeadline = $pdo->prepare("SELECT * FROM directive_deadlines WHERE id = ? AND is_active = 1 AND deadline_date > ?");
             $stmtCheckDeadline->execute([$deadlineId, $nowBrasilia]);
             $validDeadline = $stmtCheckDeadline->fetch();
             if (!$validDeadline) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'O prazo para envio de diretrizes já expirou']);
+                echo json_encode(['success' => false, 'error' => 'O prazo para envio de diretrizes j� expirou']);
                 exit;
             }
 
@@ -439,7 +439,7 @@ if ($method === 'POST') {
                 exit;
             }
 
-            // Validar banco (dinâmico - pode ter 0 ou mais jogadores)
+            // Validar banco (din�mico - pode ter 0 ou mais jogadores)
             $benchPlayers = $data['bench_players'] ?? [];
             if (!is_array($benchPlayers)) {
                 $benchPlayers = [];
@@ -458,7 +458,7 @@ if ($method === 'POST') {
                 $technicalModel = $isElite ? ($data['technical_model'] ?? null) : null;
                 $playbook = $isElite ? ($data['playbook'] ?? null) : null;
 
-                // Verificar se já existe diretriz para este prazo
+                // Verificar se j� existe diretriz para este prazo
                 $stmtCheck = $pdo->prepare('SELECT id FROM team_directives WHERE team_id = ? AND deadline_id = ?');
                 $stmtCheck->execute([$team['id'], $deadlineId]);
                 $existing = $stmtCheck->fetch();
@@ -519,7 +519,7 @@ if ($method === 'POST') {
                 // Salvar minutagem para todos os jogadores selecionados (titulares + banco)
                 $allSelectedPlayers = array_merge($starters, $benchPlayers);
                 
-                // Verificar se rotação é manual
+                // Verificar se rota��o � manual
                 $rotationStyle = $data['rotation_style'] ?? 'auto';
                 
                 // Validar por fase do prazo
@@ -540,7 +540,7 @@ if ($method === 'POST') {
                 $allowInvalid = !empty($data['allow_invalid']);
                 $stmtMinutes = $pdo->prepare('INSERT INTO directive_player_minutes (directive_id, player_id, minutes_per_game) VALUES (?, ?, ?)');
                 
-                // Se rotação for manual, validar total de 240 minutos
+                // Se rota��o for manual, validar total de 240 minutos
                 if (!$allowInvalid && $rotationStyle === 'manual') {
                     $totalMinutes = 0;
                     foreach ($allSelectedPlayers as $playerId) {
@@ -576,7 +576,7 @@ if ($method === 'POST') {
                     }
                 }
                 
-                // Se não tem 3 jogadores 85+, identificar os 5 maiores OVRs
+                // Se n�o tem 3 jogadores 85+, identificar os 5 maiores OVRs
                 $top5Ids = [];
                 if ($count85Plus < 3) {
                     $top5 = array_slice($playersWithOvr, 0, 5);
@@ -590,21 +590,21 @@ if ($method === 'POST') {
                     $isStarter = in_array($playerIdInt, $starters);
                     $isTop5 = in_array($playerIdInt, $top5Ids);
                     
-                    // Validação: Titulares devem ter no mínimo 25 minutos
+                    // Valida��o: Titulares devem ter no m�nimo 25 minutos
                     if (!$allowInvalid && $isStarter && $m < 25) {
-                        throw new Exception("Titular {$playerName} deve jogar no mínimo 25 minutos.");
+                        throw new Exception("Titular {$playerName} deve jogar no m�nimo 25 minutos.");
                     }
                     
-                    // Validação: Reservas devem ter no mínimo 5 minutos
+                    // Valida��o: Reservas devem ter no m�nimo 5 minutos
                     if (!$allowInvalid && !$isStarter && $m < 5) {
-                        throw new Exception("Reserva {$playerName} deve jogar no mínimo 5 minutos.");
+                        throw new Exception("Reserva {$playerName} deve jogar no m�nimo 5 minutos.");
                     }
                     
-                    // Regra informativa: Se time não tem 3 jogadores 85+, top 5 OVRs idealmente 25+ minutos
-                    // (não bloqueia envio)
+                    // Regra informativa: Se time n�o tem 3 jogadores 85+, top 5 OVRs idealmente 25+ minutos
+                    // (n�o bloqueia envio)
                     
                     if (!$allowInvalid && $m > $maxMinutes) {
-                        throw new Exception("Jogador {$playerName} não pode jogar mais de {$maxMinutes} minutos.");
+                        throw new Exception("Jogador {$playerName} n�o pode jogar mais de {$maxMinutes} minutos.");
                     }
                     $stmtMinutes->execute([$directiveId, $playerIdInt, $m]);
                 }
@@ -632,7 +632,7 @@ if ($method === 'POST') {
             $phase = $data['phase'] ?? 'regular';
             if (!$league || !$deadlineDate) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga e data obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'Liga e data obrigat�rios']);
                 exit;
             }
             try {
@@ -649,7 +649,7 @@ if ($method === 'POST') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -665,7 +665,7 @@ if ($method === 'PUT') {
     $deadlineId = $data['id'] ?? null;
     if (!$deadlineId) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'ID obrigatório']);
+        echo json_encode(['success' => false, 'error' => 'ID obrigat�rio']);
         exit;
     }
     $updates = [];
@@ -724,18 +724,18 @@ if ($method === 'DELETE') {
         $directiveId = $data['directive_id'] ?? null;
         if (!$directiveId) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'directive_id obrigatório']);
+            echo json_encode(['success' => false, 'error' => 'directive_id obrigat�rio']);
             exit;
         }
         $stmt = $pdo->prepare('DELETE FROM team_directives WHERE id = ?');
         $stmt->execute([$directiveId]);
-        echo json_encode(['success' => true, 'message' => 'Diretriz excluída com sucesso']);
+        echo json_encode(['success' => true, 'message' => 'Diretriz exclu�da com sucesso']);
         exit;
     }
     $deadlineId = $data['id'] ?? null;
     if (!$deadlineId) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'ID obrigatório']);
+        echo json_encode(['success' => false, 'error' => 'ID obrigat�rio']);
         exit;
     }
     $stmt = $pdo->prepare('DELETE FROM directive_deadlines WHERE id = ?');
@@ -745,4 +745,5 @@ if ($method === 'DELETE') {
 }
 
 http_response_code(405);
-echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o permitido']);
+

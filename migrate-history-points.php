@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * Migração para criar as novas tabelas de histórico e pontos
+ * Migra��o para criar as novas tabelas de hist�rico e pontos
  * Execute este arquivo via navegador para criar as tabelas
  */
 
@@ -9,7 +9,7 @@ require_once __DIR__ . '/backend/db.php';
 
 $pdo = db();
 
-echo "<h1>Migração: Novo Sistema de Histórico e Pontos</h1>";
+echo "<h1>Migra��o: Novo Sistema de Hist�rico e Pontos</h1>";
 echo "<pre>";
 
 try {
@@ -42,7 +42,7 @@ try {
             INDEX idx_league_history (league)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
-    echo "   ✅ Tabela season_history criada!\n";
+    echo "   ? Tabela season_history criada!\n";
 
     // 2. Criar tabela team_season_points
     echo "\n2. Criando tabela team_season_points...\n";
@@ -65,48 +65,49 @@ try {
             INDEX idx_team_total (team_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
-    echo "   ✅ Tabela team_season_points criada!\n";
+    echo "   ? Tabela team_season_points criada!\n";
 
-    // 3. Adicionar foreign keys (ignorar erro se já existir ou tabela não existir)
+    // 3. Adicionar foreign keys (ignorar erro se j� existir ou tabela n�o existir)
     echo "\n3. Adicionando foreign keys...\n";
     
     try {
         $pdo->exec("ALTER TABLE season_history 
             ADD CONSTRAINT fk_sh_season FOREIGN KEY (season_id) REFERENCES seasons(id) ON DELETE CASCADE");
-        echo "   ✅ FK season_id adicionada em season_history\n";
+        echo "   ? FK season_id adicionada em season_history\n";
     } catch (Exception $e) {
-        echo "   ⚠️ FK season_id já existe ou não pode ser criada: " . $e->getMessage() . "\n";
+        echo "   ?? FK season_id j� existe ou n�o pode ser criada: " . $e->getMessage() . "\n";
     }
     
     try {
         $pdo->exec("ALTER TABLE team_season_points 
             ADD CONSTRAINT fk_tsp_team FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE");
-        echo "   ✅ FK team_id adicionada em team_season_points\n";
+        echo "   ? FK team_id adicionada em team_season_points\n";
     } catch (Exception $e) {
-        echo "   ⚠️ FK team_id já existe ou não pode ser criada: " . $e->getMessage() . "\n";
+        echo "   ?? FK team_id j� existe ou n�o pode ser criada: " . $e->getMessage() . "\n";
     }
     
     try {
         $pdo->exec("ALTER TABLE team_season_points 
             ADD CONSTRAINT fk_tsp_season FOREIGN KEY (season_id) REFERENCES seasons(id) ON DELETE CASCADE");
-        echo "   ✅ FK season_id adicionada em team_season_points\n";
+        echo "   ? FK season_id adicionada em team_season_points\n";
     } catch (Exception $e) {
-        echo "   ⚠️ FK season_id já existe ou não pode ser criada: " . $e->getMessage() . "\n";
+        echo "   ?? FK season_id j� existe ou n�o pode ser criada: " . $e->getMessage() . "\n";
     }
 
     echo "\n\n========================================\n";
-    echo "MIGRAÇÃO CONCLUÍDA COM SUCESSO!\n";
+    echo "MIGRA��O CONCLU�DA COM SUCESSO!\n";
     echo "========================================\n\n";
     
     echo "Estrutura do sistema:\n";
-    echo "- season_history: Salva Campeão, Vice, MVP, DPOY, MIP, 6º Homem (reseta com sprint)\n";
-    echo "- team_season_points: Salva pontos manuais por time/temporada (NÃO reseta)\n";
+    echo "- season_history: Salva Campe�o, Vice, MVP, DPOY, MIP, 6� Homem (reseta com sprint)\n";
+    echo "- team_season_points: Salva pontos manuais por time/temporada (N�O reseta)\n";
     echo "\n";
-    echo "API disponível em: /api/history-points.php\n";
+    echo "API dispon�vel em: /api/history-points.php\n";
     echo "Actions: get_history, save_history, get_ranking, save_season_points, etc.\n";
 
 } catch (PDOException $e) {
-    echo "\n❌ ERRO: " . $e->getMessage() . "\n";
+    echo "\n? ERRO: " . $e->getMessage() . "\n";
 }
 
 echo "</pre>";
+

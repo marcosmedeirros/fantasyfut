@@ -1,4 +1,4 @@
-// my-roster-v2.js - Tabela + Quinteto Titular
+// my-roster-v2.js - Tabela + Time Titular
 const api = async (path, options = {}) => {
   const res = await fetch(`/api/${path}`, {
     headers: { 'Content-Type': 'application/json' },
@@ -30,7 +30,7 @@ function getPlayerPhotoUrl(player) {
   }
   return player.nba_player_id
     ? `https://cdn.nba.com/headshots/nba/latest/1040x760/${player.nba_player_id}.png`
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=121212&color=f17507&rounded=true&bold=true`;
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=080931&color=ffffff&rounded=true&bold=true`;
 }
 
 function convertToBase64(file) {
@@ -51,7 +51,19 @@ function normalizeRoleKey(role) {
 }
 
 const roleOrder = { 'Titular': 0, 'Banco': 1, 'Outro': 2, 'G-League': 3 };
-const starterPositionOrder = { PG: 0, SG: 1, SF: 2, PF: 3, C: 4 };
+const starterPositionOrder = { GK: 0, DEF: 1, MID: 2, ATT: 3 };
+const positionLabels = {
+  GK: 'Goleiro',
+  DEF: 'Defesa',
+  MID: 'Meio',
+  ATT: 'Ataque'
+};
+const lineupConfig = [
+  { key: 'ATT', label: 'Ataque', slots: 2 },
+  { key: 'MID', label: 'Meio', slots: 4 },
+  { key: 'DEF', label: 'Defesa', slots: 4 },
+  { key: 'GK', label: 'Goleiro', slots: 1 }
+];
 
 let allPlayers = [];
 let currentSort = { field: 'role', ascending: true };
@@ -135,7 +147,7 @@ function renderPlayers(players) {
     if (aVal < bVal) return currentSort.ascending ? -1 : 1;
     if (aVal > bVal) return currentSort.ascending ? 1 : -1;
 
-    // Em caso de empate por função, ordenar por posição de armador a pivô
+    // Em caso de empate por função, ordenar por posição base do futebol
     if (currentSort.field === 'role' && a.role === 'Titular' && b.role === 'Titular') {
       const aPos = starterPositionOrder[a.position] ?? 999;
       const bPos = starterPositionOrder[b.position] ?? 999;
@@ -146,7 +158,7 @@ function renderPlayers(players) {
     return 0;
   });
 
-  // Renderizar Quinteto Titular (grid) + Banco (lista lateral)
+  // Renderizar Time Titular (grid) + Banco (lista lateral)
   const grid = document.getElementById('players-grid');
   if (grid) {
     grid.innerHTML = '';
@@ -157,10 +169,11 @@ function renderPlayers(players) {
       if (pa !== pb) return pa - pb;
       return Number(b.ovr) - Number(a.ovr);
     });
-    const starters = titulares.slice(0, 5);
-    const bench = sorted
+    const starters = titulares.slice(0, 11);
+    const benchAll = sorted
       .filter(p => normalizeRoleKey(p.role) === 'Banco')
       .sort((a, b) => Number(b.ovr) - Number(a.ovr));
+    const bench = benchAll.slice(0, 5);
 
     const row = document.createElement('div');
     row.className = 'row g-3';
@@ -169,7 +182,7 @@ function renderPlayers(players) {
     colLeft.className = 'col-12 col-lg-8';
     const startersSection = document.createElement('div');
     startersSection.className = 'roster-section';
-    startersSection.innerHTML = '<h5>Quinteto Titular</h5>';
+    startersSection.innerHTML = '<h5>Time Titular (11)</h5>';
     if (starters.length === 0) {
       startersSection.innerHTML += '<div class="text-center text-light-gray">Sem jogadores marcados como Titular.</div>';
     } else {
@@ -183,7 +196,7 @@ function renderPlayers(players) {
         const card = document.createElement('div');
         card.className = 'card border-orange h-100 roster-card text-center';
         card.innerHTML = `
-          <div class=\"card-body p-3 d-flex flex-column gap-3 align-items-center\">\n            <img src=\"${photoUrl}\" alt=\"${p.name}\" style=\"width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 2px solid var(--fba-orange); background: #1a1a1a;\" onerror=\"this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'\">\n            <div class=\"text-center\">\n              <h6 class=\"text-white mb-1 fw-bold\" style=\"font-size: 1.05rem;\">${p.name}</h6>\n              <div class=\"d-flex justify-content-center gap-2 flex-wrap small\">\n                <span class=\"badge bg-secondary\">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</span>\n              </div>\n            </div>\n            <div class=\"text-center\">\n              <div class=\"fw-bold\" style=\"font-size: 1.8rem; line-height: 1; color: ${ovrColor};\">${p.ovr}</div>\n              <small class=\"text-light-gray\">${p.age} anos</small>\n            </div>\n          </div>`;
+          <div class=\"card-body p-3 d-flex flex-column gap-3 align-items-center\">\n            <img src=\"${photoUrl}\" alt=\"${p.name}\" style=\"width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 2px solid var(--fba-orange); background: #1a1a1a;\" onerror=\"this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'\">\n            <div class=\"text-center\">\n              <h6 class=\"text-white mb-1 fw-bold\" style=\"font-size: 1.05rem;\">${p.name}</h6>\n              <div class=\"d-flex justify-content-center gap-2 flex-wrap small\">\n                <span class=\"badge bg-secondary\">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</span>\n              </div>\n            </div>\n            <div class=\"text-center\">\n              <div class=\"fw-bold\" style=\"font-size: 1.8rem; line-height: 1; color: ${ovrColor};\">${p.ovr}</div>\n              <small class=\"text-light-gray\">${p.age} anos</small>\n            </div>\n          </div>`;
         col.appendChild(card);
         list.appendChild(col);
       });
@@ -195,7 +208,7 @@ function renderPlayers(players) {
     colRight.className = 'col-12 col-lg-4';
     const benchSection = document.createElement('div');
     benchSection.className = 'roster-section';
-    benchSection.innerHTML = '<h5>Banco</h5>';
+    benchSection.innerHTML = '<h5>Banco (5)</h5>';
     if (bench.length === 0) {
       benchSection.innerHTML += '<div class="text-center text-light-gray">Sem jogadores no banco.</div>';
     } else {
@@ -217,6 +230,8 @@ function renderPlayers(players) {
     row.appendChild(colRight);
     grid.appendChild(row);
 
+    renderLineupField(starters);
+
     document.getElementById('players-status').style.display = 'none';
     grid.style.display = '';
   }
@@ -234,6 +249,48 @@ function renderPlayers(players) {
   } catch (e) {
     console.warn('Falha ao renderizar tabela:', e);
   }
+}
+
+function renderLineupField(starters) {
+  const field = document.getElementById('lineup-field');
+  if (!field) return;
+  field.innerHTML = '';
+
+  const byPosition = { GK: [], DEF: [], MID: [], ATT: [] };
+  starters.forEach((player) => {
+    if (byPosition[player.position]) {
+      byPosition[player.position].push(player);
+    }
+  });
+
+  Object.keys(byPosition).forEach((key) => {
+    byPosition[key].sort((a, b) => Number(b.ovr) - Number(a.ovr));
+  });
+
+  lineupConfig.forEach((row) => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'lineup-row';
+    for (let i = 0; i < row.slots; i += 1) {
+      const player = (byPosition[row.key] || [])[i] || null;
+      const slot = document.createElement('div');
+      slot.className = 'lineup-slot';
+      if (player) {
+        slot.innerHTML = `
+          <div class="lineup-player">
+            <div class="name">${player.name}</div>
+            <div class="meta">${positionLabels[player.position] || player.position} · OVR ${player.ovr}</div>
+          </div>`;
+      } else {
+        slot.innerHTML = `
+          <div class="lineup-player lineup-placeholder">
+            <div class="name">${row.label}</div>
+            <div class="meta">Sem titular</div>
+          </div>`;
+      }
+      rowEl.appendChild(slot);
+    }
+    field.appendChild(rowEl);
+  });
 }
 
 function renderPlayersMobileCards(players) {
@@ -256,7 +313,7 @@ function renderPlayersMobileCards(players) {
         <div class="d-flex align-items-center gap-2">
           <img src="${photoUrl}" alt="${p.name}"
                style="width: 44px; height: 44px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;"
-               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'">
+               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'">
           <div>
             <div class="text-white fw-bold">${p.name}</div>
             <div class="text-light-gray small">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''} • ${normalizeRoleKey(p.role)}</div>
@@ -302,7 +359,7 @@ function renderPlayersTable(players) {
         <div class="d-flex align-items-center gap-2">
           <img src="${photoUrl}" alt="${p.name}"
                style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;"
-               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'">
+               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=080931&color=ffffff&rounded=true&bold=true'">
           <div class="d-flex flex-column">
             <span class="fw-semibold">${p.name}</span>
             <small class="text-light-gray">${p.position}${p.secondary_position ? '/' + p.secondary_position : ''}</small>

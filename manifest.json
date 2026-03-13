@@ -1,6 +1,6 @@
-{
-  "name": "FBA Manager - Gestor de Franquia",
-  "short_name": "FBA Manager",
+﻿{
+  "name": "FUT Manager - Gestor de Franquia",
+  "short_name": "FUT Manager",
   "description": "Sistema de gerenciamento de franquias de basquete fantasy",
   "start_url": "/dashboard.php",
   "display": "standalone",
@@ -40,3 +40,4 @@
   "categories": ["sports", "games", "entertainment"],
   "prefer_related_applications": false
 }
+

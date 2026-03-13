@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -72,13 +72,13 @@ function handleFreeAgentCreation(PDO $pdo, array $validLeagues, array $data): vo
 
     if (!in_array($league, $validLeagues, true)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+        echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
         return;
     }
 
     if ($name === '' || !$age || !$position || !$ovr) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Preencha nome, idade, posição e OVR']);
+        echo json_encode(['success' => false, 'error' => 'Preencha nome, idade, posi��o e OVR']);
         return;
     }
 
@@ -111,7 +111,7 @@ function handleFreeAgentAssignment(PDO $pdo, array $data): void
 
     if (!$freeAgentId || !$teamId) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Free agent e time são obrigatórios']);
+        echo json_encode(['success' => false, 'error' => 'Free agent e time s�o obrigat�rios']);
         return;
     }
 
@@ -121,7 +121,7 @@ function handleFreeAgentAssignment(PDO $pdo, array $data): void
 
     if (!$freeAgent) {
         http_response_code(404);
-        echo json_encode(['success' => false, 'error' => 'Free agent não encontrado']);
+        echo json_encode(['success' => false, 'error' => 'Free agent n�o encontrado']);
         return;
     }
 
@@ -131,7 +131,7 @@ function handleFreeAgentAssignment(PDO $pdo, array $data): void
 
     if (!$team) {
         http_response_code(404);
-        echo json_encode(['success' => false, 'error' => 'Time não encontrado']);
+        echo json_encode(['success' => false, 'error' => 'Time n�o encontrado']);
         return;
     }
 
@@ -186,7 +186,7 @@ if ($method === 'GET') {
             $league = strtoupper(trim((string)($_GET['league'] ?? '')));
             if (!in_array($league, $validLeagues, true)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+                echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
                 break;
             }
 
@@ -249,7 +249,7 @@ if ($method === 'GET') {
             echo json_encode(['success' => true, 'text' => trim(implode("\n", $lines))]);
             break;
         case 'leagues':
-            // Listar todas as ligas com configurações
+            // Listar todas as ligas com configura��es
             $stmtLeagues = $pdo->query("SELECT name FROM leagues ORDER BY FIELD(name,'ELITE','NEXT','RISE','ROOKIE')");
             $leagues = $stmtLeagues->fetchAll(PDO::FETCH_COLUMN);
 
@@ -315,11 +315,11 @@ if ($method === 'GET') {
             break;
 
         case 'team_details':
-            // Detalhes completos de um time específico
+            // Detalhes completos de um time espec�fico
             $teamId = $_GET['team_id'] ?? null;
             if (!$teamId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Team ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Team ID obrigat�rio']);
                 exit;
             }
 
@@ -338,7 +338,7 @@ if ($method === 'GET') {
 
             if (!$team) {
                 http_response_code(404);
-                echo json_encode(['success' => false, 'error' => 'Time não encontrado']);
+                echo json_encode(['success' => false, 'error' => 'Time n�o encontrado']);
                 exit;
             }
 
@@ -747,11 +747,11 @@ if ($method === 'GET') {
             break;
 
         case 'divisions':
-            // Listar divisões por liga
+            // Listar divis�es por liga
             $league = $_GET['league'] ?? null;
             if (!$league) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga obrigatória']);
+                echo json_encode(['success' => false, 'error' => 'Liga obrigat�ria']);
                 exit;
             }
 
@@ -766,7 +766,7 @@ if ($method === 'GET') {
             $league = strtoupper($_GET['league'] ?? 'ELITE');
             if (!in_array($league, $validLeagues, true)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+                echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
                 exit;
             }
 
@@ -789,7 +789,7 @@ if ($method === 'GET') {
             $league = strtoupper($_GET['league'] ?? 'ELITE');
             if (!in_array($league, $validLeagues, true)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+                echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
                 exit;
             }
 
@@ -838,7 +838,7 @@ if ($method === 'GET') {
             $league = strtoupper($_GET['league'] ?? 'ELITE');
             if (!in_array($league, $validLeagues, true)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+                echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
                 exit;
             }
 
@@ -877,11 +877,11 @@ if ($method === 'GET') {
             break;
 
         case 'coins_log':
-            // Histórico de moedas de um time
+            // Hist�rico de moedas de um time
             $teamId = $_GET['team_id'] ?? null;
             if (!$teamId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Team ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Team ID obrigat�rio']);
                 exit;
             }
 
@@ -899,7 +899,7 @@ if ($method === 'GET') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -962,7 +962,7 @@ if ($method === 'PUT') {
             handleFreeAgentAssignment($pdo, $data);
             break;
         case 'league_settings':
-            // Atualizar configurações de liga
+            // Atualizar configura��es de liga
             $league = $data['league'] ?? null;
             $cap_min = isset($data['cap_min']) ? (int)$data['cap_min'] : null;
             $cap_max = isset($data['cap_max']) ? (int)$data['cap_max'] : null;
@@ -973,7 +973,7 @@ if ($method === 'PUT') {
 
             if (!$league) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga obrigatória']);
+                echo json_encode(['success' => false, 'error' => 'Liga obrigat�ria']);
                 exit;
             }
 
@@ -1013,7 +1013,7 @@ if ($method === 'PUT') {
 
             $params[] = $league;
             
-            // Verifica se já existe
+            // Verifica se j� existe
             $stmtCheck = $pdo->prepare('SELECT id FROM league_settings WHERE league = ?');
             $stmtCheck->execute([$league]);
             
@@ -1032,9 +1032,9 @@ if ($method === 'PUT') {
             break;
 
         case 'team':
-            // Atualizar informações do time
+            // Atualizar informa��es do time
             $teamId = $data['team_id'] ?? null;
-            $city = $data['city'] ?? null;
+            $city = array_key_exists('city', $data) ? trim((string)$data['city']) : null;
             $name = $data['name'] ?? null;
             $mascot = $data['mascot'] ?? null;
             $conference = $data['conference'] ?? null;
@@ -1042,7 +1042,7 @@ if ($method === 'PUT') {
 
             if (!$teamId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Team ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Team ID obrigat�rio']);
                 exit;
             }
 
@@ -1051,7 +1051,7 @@ if ($method === 'PUT') {
 
             if ($city !== null) {
                 $updates[] = 'city = ?';
-                $params[] = $city;
+                $params[] = $city !== '' ? $city : null;
             }
             if ($name !== null) {
                 $updates[] = 'name = ?';
@@ -1096,7 +1096,7 @@ if ($method === 'PUT') {
 
             if (!$playerId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Player ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Player ID obrigat�rio']);
                 exit;
             }
 
@@ -1148,7 +1148,7 @@ if ($method === 'PUT') {
 
             if (!$tradeId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Trade ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Trade ID obrigat�rio']);
                 exit;
             }
 
@@ -1164,7 +1164,7 @@ if ($method === 'PUT') {
 
             if (!$tradeId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Trade ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Trade ID obrigat�rio']);
                 exit;
             }
 
@@ -1177,7 +1177,7 @@ if ($method === 'PUT') {
                 $trade = $stmtTrade->fetch(PDO::FETCH_ASSOC);
 
                 if (!$trade) {
-                    throw new Exception('Trade não encontrada ou não foi aceita');
+                    throw new Exception('Trade n�o encontrada ou n�o foi aceita');
                 }
 
                 // Buscar itens da trade
@@ -1189,7 +1189,7 @@ if ($method === 'PUT') {
                 $picksReverted = [];
                 $errors = [];
 
-                // Reverter transferências
+                // Reverter transfer�ncias
                 foreach ($items as $item) {
                     if ($item['player_id']) {
                         // Reverter jogador para o time original
@@ -1201,18 +1201,18 @@ if ($method === 'PUT') {
                         $player = $stmtCheckPlayer->fetch(PDO::FETCH_ASSOC);
                         
                         if (!$player) {
-                            $errors[] = "Jogador ID {$item['player_id']} não encontrado (pode ter sido dispensado)";
+                            $errors[] = "Jogador ID {$item['player_id']} n�o encontrado (pode ter sido dispensado)";
                             continue;
                         }
                         
-                        // Só reverter se o jogador não estiver já no time original (evita duplicação)
+                        // S� reverter se o jogador n�o estiver j� no time original (evita duplica��o)
                         if ((int)$player['team_id'] !== (int)$originalTeamId) {
                             $stmtRevert = $pdo->prepare('UPDATE players SET team_id = ? WHERE id = ?');
                             $stmtRevert->execute([$originalTeamId, $item['player_id']]);
                             $playersReverted[] = $player['name'];
                         } else {
-                            // Jogador já está no time original (pode ter sido revertido antes)
-                            $playersReverted[] = $player['name'] . ' (já estava no time)';
+                            // Jogador j� est� no time original (pode ter sido revertido antes)
+                            $playersReverted[] = $player['name'] . ' (j� estava no time)';
                         }
                     }
 
@@ -1226,14 +1226,14 @@ if ($method === 'PUT') {
                         $pick = $stmtCheckPick->fetch(PDO::FETCH_ASSOC);
                         
                         if (!$pick) {
-                            $errors[] = "Pick ID {$item['pick_id']} não encontrada";
+                            $errors[] = "Pick ID {$item['pick_id']} n�o encontrada";
                             continue;
                         }
                         
-                        // Só reverter se a pick não estiver já no time original
+                        // S� reverter se a pick n�o estiver j� no time original
                         if ((int)$pick['team_id'] !== (int)$originalTeamId) {
                             // O last_owner deve ser quem tinha antes da trade atual
-                            // Se from_team=true, o dono original era from_team, então last_owner deve ser NULL ou from_team
+                            // Se from_team=true, o dono original era from_team, ent�o last_owner deve ser NULL ou from_team
                             // Se from_team=false, o dono original era to_team
                             $lastOwnerBeforeTrade = $item['from_team'] ? null : $trade['to_team_id'];
                             
@@ -1241,7 +1241,7 @@ if ($method === 'PUT') {
                             $stmtRevert->execute([$originalTeamId, $lastOwnerBeforeTrade, $item['pick_id']]);
                             $picksReverted[] = "{$pick['season_year']} R{$pick['round']}";
                         } else {
-                            $picksReverted[] = "{$pick['season_year']} R{$pick['round']} (já estava no time)";
+                            $picksReverted[] = "{$pick['season_year']} R{$pick['round']} (j� estava no time)";
                         }
                     }
                 }
@@ -1293,7 +1293,7 @@ if ($method === 'PUT') {
 
             if (!$teamId || !$originalTeamId || !$seasonYear || !$round) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Dados obrigatórios ausentes']);
+                echo json_encode(['success' => false, 'error' => 'Dados obrigat�rios ausentes']);
                 exit;
             }
 
@@ -1336,7 +1336,7 @@ if ($method === 'PUT') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -1412,7 +1412,7 @@ if ($method === 'POST') {
 
             if (!$teamId || !$name || !$age || !$position) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Dados obrigatórios ausentes']);
+                echo json_encode(['success' => false, 'error' => 'Dados obrigat�rios ausentes']);
                 exit;
             }
 
@@ -1452,7 +1452,7 @@ if ($method === 'POST') {
 
             if (!$teamId || !$originalTeamId || !$seasonYear || !$round) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Dados obrigatórios ausentes']);
+                echo json_encode(['success' => false, 'error' => 'Dados obrigat�rios ausentes']);
                 exit;
             }
 
@@ -1499,7 +1499,7 @@ if ($method === 'POST') {
 
             if (!$teamId || $amount === null) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Team ID e quantidade são obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'Team ID e quantidade s�o obrigat�rios']);
                 exit;
             }
 
@@ -1517,7 +1517,7 @@ if ($method === 'POST') {
 
             if (!$team) {
                 http_response_code(404);
-                echo json_encode(['success' => false, 'error' => 'Time não encontrado']);
+                echo json_encode(['success' => false, 'error' => 'Time n�o encontrado']);
                 exit;
             }
 
@@ -1526,7 +1526,7 @@ if ($method === 'POST') {
             if ($operation === 'remove') {
                 if ($currentCoins < $amount) {
                     http_response_code(400);
-                    echo json_encode(['success' => false, 'error' => 'Time não tem moedas suficientes']);
+                    echo json_encode(['success' => false, 'error' => 'Time n�o tem moedas suficientes']);
                     exit;
                 }
                 $newBalance = $currentCoins - $amount;
@@ -1582,7 +1582,7 @@ if ($method === 'POST') {
 
             if (!$teamId || $amount === null) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Team ID e quantidade são obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'Team ID e quantidade s�o obrigat�rios']);
                 exit;
             }
 
@@ -1599,7 +1599,7 @@ if ($method === 'POST') {
 
             if (!$team) {
                 http_response_code(404);
-                echo json_encode(['success' => false, 'error' => 'Time não encontrado']);
+                echo json_encode(['success' => false, 'error' => 'Time n�o encontrado']);
                 exit;
             }
 
@@ -1644,17 +1644,17 @@ if ($method === 'POST') {
             // Adicionar moedas em massa para todos os times de uma liga
             $league = $data['league'] ?? null;
             $amount = $data['amount'] ?? null;
-            $reason = $data['reason'] ?? 'Distribuição de moedas';
+            $reason = $data['reason'] ?? 'Distribui��o de moedas';
 
             if (!$league || $amount === null) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga e quantidade são obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'Liga e quantidade s�o obrigat�rios']);
                 exit;
             }
 
             if (!in_array(strtoupper($league), $validLeagues, true)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+                echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
                 exit;
             }
 
@@ -1706,7 +1706,7 @@ if ($method === 'POST') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -1733,7 +1733,7 @@ if ($method === 'DELETE') {
         case 'free_agent':
             if (!$id) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'ID do free agent obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'ID do free agent obrigat�rio']);
                 exit;
             }
 
@@ -1745,7 +1745,7 @@ if ($method === 'DELETE') {
         case 'player':
             if (!$id) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Player ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Player ID obrigat�rio']);
                 exit;
             }
 
@@ -1757,7 +1757,7 @@ if ($method === 'DELETE') {
         case 'pick':
             if (!$id) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Pick ID obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'Pick ID obrigat�rio']);
                 exit;
             }
 
@@ -1768,10 +1768,11 @@ if ($method === 'DELETE') {
 
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
 
 http_response_code(405);
-echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o permitido']);
+

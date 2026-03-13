@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/db.php';
 $pdo = db();
 
@@ -7,7 +7,7 @@ echo "<h1>Sincronizador de IDs da NBA</h1>";
 // 1. Endpoint oficial da NBA que lista todos os jogadores
 $nbaApiUrl = 'https://stats.nba.com/stats/commonallplayers?IsOnlyCurrentSeason=0&LeagueID=00&Season=2023-24';
 
-// 2. Configuração avançada do cURL para burlar o Firewall (Akamai) da NBA
+// 2. Configura��o avan�ada do cURL para burlar o Firewall (Akamai) da NBA
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $nbaApiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -32,9 +32,9 @@ $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// Validação de segurança do retorno HTTP
+// Valida��o de seguran�a do retorno HTTP
 if ($httpCode !== 200 || empty($response)) {
-    die("Erro HTTP $httpCode - O firewall da NBA ainda está bloqueando a requisição do seu servidor. O log de erro retornou vazio ou acesso negado.");
+    die("Erro HTTP $httpCode - O firewall da NBA ainda est� bloqueando a requisi��o do seu servidor. O log de erro retornou vazio ou acesso negado.");
 }
 
 $nbaData = json_decode($response, true);
@@ -43,7 +43,7 @@ if (!$nbaData || !isset($nbaData['resultSets'][0]['rowSet'])) {
     die("Erro ao decodificar o JSON da NBA. A estrutura da API pode ter mudado.");
 }
 
-// 3. Criar um array de mapeamento rápido [ "nome do jogador" => id_nba ]
+// 3. Criar um array de mapeamento r�pido [ "nome do jogador" => id_nba ]
 $nbaPlayersMap = [];
 foreach ($nbaData['resultSets'][0]['rowSet'] as $row) {
     $nbaId = $row[0];
@@ -51,7 +51,7 @@ foreach ($nbaData['resultSets'][0]['rowSet'] as $row) {
     $nbaPlayersMap[$nbaName] = $nbaId;
 }
 
-// 4. Buscar os jogadores do SEU banco de dados que estão sem foto na coluna correta
+// 4. Buscar os jogadores do SEU banco de dados que est�o sem foto na coluna correta
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Mudamos de nba_id para nba_player_id
@@ -66,8 +66,8 @@ $meusJogadores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $atualizados = 0;
 $naoEncontrados = [];
 
-// 5. Atualização direta na coluna correta
-// Mudamos o SET para nba_player_id e, por precaução, já atualizamos a nba_id também para não dar conflito no front-end
+// 5. Atualiza��o direta na coluna correta
+// Mudamos o SET para nba_player_id e, por precau��o, j� atualizamos a nba_id tamb�m para n�o dar conflito no front-end
 $updateStmt = $pdo->prepare('UPDATE players SET nba_player_id = ?, nba_id = ? WHERE id = ?');
 
 foreach ($meusJogadores as $jogador) {
@@ -91,7 +91,7 @@ foreach ($meusJogadores as $jogador) {
     }
 }
 
-echo "<h3>Processo concluído! $atualizados jogadores foram atualizados e SALVOS nas colunas corretas.</h3>";
+echo "<h3>Processo conclu�do! $atualizados jogadores foram atualizados e SALVOS nas colunas corretas.</h3>";
 if (!empty($naoEncontrados)) {
     echo '<h4>Sem id_nba_player:</h4><ul>';
     foreach ($naoEncontrados as $item) {

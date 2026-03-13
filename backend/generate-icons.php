@@ -1,12 +1,12 @@
-<?php
-// Gera ícones PWA a partir de img/fba-logo.png usando GD
+﻿<?php
+// Gera ícones PWA a partir de img/FUT-logo.png usando GD
 // Uso: php backend/generate-icons.php
 
 declare(strict_types=1);
 
 $root = realpath(__DIR__ . '/..');
-$srcPathPng = $root . '/img/fba-logo.png';
-$srcPathJpg = $root . '/img/logo-fba-preta.jpg';
+$srcPathPng = $root . '/img/FUT-logo.png';
+$srcPathJpg = $root . '/img/logo-FUT-preta.jpg';
 $srcPath = file_exists($srcPathJpg) ? $srcPathJpg : $srcPathPng;
 $outDir  = $root . '/img/icons';
 
@@ -82,3 +82,5 @@ try {
     fwrite(STDERR, '[ERRO] ' . $e->getMessage() . "\n");
     exit(1);
 }
+
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -17,7 +17,7 @@ $pdo = db();
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    // Listar ligas com configurações e times
+    // Listar ligas com configura��es e times
     $stmtLeagues = $pdo->query("SELECT name FROM leagues ORDER BY FIELD(name,'ELITE','NEXT','RISE','ROOKIE')");
     $leagues = $stmtLeagues->fetchAll(PDO::FETCH_COLUMN);
 
@@ -64,7 +64,7 @@ if ($method === 'PUT') {
 
     if (!$league || $cap_min === null || $cap_max === null) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Dados inválidos']);
+        echo json_encode(['success' => false, 'error' => 'Dados inv�lidos']);
         exit;
     }
 
@@ -75,4 +75,5 @@ if ($method === 'PUT') {
 }
 
 http_response_code(405);
-echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o permitido']);
+

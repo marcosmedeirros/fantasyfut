@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redefinir Senha - FBA Manager</title>
+    <title>Redefinir Senha - FUT Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -14,7 +14,7 @@
         <div class="card bg-dark-panel border-orange" style="max-width: 500px; width: 100%;">
             <div class="card-body p-5">
                 <div class="text-center mb-4">
-                    <img src="/img/fba-logo.png" alt="FBA" height="60" class="mb-3">
+                    <img src="/img/FUT-logo.png" alt="FUT" height="60" class="mb-3">
                     <h2 class="text-white fw-bold mb-2">Redefinir Senha</h2>
                     <p class="text-light-gray">Crie uma nova senha para sua conta</p>
                 </div>
@@ -110,3 +110,5 @@
     </script>
 </body>
 </html>
+
+

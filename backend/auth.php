@@ -1,8 +1,8 @@
-<?php
-// Define timezone padrão para todo o sistema: São Paulo/Brasília
+﻿<?php
+// Define timezone padr�o para todo o sistema: S�o Paulo/Bras�lia
 date_default_timezone_set('America/Sao_Paulo');
 
-// Inicia sessão apenas se ainda não foi iniciada, mantendo usuário logado por mais tempo
+// Inicia sess�o apenas se ainda n�o foi iniciada, mantendo usu�rio logado por mais tempo
 if (session_status() === PHP_SESSION_NONE) {
     $sessionLifetime = 60 * 60 * 24 * 30; // 30 dias
     ini_set('session.gc_maxlifetime', (string)$sessionLifetime);
@@ -26,9 +26,9 @@ function requireAuth() {
         exit;
     }
     
-    // Verificar se o usuário está aprovado
+    // Verificar se o usu�rio est� aprovado
     if (isset($_SESSION['user_approved']) && $_SESSION['user_approved'] == 0) {
-        // Se não estiver na página de aprovação pendente, redireciona
+        // Se n�o estiver na p�gina de aprova��o pendente, redireciona
         $currentPage = basename($_SERVER['PHP_SELF']);
         if ($currentPage !== 'pending-approval.php' && $currentPage !== 'logout.php') {
             header('Location: /pending-approval.php');
@@ -68,3 +68,4 @@ function destroyUserSession() {
     session_destroy();
     $_SESSION = [];
 }
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -71,7 +71,7 @@ function postTradeWebhook(string $webhookUrl, array $payload, string $context, i
 
 function sendTradeWebhook(PDO $pdo, int $tradeId, string $event = 'trade_created'): void
 {
-    $webhookUrl = 'https://fbabrasil.com.br/nova-trade';
+    $webhookUrl = 'https://FUTbrasil.com.br/nova-trade';
 
     $stmtTrade = $pdo->prepare('SELECT id, from_team_id, to_team_id, league, notes, status, created_at FROM trades WHERE id = ?');
     $stmtTrade->execute([$tradeId]);
@@ -218,7 +218,7 @@ function sendTradeWebhook(PDO $pdo, int $tradeId, string $event = 'trade_created
 
 function sendMultiTradeWebhook(PDO $pdo, int $tradeId, string $event = 'trade_created'): void
 {
-    $webhookUrl = 'https://fbabrasil.com.br/nova-trade';
+    $webhookUrl = 'https://FUTbrasil.com.br/nova-trade';
 
     $stmtTrade = $pdo->prepare('SELECT id, league, notes, status, created_at, created_by_team_id FROM multi_trades WHERE id = ?');
     $stmtTrade->execute([$tradeId]);
@@ -1209,9 +1209,14 @@ if ($method === 'POST' && ($_GET['action'] ?? '') === 'multi_trades') {
             $playerId = isset($item['player_id']) ? (int)$item['player_id'] : null;
             $pickId = isset($item['pick_id']) ? (int)$item['pick_id'] : null;
 
-            if (!$fromTeam || !$toTeam || (!$playerId && !$pickId)) {
+            if (!$fromTeam || !$toTeam || !$playerId) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Todos os itens precisam ter origem, destino e jogador/pick.']);
+                echo json_encode(['success' => false, 'error' => 'Todos os itens precisam ter origem, destino e jogador.']);
+                exit;
+            }
+            if ($pickId) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Picks estão desativadas nas trades.']);
                 exit;
             }
             if ($fromTeam === $toTeam) {
@@ -1232,7 +1237,7 @@ if ($method === 'POST' && ($_GET['action'] ?? '') === 'multi_trades') {
                 'from_team_id' => $fromTeam,
                 'to_team_id' => $toTeam,
                 'player_id' => $playerId,
-                'pick_id' => $pickId
+                'pick_id' => null
             ];
         }
 
@@ -1263,7 +1268,7 @@ if ($method === 'POST' && ($_GET['action'] ?? '') === 'multi_trades') {
             $fromTeam = (int)$item['from_team_id'];
             $toTeam = (int)$item['to_team_id'];
             $playerId = $item['player_id'] ? (int)$item['player_id'] : null;
-            $pickId = $item['pick_id'] ? (int)$item['pick_id'] : null;
+            $pickId = null;
 
             if ($playerId) {
                 $stmtOwner = $pdo->prepare('SELECT team_id FROM players WHERE id = ?');
@@ -1271,17 +1276,6 @@ if ($method === 'POST' && ($_GET['action'] ?? '') === 'multi_trades') {
                 $ownerId = (int)($stmtOwner->fetchColumn() ?: 0);
                 if ($ownerId !== $fromTeam) {
                     throw new Exception('Jogador não pertence ao time informado.');
-                }
-            }
-            if ($pickId) {
-                if (isTeamPickTradeBanned($pdo, (int)$fromTeam)) {
-                    throw new Exception('Um dos times está bloqueado de usar picks em trades.');
-                }
-                $stmtOwner = $pdo->prepare('SELECT team_id FROM picks WHERE id = ?');
-                $stmtOwner->execute([$pickId]);
-                $ownerId = (int)($stmtOwner->fetchColumn() ?: 0);
-                if ($ownerId !== $fromTeam) {
-                    throw new Exception('Pick não pertence ao time informado.');
                 }
             }
 
@@ -1351,22 +1345,22 @@ if ($method === 'POST') {
         exit;
     }
     
-    // Verificar se há algo para trocar
-    if (empty($offerPlayers) && empty($offerPicks)) {
+    if (!empty($offerPicks) || !empty($requestPicks)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Você precisa oferecer algo']);
-        exit;
-    }
-    
-    if (empty($requestPlayers) && empty($requestPicks)) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Você precisa pedir algo em troca']);
+        echo json_encode(['success' => false, 'error' => 'Picks estão desativadas nas trades.']);
         exit;
     }
 
-    if (!empty($offerPicks) && isTeamPickTradeBanned($pdo, (int)$teamId)) {
+    // Verificar se há algo para trocar
+    if (empty($offerPlayers)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Seu time está bloqueado de usar picks em trades.']);
+        echo json_encode(['success' => false, 'error' => 'Você precisa oferecer jogadores']);
+        exit;
+    }
+    
+    if (empty($requestPlayers)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Você precisa pedir jogadores em troca']);
         exit;
     }
     
@@ -1423,11 +1417,6 @@ if ($method === 'POST') {
         exit;
     }
 
-    if (!empty($requestPicks) && isTeamPickTradeBanned($pdo, (int)$targetTeamData['id'])) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'O time alvo está bloqueado de usar picks em trades.']);
-        exit;
-    }
     if ($targetTeamData['league'] !== $teamData['league']) {
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Só é possível propor trades entre times da mesma liga']);
@@ -1443,39 +1432,6 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Validar posse das picks oferecidas
-    if (!empty($offerPicks)) {
-        $stmtPickOwner = $pdo->prepare('SELECT 1 FROM picks WHERE id = ? AND team_id = ?');
-        foreach ($offerPicks as $pickEntry) {
-            $pickId = (int)($pickEntry['id'] ?? 0);
-            if ($pickId <= 0) {
-                continue;
-            }
-            $stmtPickOwner->execute([$pickId, $teamId]);
-            if (!$stmtPickOwner->fetchColumn()) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Você só pode oferecer picks que pertencem ao seu time']);
-                exit;
-            }
-        }
-    }
-
-    // Validar posse das picks solicitadas
-    if (!empty($requestPicks)) {
-        $stmtPickOwner = $pdo->prepare('SELECT 1 FROM picks WHERE id = ? AND team_id = ?');
-        foreach ($requestPicks as $pickEntry) {
-            $pickId = (int)($pickEntry['id'] ?? 0);
-            if ($pickId <= 0) {
-                continue;
-            }
-            $stmtPickOwner->execute([$pickId, $toTeamId]);
-            if (!$stmtPickOwner->fetchColumn()) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Só é possível pedir picks que pertencem ao time alvo']);
-                exit;
-            }
-        }
-    }
     
     try {
     $pdo->beginTransaction();
@@ -1545,23 +1501,6 @@ if ($method === 'POST') {
             $stmtItem->execute($params);
         }
         
-        foreach ($offerPicks as $pickEntry) {
-            $pickId = (int)($pickEntry['id'] ?? 0);
-            if ($pickId <= 0) {
-                continue;
-            }
-            $params = [$tradeId, null, $pickId, true];
-            if ($hasSnapshot) {
-                $params[] = null;
-                $params[] = null;
-                $params[] = null;
-                $params[] = null;
-            }
-            if ($hasPickProtectionCol) {
-                $params[] = $pickEntry['protection'] ?? null;
-            }
-            $stmtItem->execute($params);
-        }
         
         // Adicionar itens pedidos
         foreach ($requestPlayers as $playerId) {
@@ -1582,23 +1521,6 @@ if ($method === 'POST') {
             $stmtItem->execute($params);
         }
         
-        foreach ($requestPicks as $pickEntry) {
-            $pickId = (int)($pickEntry['id'] ?? 0);
-            if ($pickId <= 0) {
-                continue;
-            }
-            $params = [$tradeId, null, $pickId, false];
-            if ($hasSnapshot) {
-                $params[] = null;
-                $params[] = null;
-                $params[] = null;
-                $params[] = null;
-            }
-            if ($hasPickProtectionCol) {
-                $params[] = $pickEntry['protection'] ?? null;
-            }
-            $stmtItem->execute($params);
-        }
 
         if ($counterTrade) {
             $counterNote = trim($notes) !== '' ? trim($notes) : 'Contraproposta enviada.';
@@ -1981,3 +1903,5 @@ if ($method === 'PUT') {
 
 http_response_code(405);
 echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+
+

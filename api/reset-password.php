@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -14,7 +14,7 @@ try {
     $email = strtolower(trim($body['email'] ?? ''));
 
     if ($email === '') {
-        jsonResponse(422, ['error' => 'E-mail é obrigatório.']);
+        jsonResponse(422, ['error' => 'E-mail � obrigat�rio.']);
     }
 
     // Verifica se o e-mail existe
@@ -23,11 +23,11 @@ try {
     $user = $stmt->fetch();
 
     if (!$user) {
-        // Por segurança, não revela se o e-mail existe ou não
-        jsonResponse(200, ['message' => 'Se o e-mail existir, você receberá um link de recuperação.']);
+        // Por seguran�a, n�o revela se o e-mail existe ou n�o
+        jsonResponse(200, ['message' => 'Se o e-mail existir, voc� receber� um link de recupera��o.']);
     }
 
-    // Gera token de recuperação
+    // Gera token de recupera��o
     $token = bin2hex(random_bytes(32));
     $tokenExpiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
@@ -41,8 +41,8 @@ try {
     $sent = sendPasswordResetEmail($email, $token, $user['name']);
 
     if (!$sent) {
-        error_log('Falha ao enviar e-mail de recuperação para: ' . $email);
-        jsonResponse(500, ['error' => 'Falha ao enviar e-mail de recuperação. Tente novamente mais tarde.']);
+        error_log('Falha ao enviar e-mail de recupera��o para: ' . $email);
+        jsonResponse(500, ['error' => 'Falha ao enviar e-mail de recupera��o. Tente novamente mais tarde.']);
     }
 
     $config = loadConfig();
@@ -50,17 +50,18 @@ try {
     if ($debugResetLink) {
         error_log('DEBUG reset link para ' . $email . ': ' . $resetUrl);
         jsonResponse(200, [
-            'message' => 'Link de recuperação enviado! Verifique seu e-mail.',
+            'message' => 'Link de recupera��o enviado! Verifique seu e-mail.',
             'debug_reset_link' => $resetUrl
         ]);
     }
 
-    jsonResponse(200, ['message' => 'Link de recuperação enviado! Verifique seu e-mail.']);
+    jsonResponse(200, ['message' => 'Link de recupera��o enviado! Verifique seu e-mail.']);
 
 } catch (PDOException $e) {
     error_log('Erro SQL no reset-password.php: ' . $e->getMessage());
-    jsonResponse(500, ['error' => 'Erro ao processar solicitação.', 'details' => $e->getMessage()]);
+    jsonResponse(500, ['error' => 'Erro ao processar solicita��o.', 'details' => $e->getMessage()]);
 } catch (Exception $e) {
     error_log('Erro no reset-password.php: ' . $e->getMessage());
     jsonResponse(500, ['error' => 'Erro interno do servidor.', 'details' => $e->getMessage()]);
 }
+

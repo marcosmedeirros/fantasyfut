@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -88,15 +88,15 @@ try {
 <head>
     <meta charset="UTF-8" />
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-    <title>Enviar Diretrizes - FBA Manager</title>
+    <title>Enviar Diretrizes - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json?v=3">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -121,7 +121,7 @@ try {
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <ul class="sidebar-menu">
             <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
@@ -139,7 +139,7 @@ try {
             <li><a href="/settings.php"><i class="bi bi-gear-fill"></i> Configurações</a></li>
         </ul>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -197,7 +197,7 @@ try {
                 <div class="card-body">
                     <div class="row g-3">
                         <?php 
-                        $starterPositions = ['PG', 'SG', 'SF', 'PF', 'C'];
+                        $starterPositions = ['GK', 'DEF', 'MID', 'ATT', 'ATT'];
                         for ($i = 1; $i <= 5; $i++): 
                             $posLabel = $starterPositions[$i - 1] ?? $i;
                         ?>
@@ -299,7 +299,7 @@ try {
                             <select class="form-select bg-dark text-white border-orange" name="technical_model">
                                 <option value="">Selecione...</option>
                                 <option value="HC">HC</option>
-                                <option value="FBA 14">FBA 14</option>
+                                <option value="FUT 14">FUT 14</option>
                                 <option value="Michael Stauffer">Michael Stauffer</option>
                                 <option value="Joe Mazzulla">Joe Mazzulla</option>
                                 <option value="Mark Daigneault">Mark Daigneault</option>
@@ -505,3 +505,5 @@ try {
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

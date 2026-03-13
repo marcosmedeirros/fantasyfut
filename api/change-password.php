@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
@@ -12,7 +12,7 @@ if ($method !== 'POST') {
 }
 
 $user = getUserSession();
-if (!$user) jsonResponse(401, ['error' => 'Não autenticado']);
+if (!$user) jsonResponse(401, ['error' => 'N�o autenticado']);
 
 $body = readJsonBody();
 $current = $body['current_password'] ?? '';
@@ -36,3 +36,4 @@ $upd = $pdo->prepare('UPDATE users SET password_hash = ? WHERE id = ?');
 $upd->execute([$newHash, $user['id']]);
 
 jsonResponse(200, ['message' => 'Senha alterada com sucesso.']);
+

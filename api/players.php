@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -215,32 +215,32 @@ if ($method === 'POST') {
     $availableForTrade = isset($body['available_for_trade']) ? (int) ((bool) $body['available_for_trade']) : 0;
 
     if (!$teamId || $name === '' || !$age || $position === '' || !$ovr) {
-        jsonResponse(422, ['error' => 'Campos obrigatórios: team_id, nome, idade, posição, ovr.']);
+        jsonResponse(422, ['error' => 'Campos obrigat�rios: team_id, nome, idade, posi��o, ovr.']);
     }
 
-    // Verificar propriedade do time pelo usuário logado
+    // Verificar propriedade do time pelo usu�rio logado
     $sessionUser = getUserSession();
     if (!isset($sessionUser['id'])) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
     $teamExists = $pdo->prepare('SELECT id, user_id FROM teams WHERE id = ?');
     $teamExists->execute([$teamId]);
     $teamRow = $teamExists->fetch();
     if (!$teamRow) {
-        jsonResponse(404, ['error' => 'Time não encontrado.']);
+        jsonResponse(404, ['error' => 'Time n�o encontrado.']);
     }
     if ((int)$teamRow['user_id'] !== (int)$sessionUser['id']) {
-        jsonResponse(403, ['error' => 'Sem permissão para alterar este time.']);
+        jsonResponse(403, ['error' => 'Sem permiss�o para alterar este time.']);
     }
 
     $stmtLeague = $pdo->prepare('SELECT league FROM teams WHERE id = ?');
     $stmtLeague->execute([$teamId]);
     $teamLeague = strtoupper((string)$stmtLeague->fetchColumn());
     if ($teamLeague !== 'ELITE') {
-        jsonResponse(403, ['error' => 'Adição de jogador disponível apenas para a liga ELITE.']);
+        jsonResponse(403, ['error' => 'Adi��o de jogador dispon�vel apenas para a liga ELITE.']);
     }
 
-    // Validar limitadores de função
+    // Validar limitadores de fun��o
     $roleCountStmt = $pdo->prepare('SELECT role, COUNT(*) as count FROM players WHERE team_id = ? GROUP BY role');
     $roleCountStmt->execute([$teamId]);
     $roleCounts = [];
@@ -253,16 +253,11 @@ if ($method === 'POST') {
     $gleagueCount = $roleCounts['G-League'] ?? 0;
     
     // Validar limites
-    if ($role === 'Titular' && $titularCount >= 5) {
-        jsonResponse(409, ['error' => 'Limite de Titulares atingido (máximo 5).']);
+    if ($role === 'Titular' && $titularCount >= 11) {
+        jsonResponse(409, ['error' => 'Limite de Titulares atingido (m�ximo 11).']);
     }
-    if ($role === 'G-League' && $gleagueCount >= 2) {
-        jsonResponse(409, ['error' => 'Limite de G-League atingido (máximo 2).']);
-    }
-    
-    // Validar elegibilidade para G-League
-    if ($role === 'G-League' && $age >= 25) {
-        jsonResponse(409, ['error' => 'Jogador não elegível para G-League: deve ter menos de 25 anos.']);
+    if ($role === 'Banco' && $bancoCount >= 5) {
+        jsonResponse(409, ['error' => 'Limite de Banco atingido (m�ximo 5).']);
     }
 
     $prospectiveCap = capWithCandidate($pdo, $teamId, $ovr);
@@ -276,7 +271,7 @@ if ($method === 'POST') {
 
     $newCap = topEightCap($pdo, $teamId);
     if ($newCap < $config['app']['cap_min']) {
-        $warnings[] = 'CAP abaixo do mínimo recomendado (' . $newCap . ' / ' . $config['app']['cap_min'] . ').';
+        $warnings[] = 'CAP abaixo do m�nimo recomendado (' . $newCap . ' / ' . $config['app']['cap_min'] . ').';
     }
 
     jsonResponse(201, [
@@ -290,19 +285,19 @@ if ($method === 'POST') {
 if ($method === 'PUT') {
     $body = readJsonBody();
     $playerId = (int) ($body['id'] ?? 0);
-    if (!$playerId) jsonResponse(422, ['error' => 'ID do jogador é obrigatório.']);
+    if (!$playerId) jsonResponse(422, ['error' => 'ID do jogador � obrigat�rio.']);
 
     $sessionUser = getUserSession();
     if (!isset($sessionUser['id'])) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
 
     $stmt = $pdo->prepare('SELECT p.*, t.user_id FROM players p INNER JOIN teams t ON t.id = p.team_id WHERE p.id = ?');
     $stmt->execute([$playerId]);
     $player = $stmt->fetch();
-    if (!$player) jsonResponse(404, ['error' => 'Jogador não encontrado.']);
+    if (!$player) jsonResponse(404, ['error' => 'Jogador n�o encontrado.']);
     if ((int)$player['user_id'] !== (int)$sessionUser['id']) {
-        jsonResponse(403, ['error' => 'Sem permissão para alterar este jogador.']);
+        jsonResponse(403, ['error' => 'Sem permiss�o para alterar este jogador.']);
     }
 
     $name = isset($body['name']) ? trim($body['name']) : $player['name'];
@@ -351,10 +346,10 @@ if ($method === 'PUT') {
     }
 
     if ($name === '' || !$age || $position === '' || !$ovr) {
-        jsonResponse(422, ['error' => 'Campos obrigatórios: nome, idade, posição, ovr.']);
+        jsonResponse(422, ['error' => 'Campos obrigat�rios: nome, idade, posi��o, ovr.']);
     }
 
-    // Validar limitadores de função se mudou o role
+    // Validar limitadores de fun��o se mudou o role
     if ($role !== $player['role']) {
         $roleCountStmt = $pdo->prepare('SELECT role, COUNT(*) as count FROM players WHERE team_id = ? AND id <> ? GROUP BY role');
         $roleCountStmt->execute([(int)$player['team_id'], $playerId]);
@@ -367,16 +362,11 @@ if ($method === 'PUT') {
         $bancoCount = $roleCounts['Banco'] ?? 0;
         $gleagueCount = $roleCounts['G-League'] ?? 0;
         
-        if ($role === 'Titular' && $titularCount >= 5) {
-            jsonResponse(409, ['error' => 'Limite de Titulares atingido (máximo 5).']);
+        if ($role === 'Titular' && $titularCount >= 11) {
+            jsonResponse(409, ['error' => 'Limite de Titulares atingido (m�ximo 11).']);
         }
-        if ($role === 'G-League' && $gleagueCount >= 2) {
-            jsonResponse(409, ['error' => 'Limite de G-League atingido (máximo 2).']);
-        }
-        
-        // Validar elegibilidade para G-League
-        if ($role === 'G-League' && $age >= 25) {
-            jsonResponse(409, ['error' => 'Jogador não elegível para G-League: deve ter menos de 25 anos.']);
+        if ($role === 'Banco' && $bancoCount >= 5) {
+            jsonResponse(409, ['error' => 'Limite de Banco atingido (m�ximo 5).']);
         }
     }
 
@@ -435,7 +425,7 @@ if ($method === 'PUT') {
 
     $newCap = topEightCap($pdo, (int)$player['team_id']);
     if ($newCap < $config['app']['cap_min']) {
-        $warnings[] = 'CAP abaixo do mínimo recomendado (' . $newCap . ' / ' . $config['app']['cap_min'] . ').';
+        $warnings[] = 'CAP abaixo do m�nimo recomendado (' . $newCap . ' / ' . $config['app']['cap_min'] . ').';
     }
     jsonResponse(200, [
         'message' => 'Jogador atualizado.',
@@ -449,11 +439,11 @@ if ($method === 'DELETE') {
     $playerId = (int) ($body['id'] ?? 0);
     $isRetirement = (bool) ($body['retirement'] ?? false);
     
-    if (!$playerId) jsonResponse(422, ['error' => 'ID do jogador é obrigatório.']);
+    if (!$playerId) jsonResponse(422, ['error' => 'ID do jogador � obrigat�rio.']);
 
     $sessionUser = getUserSession();
     if (!isset($sessionUser['id'])) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
 
     $stmt = $pdo->prepare('
@@ -467,12 +457,12 @@ if ($method === 'DELETE') {
     ');
     $stmt->execute([$playerId]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$row) jsonResponse(404, ['error' => 'Jogador não encontrado.']);
+    if (!$row) jsonResponse(404, ['error' => 'Jogador n�o encontrado.']);
     if ((int)$row['user_id'] !== (int)$sessionUser['id']) {
-        jsonResponse(403, ['error' => 'Sem permissão para remover este jogador.']);
+        jsonResponse(403, ['error' => 'Sem permiss�o para remover este jogador.']);
     }
 
-    // Se for aposentadoria, verificar idade mínima (maior que 35)
+    // Se for aposentadoria, verificar idade m�nima (maior que 35)
     if ($isRetirement) {
         if ((int)$row['age'] <= 35) {
             jsonResponse(400, ['error' => 'Apenas jogadores com mais de 35 anos podem se aposentar.']);
@@ -481,7 +471,7 @@ if ($method === 'DELETE') {
         try {
             $pdo->beginTransaction();
 
-            // Aposentadoria: remove o jogador e limpa possíveis registros em free_agents
+            // Aposentadoria: remove o jogador e limpa poss�veis registros em free_agents
             snapshotTradeItemsForPlayer($pdo, $row);
             $del = $pdo->prepare('DELETE FROM players WHERE id = ?');
             $del->execute([$playerId]);
@@ -505,7 +495,7 @@ if ($method === 'DELETE') {
             $newCap = topEightCap($pdo, (int)$row['team_id']);
 
             jsonResponse(200, [
-                'message' => $row['name'] . ' se aposentou após uma grande carreira!',
+                'message' => $row['name'] . ' se aposentou ap�s uma grande carreira!',
                 'cap_top8' => $newCap,
                 'retirement' => true
             ]);
@@ -586,3 +576,4 @@ if ($method === 'DELETE') {
 }
 
 jsonResponse(405, ['error' => 'Method not allowed']);
+

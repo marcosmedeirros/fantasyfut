@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
 require_once dirname(__DIR__) . '/backend/db.php';
@@ -51,14 +51,14 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Estatísticas - FBA Manager</title>
+    <title>Estatísticas - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <link rel="apple-touch-icon" href="/img/icon-192.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
@@ -67,32 +67,32 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         .stat-card {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             padding: 20px;
             text-align: center;
             transition: all 0.3s ease;
         }
         .stat-card:hover {
-            border-color: var(--fba-orange);
+            border-color: var(--FUT-orange);
             box-shadow: 0 4px 12px rgba(241, 117, 7, 0.2);
         }
         .stat-value {
             font-size: 2.5rem;
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             margin: 10px 0;
         }
         .stat-label {
             font-size: 0.95rem;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         .chart-container {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
@@ -100,26 +100,26 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .chart-title {
             font-size: 1.3rem;
             font-weight: bold;
-            color: var(--fba-text);
+            color: var(--FUT-text);
             margin-bottom: 20px;
         }
         .role-bar {
             display: flex;
             align-items: center;
             padding: 12px;
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             border-radius: 6px;
             margin-bottom: 10px;
-            border-left: 3px solid var(--fba-orange);
+            border-left: 3px solid var(--FUT-orange);
         }
         .role-label {
             min-width: 100px;
             font-weight: 500;
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
         .role-bar-progress {
             flex: 1;
-            background: var(--fba-border);
+            background: var(--FUT-border);
             height: 24px;
             border-radius: 4px;
             margin: 0 15px;
@@ -128,7 +128,7 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         .role-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--fba-orange), #ff9900);
+            background: linear-gradient(90deg, var(--FUT-orange), #ff9900);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -140,27 +140,27 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             min-width: 50px;
             text-align: right;
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
         }
         .position-table {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             overflow: hidden;
         }
         .position-table-header {
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             padding: 15px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
             font-weight: bold;
-            color: var(--fba-text);
+            color: var(--FUT-text);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
         }
         .position-row {
             padding: 12px 15px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
@@ -171,20 +171,20 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         .position-name {
             font-weight: 500;
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
         .position-count {
             text-align: center;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .position-ovr {
             text-align: right;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             font-weight: bold;
         }
     </style>
 </head>
-<body class="fba-dark">
+<body class="FUT-dark">
     <div class="container-fluid">
         <div class="row" style="min-height: 100vh;">
             <!-- Sidebar -->
@@ -193,7 +193,7 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <!-- Main Content -->
             <div class="col-md-9 p-4">
                 <div class="mb-4">
-                    <h1 class="display-5 mb-2" style="color: var(--fba-text);">
+                    <h1 class="display-5 mb-2" style="color: var(--FUT-text);">
                         <i class="bi bi-graph-up"></i> Estatísticas
                     </h1>
                     <p class="text-muted">Análise detalhada do seu time</p>
@@ -203,28 +203,28 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
                         <div class="stat-card">
-                            <i class="bi bi-people-fill" style="font-size: 2rem; color: var(--fba-orange);"></i>
+                            <i class="bi bi-people-fill" style="font-size: 2rem; color: var(--FUT-orange);"></i>
                             <div class="stat-value"><?= $stats['total_players'] ?? 0 ?></div>
                             <div class="stat-label">Total de Jogadores</div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="stat-card">
-                            <i class="bi bi-graph-up" style="font-size: 2rem; color: var(--fba-orange);"></i>
+                            <i class="bi bi-graph-up" style="font-size: 2rem; color: var(--FUT-orange);"></i>
                             <div class="stat-value"><?= round($stats['avg_ovr'] ?? 0) ?></div>
                             <div class="stat-label">OVR Médio</div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="stat-card">
-                            <i class="bi bi-star-fill" style="font-size: 2rem; color: var(--fba-orange);"></i>
+                            <i class="bi bi-star-fill" style="font-size: 2rem; color: var(--FUT-orange);"></i>
                             <div class="stat-value"><?= $stats['max_ovr'] ?? 0 ?></div>
                             <div class="stat-label">Melhor OVR</div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="stat-card">
-                            <i class="bi bi-graph-down" style="font-size: 2rem; color: var(--fba-orange);"></i>
+                            <i class="bi bi-graph-down" style="font-size: 2rem; color: var(--FUT-orange);"></i>
                             <div class="stat-value"><?= $stats['min_ovr'] ?? 0 ?></div>
                             <div class="stat-label">Menor OVR</div>
                         </div>
@@ -301,3 +301,5 @@ $positionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

@@ -1,12 +1,12 @@
-<?php
+﻿<?php
 // Gerador de ícones via web (tenta GD). Acomoda fundo preto.
 // Acesse: /backend/generate-icons-web.php
 
 declare(strict_types=1);
 
 $root = realpath(__DIR__ . '/..');
-$srcPathPng = $root . '/img/fba-logo.png';
-$srcPathJpg = $root . '/img/logo-fba-preta.jpg';
+$srcPathPng = $root . '/img/FUT-logo.png';
+$srcPathJpg = $root . '/img/logo-FUT-preta.jpg';
 $srcPath = file_exists($srcPathJpg) ? $srcPathJpg : $srcPathPng;
 $outDir  = $root . '/img/icons';
 $sizes   = [48,72,96,128,144,152,167,180,192,256,384,512,1024];
@@ -76,3 +76,5 @@ foreach ($sizes as $sz) {
 
 imagedestroy($src);
 jsonOut(true, 'Gerado com fundo preto.', ['files' => $generated, 'gd' => true]);
+
+

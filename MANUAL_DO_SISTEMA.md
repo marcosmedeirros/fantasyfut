@@ -1,8 +1,8 @@
-# 📘 Manual Completo do Sistema FBA (Franchise Basketball Association)
+﻿# 📘 Manual Completo do Sistema FUT (Franchise Basketball Association)
 
-## 🎯 O que é o Sistema FBA?
+## 🎯 O que é o Sistema FUT?
 
-O **Sistema FBA** é uma plataforma online para gerenciar franquias de basquete, similar a uma liga de fantasy basketball, onde cada pessoa administra sua própria franquia, monta seu time, participa de drafts, faz trocas e compete por campeonatos.
+O **Sistema FUT** é uma plataforma online para gerenciar franquias de basquete, similar a uma liga de fantasy basketball, onde cada pessoa administra sua própria franquia, monta seu time, participa de drafts, faz trocas e compete por campeonatos.
 
 ---
 
@@ -474,7 +474,7 @@ O menu lateral permite acesso rápido a:
 
 O sistema usa um tema escuro moderno com:
 - Fundo escuro para conforto visual
-- Destaques em laranja/dourado (cores FBA)
+- Destaques em laranja/dourado (cores FUT)
 - Ícones intuitivos
 - Design responsivo (funciona em celular, tablet e computador)
 
@@ -576,7 +576,7 @@ O sistema usa um tema escuro moderno com:
 
 | Termo | Significado |
 |-------|-------------|
-| **FBA** | Franchise Basketball Association - Nome do sistema |
+| **FUT** | Franchise Basketball Association - Nome do sistema |
 | **GM** | General Manager - Você, o gerente do time |
 | **OVR** | Overall - Nota geral do jogador (0-99) |
 | **CAP** | Salary Cap - Limite de qualidade do time |
@@ -631,7 +631,7 @@ Se você tiver dúvidas ou problemas:
 
 ## 🎉 Divirta-se!
 
-O Sistema FBA é uma experiência de gerenciamento de franquia de basquete completa. Você terá:
+O Sistema FUT é uma experiência de gerenciamento de franquia de basquete completa. Você terá:
 
 - 🏀 A emoção de montar seu próprio time
 - 🎯 O desafio de fazer boas escolhas no draft
@@ -646,4 +646,6 @@ O Sistema FBA é uma experiência de gerenciamento de franquia de basquete compl
 
 *Documento criado em: Janeiro de 2026*  
 *Versão: 1.0*  
-*Sistema: FBA - Franchise Basketball Association*
+*Sistema: FUT - Franchise Basketball Association*
+
+

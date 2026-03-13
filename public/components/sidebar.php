@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Sidebar público para páginas em /public
 $publicPage = basename($_SERVER['PHP_SELF'] ?? '');
 $links = [
@@ -22,7 +22,7 @@ $links = [
             <img src="/img/default-team.png" alt="Time" class="team-avatar">
             <h5 class="text-white mb-1">Menu</h5>
         </div>
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
         <ul class="sidebar-menu">
             <?php foreach ($links as $link): ?>
                 <li>
@@ -33,7 +33,7 @@ $links = [
                 </li>
             <?php endforeach; ?>
         </ul>
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
                 <i class="bi bi-box-arrow-right me-2"></i>Sair
@@ -41,3 +41,5 @@ $links = [
         </div>
     </div>
 </div>
+
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 $pdo = db();
 
-// Obter league do usuário da sessão
+// Obter league do usu�rio da sess�o
 $user = getUserSession();
 $league = $user['league'] ?? 'ROOKIE';
 
@@ -51,3 +51,4 @@ foreach ($teams as &$team) {
 }
 
 jsonResponse(200, ['teams' => $teams]);
+

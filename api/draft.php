@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
  * API de Draft
- * Gerencia sessões de draft, ordem de picks e seleções
+ * Gerencia sess�es de draft, ordem de picks e sele��es
  */
 
 require_once __DIR__ . '/../backend/auth.php';
@@ -13,7 +13,7 @@ try {
     requireAuth();
 } catch (Exception $e) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autorizado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autorizado']);
     exit;
 }
 
@@ -21,14 +21,14 @@ $user = getUserSession();
 $pdo = db();
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Buscar time do usuário
+// Buscar time do usu�rio
 $stmtTeam = $pdo->prepare('SELECT id, league FROM teams WHERE user_id = ? LIMIT 1');
 $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch();
 
 $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
 
-// Função utilitária: compacta posições (1..N) em todas as rodadas, mantendo ordem atual
+// Fun��o utilit�ria: compacta posi��es (1..N) em todas as rodadas, mantendo ordem atual
 function recalculateOrderPositions(PDO $pdo, int $draftSessionId): void {
     $stmtRounds = $pdo->prepare('SELECT total_rounds FROM draft_sessions WHERE id = ?');
     $stmtRounds->execute([$draftSessionId]);
@@ -56,7 +56,7 @@ if ($method === 'GET') {
         case 'active_draft':
             $league = $_GET['league'] ?? ($team['league'] ?? null);
             if (!$league) {
-                echo json_encode(['success' => false, 'error' => 'Liga não especificada']);
+                echo json_encode(['success' => false, 'error' => 'Liga n�o especificada']);
                 exit;
             }
 
@@ -77,7 +77,7 @@ if ($method === 'GET') {
         case 'draft_order':
             $draftSessionId = $_GET['draft_session_id'] ?? null;
             if (!$draftSessionId) {
-                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigat�rio']);
                 exit;
             }
 
@@ -114,11 +114,11 @@ if ($method === 'GET') {
             ]);
             break;
 
-        // Buscar jogadores disponíveis para draft
+        // Buscar jogadores dispon�veis para draft
         case 'available_players':
             $seasonId = $_GET['season_id'] ?? null;
             if (!$seasonId) {
-                echo json_encode(['success' => false, 'error' => 'season_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id obrigat�rio']);
                 exit;
             }
 
@@ -133,11 +133,11 @@ if ($method === 'GET') {
             echo json_encode(['success' => true, 'players' => $players]);
             break;
 
-        // Verificar se é a vez do time
+        // Verificar se � a vez do time
         case 'my_turn':
             $draftSessionId = $_GET['draft_session_id'] ?? null;
             if (!$draftSessionId || !$team) {
-                echo json_encode(['success' => false, 'error' => 'Parâmetros inválidos']);
+                echo json_encode(['success' => false, 'error' => 'Par�metros inv�lidos']);
                 exit;
             }
 
@@ -146,7 +146,7 @@ if ($method === 'GET') {
             $session = $stmtSession->fetch(PDO::FETCH_ASSOC);
 
             if (!$session) {
-                echo json_encode(['success' => true, 'is_my_turn' => false, 'reason' => 'Draft não está em andamento']);
+                echo json_encode(['success' => true, 'is_my_turn' => false, 'reason' => 'Draft n�o est� em andamento']);
                 exit;
             }
 
@@ -172,12 +172,12 @@ if ($method === 'GET') {
             ]);
             break;
 
-        // Buscar histórico de draft de uma temporada
+        // Buscar hist�rico de draft de uma temporada
         case 'draft_history':
             $seasonId = $_GET['season_id'] ?? null;
             $league = $_GET['league'] ?? ($team['league'] ?? null);
             if (!$seasonId && !$league) {
-                echo json_encode(['success' => false, 'error' => 'season_id ou league obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id ou league obrigat�rio']);
                 exit;
             }
 
@@ -192,7 +192,7 @@ if ($method === 'GET') {
                 $season = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if (!$season) {
-                    echo json_encode(['success' => false, 'error' => 'Temporada não encontrada']);
+                    echo json_encode(['success' => false, 'error' => 'Temporada n�o encontrada']);
                     exit;
                 }
 
@@ -258,7 +258,7 @@ if ($method === 'GET') {
             echo json_encode(['success' => true, 'seasons' => $seasons]);
             break;
 
-        // Jogadores disponíveis para preencher draft passado
+        // Jogadores dispon�veis para preencher draft passado
         case 'available_players_for_past_draft':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -268,7 +268,7 @@ if ($method === 'GET') {
 
             $draftSessionId = $_GET['draft_session_id'] ?? null;
             if (!$draftSessionId) {
-                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigat�rio']);
                 exit;
             }
 
@@ -277,7 +277,7 @@ if ($method === 'GET') {
             $session = $stmtSession->fetch();
 
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão de draft não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o de draft n�o encontrada']);
                 exit;
             }
 
@@ -293,7 +293,7 @@ if ($method === 'GET') {
             break;
 
         default:
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
@@ -304,7 +304,7 @@ if ($method === 'POST') {
     $action = $data['action'] ?? '';
 
     switch ($action) {
-        // ADMIN: Criar sessão de draft
+        // ADMIN: Criar sess�o de draft
         case 'create_session':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -314,7 +314,7 @@ if ($method === 'POST') {
 
             $seasonId = $data['season_id'] ?? null;
             if (!$seasonId) {
-                echo json_encode(['success' => false, 'error' => 'season_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id obrigat�rio']);
                 exit;
             }
 
@@ -322,7 +322,7 @@ if ($method === 'POST') {
             $stmtSeason->execute([$seasonId]);
             $seasonData = $stmtSeason->fetch();
             if (!$seasonData) {
-                echo json_encode(['success' => false, 'error' => 'Temporada não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Temporada n�o encontrada']);
                 exit;
             }
 
@@ -331,7 +331,7 @@ if ($method === 'POST') {
             $stmtCheck = $pdo->prepare('SELECT id FROM draft_sessions WHERE season_id = ?');
             $stmtCheck->execute([$seasonId]);
             if ($stmtCheck->fetch()) {
-                echo json_encode(['success' => false, 'error' => 'Já existe uma sessão de draft para esta temporada']);
+                echo json_encode(['success' => false, 'error' => 'J� existe uma sess�o de draft para esta temporada']);
                 exit;
             }
 
@@ -342,7 +342,7 @@ if ($method === 'POST') {
             echo json_encode(['success' => true, 'draft_session_id' => $draftSessionId]);
             break;
 
-        // ADMIN: Adicionar time à ordem de draft (sem "via", permite repetição)
+        // ADMIN: Adicionar time � ordem de draft (sem "via", permite repeti��o)
         case 'add_to_order':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -361,7 +361,7 @@ if ($method === 'POST') {
             $stmtSession->execute([$draftSessionId]);
             $session = $stmtSession->fetch();
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada ou já iniciada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada ou j� iniciada']);
                 exit;
             }
 
@@ -396,7 +396,7 @@ if ($method === 'POST') {
             }
             break;
 
-        // ADMIN: Remover time da ordem (por posição em todas as rodadas)
+        // ADMIN: Remover time da ordem (por posi��o em todas as rodadas)
         case 'remove_from_order':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -415,7 +415,7 @@ if ($method === 'POST') {
             $stmtPick->execute([$pickId]);
             $pick = $stmtPick->fetch();
             if (!$pick) {
-                echo json_encode(['success' => false, 'error' => 'Pick não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Pick n�o encontrada']);
                 exit;
             }
 
@@ -436,7 +436,7 @@ if ($method === 'POST') {
 
             $draftSessionId = $data['draft_session_id'] ?? null;
             if (!$draftSessionId) {
-                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigat�rio']);
                 exit;
             }
 
@@ -444,7 +444,7 @@ if ($method === 'POST') {
             echo json_encode(['success' => true, 'message' => 'Ordem limpa']);
             break;
 
-        // ADMIN: Excluir sessão de draft
+        // ADMIN: Excluir sess�o de draft
         case 'delete_session':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -454,7 +454,7 @@ if ($method === 'POST') {
 
             $draftSessionId = $data['draft_session_id'] ?? null;
             if (!$draftSessionId) {
-                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigat�rio']);
                 exit;
             }
 
@@ -463,14 +463,14 @@ if ($method === 'POST') {
                 $pdo->prepare('DELETE FROM draft_order WHERE draft_session_id = ?')->execute([(int)$draftSessionId]);
                 $pdo->prepare('DELETE FROM draft_sessions WHERE id = ?')->execute([(int)$draftSessionId]);
                 $pdo->commit();
-                echo json_encode(['success' => true, 'message' => 'Sessão excluída']);
+                echo json_encode(['success' => true, 'message' => 'Sess�o exclu�da']);
             } catch (Exception $e) {
                 $pdo->rollBack();
                 echo json_encode(['success' => false, 'error' => 'Erro: ' . $e->getMessage()]);
             }
             break;
 
-        // ADMIN: Definir ordem completa (sem "via", permite repetição, sem snake)
+        // ADMIN: Definir ordem completa (sem "via", permite repeti��o, sem snake)
         case 'set_draft_order':
             if (!$isAdmin) {
                 http_response_code(403);
@@ -489,7 +489,7 @@ if ($method === 'POST') {
             $stmtSession->execute([$draftSessionId]);
             $session = $stmtSession->fetch();
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada ou já iniciada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada ou j� iniciada']);
                 exit;
             }
 
@@ -537,12 +537,12 @@ if ($method === 'POST') {
             $stmtSession->execute([(int)$draftSessionId]);
             $session = $stmtSession->fetch(PDO::FETCH_ASSOC);
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada']);
                 exit;
             }
 
             if (($session['status'] ?? '') !== 'in_progress') {
-                echo json_encode(['success' => false, 'error' => 'Só é possível trocar pick com draft em andamento']);
+                echo json_encode(['success' => false, 'error' => 'S� � poss�vel trocar pick com draft em andamento']);
                 exit;
             }
 
@@ -550,26 +550,26 @@ if ($method === 'POST') {
             $stmtPick->execute([(int)$pickId, (int)$draftSessionId]);
             $pick = $stmtPick->fetch(PDO::FETCH_ASSOC);
             if (!$pick) {
-                echo json_encode(['success' => false, 'error' => 'Pick não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Pick n�o encontrada']);
                 exit;
             }
 
             if (!empty($pick['picked_player_id'])) {
-                echo json_encode(['success' => false, 'error' => 'Essa pick já foi utilizada']);
+                echo json_encode(['success' => false, 'error' => 'Essa pick j� foi utilizada']);
                 exit;
             }
 
             $fromTeamId = (int)$pick['team_id'];
             $toTeamId = (int)$toTeamId;
             if ($fromTeamId === $toTeamId) {
-                echo json_encode(['success' => false, 'error' => 'A pick já pertence a esse time']);
+                echo json_encode(['success' => false, 'error' => 'A pick j� pertence a esse time']);
                 exit;
             }
 
             if (!$isAdmin) {
                 if (!$team || (int)$team['id'] !== $fromTeamId) {
                     http_response_code(403);
-                    echo json_encode(['success' => false, 'error' => 'Você só pode trocar picks do seu time']);
+                    echo json_encode(['success' => false, 'error' => 'Voc� s� pode trocar picks do seu time']);
                     exit;
                 }
             }
@@ -578,7 +578,7 @@ if ($method === 'POST') {
             $stmtToTeam->execute([$toTeamId]);
             $toTeam = $stmtToTeam->fetch(PDO::FETCH_ASSOC);
             if (!$toTeam) {
-                echo json_encode(['success' => false, 'error' => 'Time de destino não encontrado']);
+                echo json_encode(['success' => false, 'error' => 'Time de destino n�o encontrado']);
                 exit;
             }
 
@@ -612,7 +612,7 @@ if ($method === 'POST') {
             $stmtSession->execute([$draftSessionId]);
             $session = $stmtSession->fetch();
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada ou já iniciada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada ou j� iniciada']);
                 exit;
             }
 
@@ -638,7 +638,7 @@ if ($method === 'POST') {
 
             $draftSessionId = $data['draft_session_id'] ?? null;
             if (!$draftSessionId) {
-                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'draft_session_id obrigat�rio']);
                 exit;
             }
 
@@ -646,7 +646,7 @@ if ($method === 'POST') {
             $stmtSession->execute([(int)$draftSessionId]);
             $session = $stmtSession->fetch(PDO::FETCH_ASSOC);
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada']);
                 exit;
             }
 
@@ -679,7 +679,7 @@ if ($method === 'POST') {
             $stmtSession->execute([(int)$draftSessionId]);
             $session = $stmtSession->fetch(PDO::FETCH_ASSOC);
             if (!$session) {
-                echo json_encode(['success' => false, 'error' => 'Sessão não encontrada']);
+                echo json_encode(['success' => false, 'error' => 'Sess�o n�o encontrada']);
                 exit;
             }
 
@@ -841,21 +841,21 @@ if ($method === 'POST') {
                 $stmtPick->execute([(int)$pickId]);
                 $pick = $stmtPick->fetch();
                 if (!$pick) {
-                    throw new Exception('Pick não encontrada');
+                    throw new Exception('Pick n�o encontrada');
                 }
 
                 $stmtPlayer = $pdo->prepare('SELECT * FROM draft_pool WHERE id = ? AND draft_status = "available"');
                 $stmtPlayer->execute([(int)$playerId]);
                 $player = $stmtPlayer->fetch();
                 if (!$player) {
-                    throw new Exception('Jogador não disponível no draft pool');
+                    throw new Exception('Jogador n�o dispon�vel no draft pool');
                 }
 
                 $stmtSession = $pdo->prepare('SELECT * FROM draft_sessions WHERE id = ?');
                 $stmtSession->execute([(int)$draftSessionId]);
                 $session = $stmtSession->fetch();
                 if (!$session) {
-                    throw new Exception('Sessão de draft não encontrada');
+                    throw new Exception('Sess�o de draft n�o encontrada');
                 }
 
                 $pdo->prepare('UPDATE draft_order SET picked_player_id = ?, picked_at = NOW() WHERE id = ?')->execute([(int)$playerId, (int)$pickId]);
@@ -933,11 +933,12 @@ if ($method === 'POST') {
             break;
 
         default:
-            echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     }
     exit;
 }
 
-echo json_encode(['success' => false, 'error' => 'Método não suportado']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o suportado']);
 
 ?>
+

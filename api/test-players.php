@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * API de teste para debug dos jogadores
  */
@@ -18,7 +18,7 @@ try {
     $pdo = db();
     $output['connection'] = 'OK';
     
-    // Testar conexão
+    // Testar conex�o
     $pdo->query('SELECT 1');
     $output['query_test'] = 'OK';
     
@@ -37,11 +37,11 @@ try {
     $output['players_for_team'] = $playersTeam;
     $output['players_count'] = count($playersTeam);
     
-    // Verificar distribuição por times
+    // Verificar distribui��o por times
     $distStmt = $pdo->query('SELECT team_id, COUNT(*) as cnt FROM players GROUP BY team_id ORDER BY team_id');
     $output['distribution_by_team'] = $distStmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Sessão do usuário
+    // Sess�o do usu�rio
     $user = getUserSession();
     $output['session_user'] = $user;
     
@@ -60,3 +60,4 @@ try {
 }
 
 echo json_encode($output, JSON_PRETTY_PRINT);
+

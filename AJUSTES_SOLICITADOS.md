@@ -1,10 +1,10 @@
-# Ajustes Solicitados - 26/01/2026
+﻿# Ajustes Solicitados - 26/01/2026
 
 ## Lista de Tarefas
 
-### ✅ 1. Anos das temporadas da SPRINT (aparecem como Zero)
+### ? 1. Anos das temporadas da SPRINT (aparecem como Zero)
 **Status**: Verificar banco de dados
-**Ação**: Execute no phpMyAdmin:
+**A��o**: Execute no phpMyAdmin:
 ```sql
 -- Ver sprints atuais
 SELECT * FROM sprints ORDER BY league, sprint_number;
@@ -22,28 +22,28 @@ SET s.year = sp.start_year + s.season_number - 1
 WHERE s.year = 0 OR s.year IS NULL;
 ```
 
-### ✅ 2. Resetar trades a cada 2 temporadas
+### ? 2. Resetar trades a cada 2 temporadas
 **Requires**: Backend implementation
 **Files to create**: `backend/reset-trades-logic.php`
 
-### ✅ 3. Mostrar "via" nas picks trocadas
+### ? 3. Mostrar "via" nas picks trocadas
 **Requires**: Frontend + API modification  
 **Files**: `trades.php`, `api/trades.php`
 
-### ✅ 4. Corrigir layout mobile da página Meu Time
+### ? 4. Corrigir layout mobile da p�gina Meu Time
 **Requires**: CSS/HTML adjustment
 **File**: `my-roster.php`
 
-### ✅ 5. Adicionar busca de jogadores em Trades Gerais
+### ? 5. Adicionar busca de jogadores em Trades Gerais
 **Requires**: JavaScript implementation
 **File**: `trades.php`, `js/trades.js`
 
-### ✅ 6. Adicionar busca de times
+### ? 6. Adicionar busca de times
 **Requires**: JavaScript implementation
 **File**: `teams.php`
 
-### ✅ 7. Garantir unicidade de picks
-**Ação**: Execute no phpMyAdmin:
+### ? 7. Garantir unicidade de picks
+**A��o**: Execute no phpMyAdmin:
 ```sql
 -- Adicionar constraint de unicidade para picks
 ALTER TABLE picks ADD UNIQUE KEY unique_pick (original_team_id, season_year, round);
@@ -55,15 +55,15 @@ GROUP BY original_team_id, season_year, round
 HAVING total > 1;
 ```
 
-### ✅ 8. Corrigir lógica de seleção de picks trocadas no draft
+### ? 8. Corrigir l�gica de sele��o de picks trocadas no draft
 **Requires**: Backend logic review
 **Files**: `api/draft.php`, `drafts.php`
 
-### ✅ 9. Garantir unicidade de jogadores por liga
-**Ação**: Execute no phpMyAdmin:
+### ? 9. Garantir unicidade de jogadores por liga
+**A��o**: Execute no phpMyAdmin:
 ```sql
--- Para draft_pool: unicidade por temporada (season_id já contém a liga)
--- NOTA: draft_pool NÃO tem coluna 'league', usa season_id que vincula à seasons que tem a liga
+-- Para draft_pool: unicidade por temporada (season_id j� cont�m a liga)
+-- NOTA: draft_pool N�O tem coluna 'league', usa season_id que vincula � seasons que tem a liga
 ALTER TABLE draft_pool ADD UNIQUE KEY unique_draft_player_per_season (season_id, name);
 
 -- Verificar duplicatas no draft_pool antes:
@@ -80,29 +80,30 @@ HAVING total > 1;
 -- AND dp1.name = dp2.name;
 ```
 
-**Validação em código**: Já implementada em `api/players.php` e `api/import-draft-players.php`
+**Valida��o em c�digo**: J� implementada em `api/players.php` e `api/import-draft-players.php`
 
-### ✅ 10. Corrigir layout mobile da Free Agency
+### ? 10. Corrigir layout mobile da Free Agency
 **Requires**: CSS/HTML adjustment
 **File**: `free-agency.php`
 
-## Prioridade de Execução
+## Prioridade de Execu��o
 
 1. **IMEDIATO** (SQL):
    - Task #1: Corrigir anos das temporadas
    - Task #7: Garantir unicidade de picks
    - Task #9: Garantir unicidade de jogadores
 
-2. **DESENVOLVIMENTO** (Código):
+2. **DESENVOLVIMENTO** (C�digo):
    - Task #3: Mostrar "via" nas picks
    - Task #5: Busca de jogadores em trades
    - Task #6: Busca de times
-   - Task #8: Lógica de picks trocadas no draft
+   - Task #8: L�gica de picks trocadas no draft
 
 3. **LAYOUT** (Frontend):
    - Task #4: Mobile Meu Time
    - Task #10: Mobile Free Agency
 
-4. **LÓGICA DE NEGÓCIO**:
-   - Task #2: Reset automático de trades
+4. **L�GICA DE NEG�CIO**:
+   - Task #2: Reset autom�tico de trades
+
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 require_once __DIR__ . '/backend/helpers.php';
@@ -17,7 +17,7 @@ $team = $stmtTeam->fetch() ?: null;
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Configurações - FBA Manager</title>
+    <title>Configurações - FUT Manager</title>
     
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
     
@@ -44,7 +44,7 @@ $team = $stmtTeam->fetch() ?: null;
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <ul class="sidebar-menu">
             <li>
@@ -129,7 +129,7 @@ $team = $stmtTeam->fetch() ?: null;
             </li>
         </ul>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -195,7 +195,7 @@ $team = $stmtTeam->fetch() ?: null;
                                 <button type="button" class="btn btn-orange" id="btn-save-profile"><i class="bi bi-save2 me-1"></i> Salvar Perfil</button>
                             </div>
                         </form>
-                        <hr class="my-4" style="border-color: var(--fba-border);">
+                        <hr class="my-4" style="border-color: var(--FUT-border);">
                         <h5 class="text-white mb-3"><i class="bi bi-shield-lock-fill me-2 text-orange"></i>Alterar Senha</h5>
                         <form id="form-password">
                             <div class="mb-3">
@@ -276,3 +276,5 @@ $team = $stmtTeam->fetch() ?: null;
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

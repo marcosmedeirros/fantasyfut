@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -15,14 +15,14 @@ try {
     $password = $body['password'] ?? '';
 
     if ($token === '' || $password === '') {
-        jsonResponse(422, ['error' => 'Token e senha são obrigatórios.']);
+        jsonResponse(422, ['error' => 'Token e senha s�o obrigat�rios.']);
     }
 
     if (strlen($password) < 6) {
         jsonResponse(422, ['error' => 'A senha deve ter pelo menos 6 caracteres.']);
     }
 
-    // Busca usuário com token válido
+    // Busca usu�rio com token v�lido
     $stmt = $pdo->prepare('
         SELECT id, email, name 
         FROM users 
@@ -34,7 +34,7 @@ try {
     $user = $stmt->fetch();
 
     if (!$user) {
-        jsonResponse(400, ['error' => 'Token inválido ou expirado. Solicite um novo link de recuperação.']);
+        jsonResponse(400, ['error' => 'Token inv�lido ou expirado. Solicite um novo link de recupera��o.']);
     }
 
     // Atualiza a senha
@@ -55,3 +55,4 @@ try {
     error_log('Erro no reset-password-confirm.php: ' . $e->getMessage());
     jsonResponse(500, ['error' => 'Erro interno do servidor.', 'details' => $e->getMessage()]);
 }
+

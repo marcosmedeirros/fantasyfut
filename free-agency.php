@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once 'backend/config.php';
 require_once 'backend/db.php';
@@ -76,7 +76,7 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Agency - FBA Brasil</title>
+    <title>Free Agency - FUT Brasil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -188,14 +188,14 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
 
         .fa-new-card .form-control,
         .fa-new-card .form-select {
-            background: var(--fba-dark-bg);
-            color: var(--fba-text);
-            border-color: var(--fba-border);
+            background: var(--FUT-dark-bg);
+            color: var(--FUT-text);
+            border-color: var(--FUT-border);
         }
 
         .fa-new-card .form-control:focus,
         .fa-new-card .form-select:focus {
-            border-color: var(--fba-orange);
+            border-color: var(--FUT-orange);
             box-shadow: 0 0 0 0.25rem rgba(241, 117, 7, 0.25);
         }
 
@@ -324,11 +324,10 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
                                 <div class="col-md-2">
                                     <label for="faNewPosition" class="form-label">Posicao</label>
                                     <select id="faNewPosition" class="form-select">
-                                        <option value="PG">PG</option>
-                                        <option value="SG">SG</option>
-                                        <option value="SF">SF</option>
-                                        <option value="PF">PF</option>
-                                        <option value="C">C</option>
+                                        <option value="GK">GK</option>
+                                        <option value="DEF">DEF</option>
+                                        <option value="MID">MID</option>
+                                        <option value="ATT">ATT</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -400,11 +399,10 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
                                     <label for="faPositionFilter" class="form-label d-none d-md-block">Posicao</label>
                                     <select id="faPositionFilter" class="form-select">
                                         <option value="">Pos.</option>
-                                        <option value="PG">PG</option>
-                                        <option value="SG">SG</option>
-                                        <option value="SF">SF</option>
-                                        <option value="PF">PF</option>
-                                        <option value="C">C</option>
+                                        <option value="GK">GK</option>
+                                        <option value="DEF">DEF</option>
+                                        <option value="MID">MID</option>
+                                        <option value="ATT">ATT</option>
                                     </select>
                                 </div>
                             </div>
@@ -563,11 +561,10 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
                                         <div class="col-md-2">
                                             <label for="auctionPlayerPosition" class="form-label">Posicao</label>
                                             <select id="auctionPlayerPosition" class="form-select">
-                                                <option value="PG">PG</option>
-                                                <option value="SG">SG</option>
-                                                <option value="SF">SF</option>
-                                                <option value="PF">PF</option>
-                                                <option value="C">C</option>
+                                                <option value="GK">GK</option>
+                                                <option value="DEF">DEF</option>
+                                                <option value="MID">MID</option>
+                                                <option value="ATT">ATT</option>
                                             </select>
                                         </div>
                                         <div class="col-md-1">
@@ -677,11 +674,10 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
                                 <div class="col-md-2">
                                     <label for="faPosition" class="form-label">Posicao</label>
                                     <select id="faPosition" class="form-select">
-                                        <option value="PG">PG</option>
-                                        <option value="SG">SG</option>
-                                        <option value="SF">SF</option>
-                                        <option value="PF">PF</option>
-                                        <option value="C">C</option>
+                                        <option value="GK">GK</option>
+                                        <option value="DEF">DEF</option>
+                                        <option value="MID">MID</option>
+                                        <option value="ATT">ATT</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -862,3 +858,5 @@ $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
     <script src="js/leilao.js"></script>
 </body>
 </html>
+
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../backend/auth.php';
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
@@ -9,12 +9,12 @@ requireAuth(true); // Admin apenas
 try {
     $db = db();
     
-    // Verifica se é upload de arquivo
+    // Verifica se � upload de arquivo
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
         $seasonId = (int)($_POST['season_id'] ?? 0);
         
         if ($seasonId <= 0) {
-            throw new Exception('ID da temporada inválido');
+            throw new Exception('ID da temporada inv�lido');
         }
         
         // Verifica se a temporada existe
@@ -23,12 +23,12 @@ try {
         $season = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!$season) {
-            throw new Exception('Temporada não encontrada');
+            throw new Exception('Temporada n�o encontrada');
         }
         
         $file = $_FILES['csv_file'];
         
-        // Validações do arquivo
+        // Valida��es do arquivo
         if ($file['error'] !== UPLOAD_ERR_OK) {
             throw new Exception('Erro no upload do arquivo');
         }
@@ -38,10 +38,10 @@ try {
             throw new Exception('Arquivo deve ser CSV');
         }
         
-        // Lê o arquivo CSV
+        // L� o arquivo CSV
         $handle = fopen($file['tmp_name'], 'r');
         if (!$handle) {
-            throw new Exception('Não foi possível ler o arquivo');
+            throw new Exception('N�o foi poss�vel ler o arquivo');
         }
         
         $players = [];
@@ -51,7 +51,7 @@ try {
         while (($row = fgetcsv($handle, 1000, ',')) !== false) {
             $lineNumber++;
             
-            // Primeira linha é o cabeçalho
+            // Primeira linha � o cabe�alho
             if ($lineNumber === 1) {
                 $header = array_map('trim', array_map('strtolower', $row));
                 continue;
@@ -62,29 +62,29 @@ try {
                 continue;
             }
             
-            // Mapeia os dados usando o cabeçalho
+            // Mapeia os dados usando o cabe�alho
             $data = array_combine($header, $row);
             
-            // Validações
+            // Valida��es
             $name = trim($data['nome'] ?? $data['name'] ?? '');
-            $position = trim($data['posicao'] ?? $data['posição'] ?? $data['position'] ?? '');
+            $position = trim($data['posicao'] ?? $data['posi��o'] ?? $data['position'] ?? '');
             $age = (int)($data['idade'] ?? $data['age'] ?? 0);
             $ovr = (int)($data['ovr'] ?? $data['overall'] ?? 0);
             
             if (empty($name)) {
-                throw new Exception("Linha {$lineNumber}: Nome é obrigatório");
+                throw new Exception("Linha {$lineNumber}: Nome � obrigat�rio");
             }
             
             if (empty($position)) {
-                throw new Exception("Linha {$lineNumber}: Posição é obrigatória");
+                throw new Exception("Linha {$lineNumber}: Posi��o � obrigat�ria");
             }
             
             if ($age < 18 || $age > 50) {
-                throw new Exception("Linha {$lineNumber}: Idade inválida ({$age})");
+                throw new Exception("Linha {$lineNumber}: Idade inv�lida ({$age})");
             }
             
             if ($ovr < 40 || $ovr > 99) {
-                throw new Exception("Linha {$lineNumber}: OVR inválido ({$ovr})");
+                throw new Exception("Linha {$lineNumber}: OVR inv�lido ({$ovr})");
             }
             
             $players[] = [
@@ -98,7 +98,7 @@ try {
         fclose($handle);
         
         if (empty($players)) {
-            throw new Exception('Nenhum jogador válido encontrado no arquivo');
+            throw new Exception('Nenhum jogador v�lido encontrado no arquivo');
         }
         
         // Verificar duplicatas antes de inserir
@@ -112,7 +112,7 @@ try {
         }
         
         if (!empty($duplicates)) {
-            throw new Exception('Jogadores já existem nesta temporada: ' . implode(', ', $duplicates));
+            throw new Exception('Jogadores j� existem nesta temporada: ' . implode(', ', $duplicates));
         }
         
         // Insere os jogadores no draft_pool da temporada
@@ -145,7 +145,7 @@ try {
         ]);
         
     } else {
-        throw new Exception('Método não suportado');
+        throw new Exception('M�todo n�o suportado');
     }
     
 } catch (Exception $e) {
@@ -169,3 +169,4 @@ try {
         'line' => $e->getLine()
     ]);
 }
+

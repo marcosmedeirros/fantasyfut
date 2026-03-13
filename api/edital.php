@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 require_once dirname(__DIR__) . '/backend/auth.php';
@@ -8,21 +8,21 @@ $user = getUserSession();
 if (!$user) {
     http_response_code(401);
     header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'error' => 'Usuário não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'Usu�rio n�o autenticado']);
     exit;
 }
 
 $pdo = db();
 $action = $_GET['action'] ?? $_POST['action'] ?? null;
 
-// Download de edital - permitido para todos os usuários
+// Download de edital - permitido para todos os usu�rios
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'download_edital') {
     $league = $_GET['league'] ?? null;
     
     if (!$league || !in_array($league, ['ELITE', 'NEXT', 'RISE', 'ROOKIE'])) {
         http_response_code(400);
         header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+        echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
         exit;
     }
     
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'download_edital') {
     if (!$result || !$result['edital_file']) {
         http_response_code(404);
         header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'error' => 'Edital não encontrado']);
+        echo json_encode(['success' => false, 'error' => 'Edital n�o encontrado']);
         exit;
     }
     
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'download_edital') {
     if (!file_exists($filePath)) {
         http_response_code(404);
         header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'error' => 'Arquivo não encontrado']);
+        echo json_encode(['success' => false, 'error' => 'Arquivo n�o encontrado']);
         exit;
     }
     
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'download_edital') {
     exit;
 }
 
-// Verificar se é admin para ações de modificação
+// Verificar se � admin para a��es de modifica��o
 if (($user['user_type'] ?? 'jogador') !== 'admin') {
     http_response_code(403);
     header('Content-Type: application/json');
@@ -71,13 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload_edital') {
     
     if (!$league || !in_array($league, ['ELITE', 'NEXT', 'RISE', 'ROOKIE'])) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+        echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
         exit;
     }
     
     if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Arquivo não enviado ou erro no upload']);
+        echo json_encode(['success' => false, 'error' => 'Arquivo n�o enviado ou erro no upload']);
         exit;
     }
     
@@ -88,24 +88,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'upload_edital') {
     // Validar tipo
     if (!in_array($file['type'], $allowedTypes)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Apenas arquivos PDF ou Word são permitidos']);
+        echo json_encode(['success' => false, 'error' => 'Apenas arquivos PDF ou Word s�o permitidos']);
         exit;
     }
     
     // Validar tamanho
     if ($file['size'] > $maxSize) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Arquivo muito grande. Máximo: 10MB']);
+        echo json_encode(['success' => false, 'error' => 'Arquivo muito grande. M�ximo: 10MB']);
         exit;
     }
     
-    // Criar diretório se não existir
+    // Criar diret�rio se n�o existir
     $uploadDir = dirname(__DIR__) . '/uploads/editais';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }
     
-    // Extensão do arquivo
+    // Extens�o do arquivo
     $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
     $fileName = strtolower($league) . '_edital.' . $ext;
     $filePath = $uploadDir . '/' . $fileName;
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'delete_edital') {
     
     if (!$league || !in_array($league, ['ELITE', 'NEXT', 'RISE', 'ROOKIE'])) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+        echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
         exit;
     }
     
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'delete_edital') {
         if ($result && $result['edital_file']) {
             $filePath = dirname(__DIR__) . '/uploads/editais/' . $result['edital_file'];
             
-            // Deletar arquivo físico se existir
+            // Deletar arquivo f�sico se existir
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -175,4 +175,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'delete_edital') {
 }
 
 http_response_code(400);
-echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
+

@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
  * API de Playoffs
- * Gerencia brackets, partidas e pontuação
+ * Gerencia brackets, partidas e pontua��o
  */
 
 session_start();
@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autenticado']);
     exit;
 }
 
@@ -33,7 +33,7 @@ if ($method === 'GET') {
             $league = $_GET['league'] ?? null;
             
             if (!$seasonId) {
-                echo json_encode(['success' => false, 'error' => 'season_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id obrigat�rio']);
                 exit;
             }
             
@@ -65,7 +65,7 @@ if ($method === 'GET') {
             $league = $_GET['league'] ?? null;
             
             if (!$seasonId) {
-                echo json_encode(['success' => false, 'error' => 'season_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id obrigat�rio']);
                 exit;
             }
             
@@ -95,7 +95,7 @@ if ($method === 'GET') {
             $seasonId = $_GET['season_id'] ?? null;
             
             if (!$seasonId) {
-                echo json_encode(['success' => false, 'error' => 'season_id obrigatório']);
+                echo json_encode(['success' => false, 'error' => 'season_id obrigat�rio']);
                 exit;
             }
             
@@ -114,7 +114,7 @@ if ($method === 'GET') {
             break;
             
         default:
-            echo json_encode(['success' => false, 'error' => 'Ação GET inválida']);
+            echo json_encode(['success' => false, 'error' => 'A��o GET inv�lida']);
     }
     exit;
 }
@@ -131,7 +131,7 @@ if ($method === 'POST') {
     $action = $_GET['action'] ?? $data['action'] ?? '';
     
     switch ($action) {
-        // Configurar bracket inicial com classificação
+        // Configurar bracket inicial com classifica��o
         case 'setup_bracket':
             $seasonId = $data['season_id'] ?? null;
             $league = $data['league'] ?? null;
@@ -151,7 +151,7 @@ if ($method === 'POST') {
                 $pdo->prepare("DELETE FROM playoff_brackets WHERE season_id = ? AND league = ?")
                     ->execute([$seasonId, $league]);
                 
-                // Inserir classificação
+                // Inserir classifica��o
                 $stmtBracket = $pdo->prepare("
                     INSERT INTO playoff_brackets (season_id, league, team_id, conference, seed, status, points_earned)
                     VALUES (?, ?, ?, ?, ?, 'active', ?)
@@ -159,11 +159,11 @@ if ($method === 'POST') {
                 
                 foreach (['LESTE', 'OESTE'] as $conf) {
                     if (!isset($standings[$conf]) || count($standings[$conf]) !== 8) {
-                        throw new Exception("Conferência {$conf} deve ter exatamente 8 times");
+                        throw new Exception("Confer�ncia {$conf} deve ter exatamente 8 times");
                     }
                     
                     foreach ($standings[$conf] as $team) {
-                        // Calcular pontos de standing: 1º=4, 2-4=3, 5-8=2
+                        // Calcular pontos de standing: 1�=4, 2-4=3, 5-8=2
                         $standingPoints = 0;
                         if ($team['seed'] == 1) {
                             $standingPoints = 4;
@@ -184,7 +184,7 @@ if ($method === 'POST') {
                     }
                 }
                 
-                // Criar partidas da primeira rodada para cada conferência
+                // Criar partidas da primeira rodada para cada confer�ncia
                 // Formato: 1v8, 4v5, 3v6, 2v7
                 $matchups = [
                     1 => [1, 8],
@@ -244,7 +244,7 @@ if ($method === 'POST') {
             try {
                 $pdo->beginTransaction();
                 
-                // Verificar se partida já existe
+                // Verificar se partida j� existe
                 $stmtCheck = $pdo->prepare("
                     SELECT id FROM playoff_matches 
                     WHERE season_id = ? AND league = ? AND conference = ? AND round = ? AND match_number = ?
@@ -267,7 +267,7 @@ if ($method === 'POST') {
                     ")->execute([$seasonId, $league, $conference, $round, $matchNumber, $team1Id, $team2Id, $winnerId]);
                 }
                 
-                // Se for final de conferência, criar/atualizar jogo das finais
+                // Se for final de confer�ncia, criar/atualizar jogo das finais
                 if ($round === 'conference_finals') {
                     $stmtCheckFinals = $pdo->prepare("
                         SELECT id, team1_id, team2_id FROM playoff_matches 
@@ -309,14 +309,14 @@ if ($method === 'POST') {
             }
             break;
             
-        // Salvar prêmios individuais
+        // Salvar pr�mios individuais
         case 'save_awards':
             $seasonId = $data['season_id'] ?? null;
             $league = $data['league'] ?? null;
             $awards = $data['awards'] ?? [];
             
             if (!$seasonId || !$league) {
-                echo json_encode(['success' => false, 'error' => 'season_id e league obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'season_id e league obrigat�rios']);
                 exit;
             }
             
@@ -325,7 +325,7 @@ if ($method === 'POST') {
                 $tableExists = $pdo->query("SHOW TABLES LIKE 'season_history'")->rowCount() > 0;
                 
                 if ($tableExists) {
-                    // Atualizar ou inserir no histórico
+                    // Atualizar ou inserir no hist�rico
                     $stmtCheck = $pdo->prepare("SELECT id FROM season_history WHERE season_id = ? AND league = ?");
                     $stmtCheck->execute([$seasonId, $league]);
                     $existing = $stmtCheck->fetch();
@@ -362,7 +362,7 @@ if ($method === 'POST') {
                     }
                 }
                 
-                echo json_encode(['success' => true, 'message' => 'Prêmios salvos!']);
+                echo json_encode(['success' => true, 'message' => 'Pr�mios salvos!']);
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'error' => $e->getMessage()]);
             }
@@ -374,7 +374,7 @@ if ($method === 'POST') {
             $league = $data['league'] ?? null;
             
             if (!$seasonId || !$league) {
-                echo json_encode(['success' => false, 'error' => 'season_id e league obrigatórios']);
+                echo json_encode(['success' => false, 'error' => 'season_id e league obrigat�rios']);
                 exit;
             }
             
@@ -388,7 +388,7 @@ if ($method === 'POST') {
                         $pdo->exec("ALTER TABLE teams ADD COLUMN ranking_points INT DEFAULT 0");
                     }
                 } catch (Exception $e) {
-                    // Ignora erro se já existe
+                    // Ignora erro se j� existe
                 }
                 
                 // Buscar todos os times da liga
@@ -412,7 +412,7 @@ if ($method === 'POST') {
                     }
                 };
                 
-                // 1. Pontos de classificação (standing)
+                // 1. Pontos de classifica��o (standing)
                 $stmtBrackets = $pdo->prepare("
                     SELECT team_id, seed, points_earned FROM playoff_brackets 
                     WHERE season_id = ? AND league = ?
@@ -443,7 +443,7 @@ if ($method === 'POST') {
                     $champion = $final['winner_id'];
                     $runnerUp = ($final['winner_id'] == $final['team1_id']) ? $final['team2_id'] : $final['team1_id'];
                     
-                    // Campeão: +5
+                    // Campe�o: +5
                     $teamPoints[$champion] += 5;
                     // Vice: +2
                     if ($runnerUp) {
@@ -451,7 +451,7 @@ if ($method === 'POST') {
                     }
                 }
                 
-                // Finais de conferência
+                // Finais de confer�ncia
                 $stmtConfFinals = $pdo->prepare("
                     SELECT * FROM playoff_matches 
                     WHERE season_id = ? AND league = ? AND round = 'conference_finals' AND winner_id IS NOT NULL
@@ -520,7 +520,7 @@ if ($method === 'POST') {
                     }
                 }
                 
-                // 3. Pontos de prêmios individuais (+1 cada)
+                // 3. Pontos de pr�mios individuais (+1 cada)
                 $tableExists = $pdo->query("SHOW TABLES LIKE 'season_history'")->rowCount() > 0;
                 if ($tableExists) {
                     $stmtAwards = $pdo->prepare("
@@ -538,7 +538,7 @@ if ($method === 'POST') {
                         if (isset($awards['roy_team_id']) && $awards['roy_team_id']) $teamPoints[$awards['roy_team_id']] += 1;
                     }
                     
-                    // Atualizar campeão/vice no histórico
+                    // Atualizar campe�o/vice no hist�rico
                     if ($champion || $runnerUp) {
                         $pdo->prepare("
                             UPDATE season_history SET champion_team_id = ?, runner_up_team_id = ?
@@ -581,7 +581,7 @@ if ($method === 'POST') {
                         ->execute([$seasonId, $league, $tid]);
                 }
                 
-                // 6. Salvar snapshot da ordem do draft para histórico
+                // 6. Salvar snapshot da ordem do draft para hist�rico
                 try {
                     $stmtSession = $pdo->prepare("SELECT id FROM draft_sessions WHERE season_id = ?");
                     $stmtSession->execute([$seasonId]);
@@ -612,7 +612,7 @@ if ($method === 'POST') {
                         }
                     }
                 } catch (Exception $e) {
-                    // Log mas não falha a finalização
+                    // Log mas n�o falha a finaliza��o
                     error_log("Erro ao salvar snapshot do draft: " . $e->getMessage());
                 }
                 
@@ -631,9 +631,10 @@ if ($method === 'POST') {
             break;
             
         default:
-            echo json_encode(['success' => false, 'error' => 'Ação POST inválida: ' . $action]);
+            echo json_encode(['success' => false, 'error' => 'A��o POST inv�lida: ' . $action]);
     }
     exit;
 }
 
-echo json_encode(['success' => false, 'error' => 'Método não suportado']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o suportado']);
+

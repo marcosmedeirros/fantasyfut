@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -8,17 +8,17 @@ require_once dirname(__DIR__) . '/backend/db.php';
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autenticado']);
     exit;
 }
 
 $pdo = db();
 
-// Liga ativa deve ser a mesma escolhida no login do usuário
+// Liga ativa deve ser a mesma escolhida no login do usu�rio
 $activeLeague = $user['league'] ?? null;
 if (!$activeLeague) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Liga ativa não encontrada']);
+    echo json_encode(['success' => false, 'error' => 'Liga ativa n�o encontrada']);
     exit;
 }
 
@@ -82,3 +82,4 @@ try {
         'error' => 'Erro ao carregar lista de trocas'
     ]);
 }
+

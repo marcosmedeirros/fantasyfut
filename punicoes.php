@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -26,8 +26,8 @@ $team = $stmtTeam->fetch();
   <link rel="stylesheet" href="/css/styles.css" />
   <style>
     .punicao-card {
-      background: var(--fba-panel);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-panel);
+      border: 1px solid var(--FUT-border);
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 12px;
@@ -46,7 +46,7 @@ $team = $stmtTeam->fetch();
       <h5 class="text-white mb-1"><?= $team ? htmlspecialchars($team['city'] . ' ' . $team['name']) : 'Admin' ?></h5>
       <span class="badge bg-gradient-orange"><?= $team ? htmlspecialchars($team['league']) : 'Painel' ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -63,7 +63,7 @@ $team = $stmtTeam->fetch();
       <li><a href="/temporadas.php"><i class="bi bi-calendar3"></i>Temporadas</a></li>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -158,3 +158,5 @@ $team = $stmtTeam->fetch();
   <script src="/js/punicoes.js"></script>
 </body>
 </html>
+
+

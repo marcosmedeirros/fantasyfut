@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/db.php';
 
 $pdo = db();
@@ -20,7 +20,7 @@ try {
             FOREIGN KEY (to_team_id) REFERENCES teams(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
-    echo "✓ Tabela 'trades' criada\n";
+    echo "? Tabela 'trades' criada\n";
     
     // Criar tabela trade_items
     $pdo->exec("
@@ -35,25 +35,26 @@ try {
             FOREIGN KEY (pick_id) REFERENCES picks(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
-    echo "✓ Tabela 'trade_items' criada\n";
+    echo "? Tabela 'trade_items' criada\n";
     
-    // Criar índices
+    // Criar �ndices
     $pdo->exec("CREATE INDEX IF NOT EXISTS idx_trades_from_team ON trades(from_team_id)");
-    echo "✓ Índice idx_trades_from_team criado\n";
+    echo "? �ndice idx_trades_from_team criado\n";
     
     $pdo->exec("CREATE INDEX IF NOT EXISTS idx_trades_to_team ON trades(to_team_id)");
-    echo "✓ Índice idx_trades_to_team criado\n";
+    echo "? �ndice idx_trades_to_team criado\n";
     
     $pdo->exec("CREATE INDEX IF NOT EXISTS idx_trades_status ON trades(status)");
-    echo "✓ Índice idx_trades_status criado\n";
+    echo "? �ndice idx_trades_status criado\n";
     
     $pdo->exec("CREATE INDEX IF NOT EXISTS idx_trade_items_trade ON trade_items(trade_id)");
-    echo "✓ Índice idx_trade_items_trade criado\n";
+    echo "? �ndice idx_trade_items_trade criado\n";
     
-    echo "\n✅ Migração concluída com sucesso!\n";
-    echo "Agora você pode usar o sistema de trades.\n";
+    echo "\n? Migra��o conclu�da com sucesso!\n";
+    echo "Agora voc� pode usar o sistema de trades.\n";
     
 } catch (PDOException $e) {
-    echo "❌ Erro na migração: " . $e->getMessage() . "\n";
+    echo "? Erro na migra��o: " . $e->getMessage() . "\n";
     exit(1);
 }
+

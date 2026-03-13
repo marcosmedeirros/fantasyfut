@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -23,18 +23,18 @@ $userLeague = $team['league'];
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Histórico - GM FBA</title>
+  <title>Histórico - GM FUT</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0a0a0c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
-  <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
+  <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/img/fba-logo.png?v=3">
+  <link rel="icon" type="image/png" href="/img/FUT-logo.png?v=3">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/styles.css" />
@@ -53,7 +53,7 @@ $userLeague = $team['league'];
       <h6 class="text-white mb-1"><?= htmlspecialchars($team['name']) ?></h6>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($team['league']) ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -71,7 +71,7 @@ $userLeague = $team['league'];
       <?php endif; ?>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -98,3 +98,4 @@ $userLeague = $team['league'];
 <script src="/js/pwa.js"></script>
 </body>
 </html>
+

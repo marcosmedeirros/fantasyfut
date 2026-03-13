@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -8,11 +8,11 @@ require_once dirname(__DIR__) . '/backend/db.php';
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autenticado']);
     exit;
 }
 
-// Evita bloqueios de sessão em chamadas paralelas
+// Evita bloqueios de sess�o em chamadas paralelas
 if (session_status() === PHP_SESSION_ACTIVE) {
     session_write_close();
 }
@@ -23,11 +23,11 @@ try {
     $league = $_GET['league'] ?? null;
     
     if (!$league) {
-        echo json_encode(['success' => false, 'error' => 'Liga não especificada']);
+        echo json_encode(['success' => false, 'error' => 'Liga n�o especificada']);
         exit;
     }
 
-    // Teste 1: Verificar conexão com banco
+    // Teste 1: Verificar conex�o com banco
     $testConn = $pdo->query("SELECT 1 as test");
     $connResult = $testConn->fetch();
     
@@ -36,7 +36,7 @@ try {
     $stmtCount->execute([$league]);
     $countResult = $stmtCount->fetch();
     
-    // Teste 3: Listar temporadas (todas, não apenas completas)
+    // Teste 3: Listar temporadas (todas, n�o apenas completas)
     $stmtAll = $pdo->prepare("SELECT id, season_number, status, league FROM seasons WHERE league = ? LIMIT 10");
     $stmtAll->execute([$league]);
     $allSeasons = $stmtAll->fetchAll();
@@ -75,3 +75,4 @@ try {
         'line' => $e->getLine()
     ]);
 }
+

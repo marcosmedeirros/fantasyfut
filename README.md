@@ -1,6 +1,6 @@
-# FBA (Franchise Basketball Association)
+﻿# FUT (Franchise Basketball Association)
 
-Projeto PHP + JavaScript para gerenciar franquias da NBA (FBA) com cadastro de usuários, times, jogadores, drafts, divisões e picks. Inclui frontend estilizado (HTML/CSS/JS), APIs em PHP e script SQL do banco.
+Projeto PHP + JavaScript para gerenciar franquias da NBA (FUT) com cadastro de usuários, times, jogadores, drafts, divisões e picks. Inclui frontend estilizado (HTML/CSS/JS), APIs em PHP e script SQL do banco.
 
 ## Estrutura
 - public/ — frontend e APIs
@@ -42,10 +42,10 @@ Campos novos no schema (sql/schema.sql):
 - Limites: mínimo recomendado 618, máximo 648. A API bloqueia inserções que ultrapassam 648.
 
 ## Rodando localmente (XAMPP)
-1) Coloque o projeto em htdocs (c:/xampp/htdocs/GMFBA).
-2) Crie o banco `fba` e importe sql/schema.sql.
+1) Coloque o projeto em htdocs (c:/xampp/htdocs/GMFUT).
+2) Crie o banco `FUT` e importe sql/schema.sql.
 3) Ajuste backend/config.php com usuário/senha do MySQL local.
-4) Abra http://localhost/GMFBA/public para usar a central do GM ou http://localhost/GMFBA/public/teams.html para ver elencos.
+4) Abra http://localhost/GMFUT/public para usar a central do GM ou http://localhost/GMFUT/public/teams.html para ver elencos.
 
 ## Próximos passos sugeridos
 - Implementar autenticação por sessão/JWT e proteção dos endpoints.
@@ -68,3 +68,4 @@ Campos novos no schema (sql/schema.sql):
 Observações:
 - Em ambiente local, configure `backend/config.php` (copie de `backend/config.sample.php`) antes de rodar migrações ou acessar APIs.
 - Se preferir executar migrações manualmente, rode `php backend/migrations.php` no terminal (requer credenciais válidas no `config.php`).
+

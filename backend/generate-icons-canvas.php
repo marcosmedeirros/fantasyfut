@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 // Gerador de ícones via Canvas (sem GD). Acesse: /backend/generate-icons-canvas.php
-// Gera PNGs com fundo preto a partir de /img/fba-logo.png
+// Gera PNGs com fundo preto a partir de /img/FUT-logo.png
 
 declare(strict_types=1);
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h2>Gerar ícones com fundo preto</h2>
-    <p>Base: /img/logo-fba-preta.jpg. Este gerador aplica fundo preto em todos os tamanhos.</p>
+    <p>Base: /img/logo-FUT-preta.jpg. Este gerador aplica fundo preto em todos os tamanhos.</p>
     <button id="gen">Gerar ícones</button>
     <div id="log" class="log"></div>
 
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         async function generate() {
             logEl.textContent = '';
             const img = new Image();
-            img.src = '/img/logo-fba-preta.jpg';
+            img.src = '/img/logo-FUT-preta.jpg';
             await img.decode();
 
             for (const size of sizes) {
@@ -121,3 +121,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
+
+

@@ -878,11 +878,10 @@ function editPlayer(playerId) {
 <div class="col-md-6 mb-3"><label class="form-label text-light-gray">Pos. Secundária</label>
 <select class="form-select bg-dark text-white border-orange" id="editPlayerSecondaryPosition">
 <option value="" ${!p.secondary_position ? 'selected' : ''}>Sem</option>
-<option value="PG" ${p.secondary_position === 'PG' ? 'selected' : ''}>PG</option>
-<option value="SG" ${p.secondary_position === 'SG' ? 'selected' : ''}>SG</option>
-<option value="SF" ${p.secondary_position === 'SF' ? 'selected' : ''}>SF</option>
-<option value="PF" ${p.secondary_position === 'PF' ? 'selected' : ''}>PF</option>
-<option value="C" ${p.secondary_position === 'C' ? 'selected' : ''}>C</option>
+<option value="GK" ${p.secondary_position === 'GK' ? 'selected' : ''}>Goleiro</option>
+<option value="DEF" ${p.secondary_position === 'DEF' ? 'selected' : ''}>Defensor</option>
+<option value="MID" ${p.secondary_position === 'MID' ? 'selected' : ''}>Meio</option>
+<option value="ATT" ${p.secondary_position === 'ATT' ? 'selected' : ''}>Atacante</option>
 </select></div>
 <div class="col-md-6 mb-3"><label class="form-label text-light-gray">Idade</label>
 <input type="number" class="form-control bg-dark text-white border-orange" id="editPlayerAge" value="${p.age || ''}" min="16" max="60"></div>
@@ -975,20 +974,18 @@ function addPlayer(teamId) {
 <div class="row">
 <div class="col-md-6 mb-3"><label class="form-label text-light-gray">Posição</label>
 <select class="form-select bg-dark text-white border-orange" id="addPlayerPosition">
-<option value="PG">PG</option>
-<option value="SG">SG</option>
-<option value="SF">SF</option>
-<option value="PF">PF</option>
-<option value="C">C</option>
+<option value="GK">Goleiro</option>
+<option value="DEF">Defensor</option>
+<option value="MID">Meio</option>
+<option value="ATT">Atacante</option>
 </select></div>
 <div class="col-md-6 mb-3"><label class="form-label text-light-gray">Pos. Secundária</label>
 <select class="form-select bg-dark text-white border-orange" id="addPlayerSecondaryPosition">
 <option value="">Nenhuma</option>
-<option value="PG">PG</option>
-<option value="SG">SG</option>
-<option value="SF">SF</option>
-<option value="PF">PF</option>
-<option value="C">C</option>
+<option value="GK">Goleiro</option>
+<option value="DEF">Defensor</option>
+<option value="MID">Meio</option>
+<option value="ATT">Atacante</option>
 </select></div>
 </div>
 <div class="row">
@@ -2351,22 +2348,20 @@ function openCreateFreeAgentModal() {
             <div class="col-md-6">
               <label class="form-label text-light-gray">Posição</label>
               <select class="form-select bg-dark text-white border-orange" id="faPosition">
-                <option value="PG">PG - Armador</option>
-                <option value="SG">SG - Ala-Armador</option>
-                <option value="SF">SF - Ala</option>
-                <option value="PF">PF - Ala-Pivô</option>
-                <option value="C">C - Pivô</option>
+                <option value="GK">Goleiro</option>
+                <option value="DEF">Defensor</option>
+                <option value="MID">Meio-campista</option>
+                <option value="ATT">Atacante</option>
               </select>
             </div>
             <div class="col-md-6">
               <label class="form-label text-light-gray">Posição Secundária</label>
               <select class="form-select bg-dark text-white border-orange" id="faSecondary">
                 <option value="">Nenhuma</option>
-                <option value="PG">PG - Armador</option>
-                <option value="SG">SG - Ala-Armador</option>
-                <option value="SF">SF - Ala</option>
-                <option value="PF">PF - Ala-Pivô</option>
-                <option value="C">C - Pivô</option>
+                <option value="GK">Goleiro</option>
+                <option value="DEF">Defensor</option>
+                <option value="MID">Meio-campista</option>
+                <option value="ATT">Atacante</option>
               </select>
             </div>
           </div>

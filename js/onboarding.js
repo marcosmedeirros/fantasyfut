@@ -56,8 +56,8 @@ async function saveTeamAndFinish() {
         photo_url: teamPhotoFile ? await convertToBase64(teamPhotoFile) : null
     };
     
-    if (!data.name || !data.city || !data.conference) {
-        alert('Por favor, preencha nome, cidade e conferência do time.');
+    if (!data.name || !data.conference) {
+        alert('Por favor, preencha nome e conferência do time.');
         return;
     }
     

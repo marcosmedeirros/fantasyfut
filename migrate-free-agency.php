@@ -1,13 +1,13 @@
-<?php
+﻿<?php
 /**
- * Migração para criar sistema de Free Agency
+ * Migra��o para criar sistema de Free Agency
  */
 
 require_once __DIR__ . '/backend/db.php';
 
 $pdo = db();
 
-echo "=== Migração de Free Agency ===\n\n";
+echo "=== Migra��o de Free Agency ===\n\n";
 
 // Criar tabela free_agents
 try {
@@ -31,12 +31,12 @@ try {
                 INDEX idx_fa_season (season_id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
         ");
-        echo "✓ Tabela free_agents criada!\n";
+        echo "? Tabela free_agents criada!\n";
     } else {
-        echo "✓ Tabela free_agents já existe.\n";
+        echo "? Tabela free_agents j� existe.\n";
     }
 } catch (Exception $e) {
-    echo "✗ Erro ao criar tabela free_agents: " . $e->getMessage() . "\n";
+    echo "? Erro ao criar tabela free_agents: " . $e->getMessage() . "\n";
 }
 
 // Criar tabela free_agent_offers
@@ -60,12 +60,12 @@ try {
                 INDEX idx_fao_team (team_id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
         ");
-        echo "✓ Tabela free_agent_offers criada!\n";
+        echo "? Tabela free_agent_offers criada!\n";
     } else {
-        echo "✓ Tabela free_agent_offers já existe.\n";
+        echo "? Tabela free_agent_offers j� existe.\n";
     }
 } catch (Exception $e) {
-    echo "✗ Erro ao criar tabela free_agent_offers: " . $e->getMessage() . "\n";
+    echo "? Erro ao criar tabela free_agent_offers: " . $e->getMessage() . "\n";
 }
 
 try {
@@ -73,7 +73,7 @@ try {
     if ($checkCol->rowCount() === 0) {
         echo "Adicionando coluna amount em free_agent_offers...\n";
         $pdo->exec("ALTER TABLE free_agent_offers ADD COLUMN amount INT NOT NULL DEFAULT 0 AFTER team_id");
-        echo "✓ Coluna amount adicionada!\n";
+        echo "? Coluna amount adicionada!\n";
     }
 } catch (Exception $e) {
     echo "Aviso: " . $e->getMessage() . "\n";
@@ -87,9 +87,9 @@ try {
     if ($checkCol->rowCount() === 0) {
         echo "Adicionando coluna waivers_used...\n";
         $pdo->exec("ALTER TABLE teams ADD COLUMN waivers_used INT DEFAULT 0");
-        echo "✓ Coluna waivers_used adicionada!\n";
+        echo "? Coluna waivers_used adicionada!\n";
     } else {
-        echo "✓ Coluna waivers_used já existe.\n";
+        echo "? Coluna waivers_used j� existe.\n";
     }
 } catch (Exception $e) {
     echo "Aviso: " . $e->getMessage() . "\n";
@@ -100,19 +100,20 @@ try {
     if ($checkCol->rowCount() === 0) {
         echo "Adicionando coluna fa_signings_used...\n";
         $pdo->exec("ALTER TABLE teams ADD COLUMN fa_signings_used INT DEFAULT 0");
-        echo "✓ Coluna fa_signings_used adicionada!\n";
+        echo "? Coluna fa_signings_used adicionada!\n";
     } else {
-        echo "✓ Coluna fa_signings_used já existe.\n";
+        echo "? Coluna fa_signings_used j� existe.\n";
     }
 } catch (Exception $e) {
     echo "Aviso: " . $e->getMessage() . "\n";
 }
 
-echo "\n=== Migração concluída! ===\n";
-echo "\nAgora você pode usar o sistema de Free Agency:\n";
-echo "- Jogadores podem dispensar até 3 jogadores por temporada\n";
-echo "- Jogadores dispensados vão para Free Agency\n";
-echo "- Times podem enviar propostas para contratá-los\n";
+echo "\n=== Migra��o conclu�da! ===\n";
+echo "\nAgora voc� pode usar o sistema de Free Agency:\n";
+echo "- Jogadores podem dispensar at� 3 jogadores por temporada\n";
+echo "- Jogadores dispensados v�o para Free Agency\n";
+echo "- Times podem enviar propostas para contrat�-los\n";
 echo "- Admin decide qual time contrata cada jogador\n";
-echo "- Cada time pode contratar até 3 jogadores via FA\n";
-echo "- O botão Resetar limpa tudo (free agents + contadores)\n";
+echo "- Cada time pode contratar at� 3 jogadores via FA\n";
+echo "- O bot�o Resetar limpa tudo (free agents + contadores)\n";
+

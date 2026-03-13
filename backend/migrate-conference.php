@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/db.php';
 
 $pdo = db();
@@ -15,10 +15,11 @@ try {
         $pdo->exec("ALTER TABLE teams ADD INDEX idx_team_conference (conference)");
         echo "[OK] Coluna 'conference' adicionada em 'teams'.\n";
     } else {
-        echo "[SKIP] Coluna 'conference' já existe em 'teams'.\n";
+        echo "[SKIP] Coluna 'conference' j� existe em 'teams'.\n";
     }
-    echo "Migração concluída.";
+    echo "Migra��o conclu�da.";
 } catch (Throwable $e) {
     http_response_code(500);
-    echo "Erro na migração: " . $e->getMessage();
+    echo "Erro na migra��o: " . $e->getMessage();
 }
+

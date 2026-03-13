@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -22,10 +22,10 @@ $team = $stmtTeam->fetch();
   <meta name="theme-color" content="#fc0025">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="/manifest.json?v=3">
-  <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+  <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
   <title>Admin - Ligas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@ $team = $stmtTeam->fetch();
       <h5 class="text-white mb-1"><?= $team ? htmlspecialchars($team['city'] . ' ' . $team['name']) : 'Admin' ?></h5>
       <span class="badge bg-gradient-orange"><?= $team ? htmlspecialchars($team['league']) : 'Painel' ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -72,7 +72,7 @@ $team = $stmtTeam->fetch();
       <li><a href="/temporadas.php"><i class="bi bi-calendar3"></i>Temporadas</a></li>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -135,3 +135,5 @@ $team = $stmtTeam->fetch();
   <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

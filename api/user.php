@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
@@ -9,14 +9,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
     $user = getUserSession();
-    if (!$user) jsonResponse(401, ['error' => 'Não autenticado']);
+    if (!$user) jsonResponse(401, ['error' => 'N�o autenticado']);
     $user['phone_display'] = formatBrazilianPhone($user['phone'] ?? '');
     jsonResponse(200, ['user' => $user]);
 }
 
 if ($method === 'POST') {
     $user = getUserSession();
-    if (!$user) jsonResponse(401, ['error' => 'Não autenticado']);
+    if (!$user) jsonResponse(401, ['error' => 'N�o autenticado']);
 
     $body = readJsonBody();
     $name = trim($body['name'] ?? $user['name']);
@@ -25,15 +25,15 @@ if ($method === 'POST') {
     $phone = normalizeBrazilianPhone($phoneRaw);
 
     if ($name === '') {
-        jsonResponse(422, ['error' => 'Nome é obrigatório.']);
+        jsonResponse(422, ['error' => 'Nome � obrigat�rio.']);
     }
 
     if ($phoneRaw === '') {
-        jsonResponse(422, ['error' => 'Telefone é obrigatório.']);
+        jsonResponse(422, ['error' => 'Telefone � obrigat�rio.']);
     }
 
     if (!$phone) {
-        jsonResponse(422, ['error' => 'Telefone inválido. Informe DDD brasileiro ou código do país (apenas números).']);
+        jsonResponse(422, ['error' => 'Telefone inv�lido. Informe DDD brasileiro ou c�digo do pa�s (apenas n�meros).']);
     }
 
     // Salvar foto se vier como data URL
@@ -64,14 +64,14 @@ if ($method === 'POST') {
             $photoUrl = '';
         }
     } else {
-        // Se não foi enviada nova foto, manter a atual
+        // Se n�o foi enviada nova foto, manter a atual
         $photoUrl = ($photoUrl !== '') ? $photoUrl : ($user['photo_url'] ?? null);
     }
 
     $stmt = $pdo->prepare('UPDATE users SET name = ?, photo_url = ?, phone = ? WHERE id = ?');
     $stmt->execute([$name, $photoUrl ?: null, $phone, $user['id']]);
 
-    // Atualizar sessão
+    // Atualizar sess�o
     $updated = $user;
     $updated['name'] = $name;
     $updated['photo_url'] = $photoUrl ?: $user['photo_url'] ?? null;
@@ -82,3 +82,4 @@ if ($method === 'POST') {
 }
 
 jsonResponse(405, ['error' => 'Method not allowed']);
+

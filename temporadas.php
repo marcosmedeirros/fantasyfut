@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once 'backend/auth.php';
 require_once 'backend/db.php';
@@ -27,14 +27,14 @@ if (!$team) {
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Temporadas - GM FBA</title>
+  <title>Temporadas - GM FUT</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0a0a0c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
   <link rel="apple-touch-icon" href="/img/icon-192.png">
   
   <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
@@ -56,7 +56,7 @@ if (!$team) {
       <h6 class="text-white mb-1"><?= htmlspecialchars($team['name']) ?></h6>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($team['league']) ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -73,7 +73,7 @@ if (!$team) {
       <li><a href="/temporadas.php" class="active"><i class="bi bi-calendar3"></i>Temporadas</a></li>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -816,22 +816,20 @@ if (!$team) {
                     <label class="form-label text-white">Posição</label>
                     <select class="form-select bg-dark text-white border-orange" name="position" required>
                       <option value="">Selecione...</option>
-                      <option value="PG">PG - Armador</option>
-                      <option value="SG">SG - Ala-Armador</option>
-                      <option value="SF">SF - Ala</option>
-                      <option value="PF">PF - Ala-Pivô</option>
-                      <option value="C">C - Pivô</option>
+                      <option value="GK">GK - Goleiro</option>
+                      <option value="DEF">DEF - Defensor</option>
+                      <option value="MID">MID - Meio</option>
+                      <option value="ATT">ATT - Atacante</option>
                     </select>
                   </div>
                     <div class="mb-3">
                       <label class="form-label text-white">Posição Secundária</label>
                       <select class="form-select bg-dark text-white border-orange" name="secondary_position">
                         <option value="">Nenhuma</option>
-                        <option value="PG">PG - Armador</option>
-                        <option value="SG">SG - Ala-Armador</option>
-                        <option value="SF">SF - Ala</option>
-                        <option value="PF">PF - Ala-Pivô</option>
-                        <option value="C">C - Pivô</option>
+                        <option value="GK">GK - Goleiro</option>
+                        <option value="DEF">DEF - Defensor</option>
+                        <option value="MID">MID - Meio</option>
+                        <option value="ATT">ATT - Atacante</option>
                       </select>
                     </div>
                   <div class="mb-3">
@@ -913,8 +911,8 @@ if (!$team) {
                     </p>
                     <div class="bg-dark rounded p-2 mb-2">
                       <code class="text-white small" style="display: block; white-space: pre;">nome,posicao,idade,ovr
-LeBron James,SF,39,96
-Stephen Curry,PG,35,95</code>
+Neymar Jr.,ATT,32,92
+Kevin De Bruyne,MID,32,91</code>
                     </div>
                     <button class="btn btn-sm btn-outline-orange" onclick="downloadCSVTemplate()">
                       <i class="bi bi-download me-1"></i>Baixar Template
@@ -2739,3 +2737,5 @@ Stephen Curry,PG,35,95</code>
   </script>
 </body>
 </html>
+
+

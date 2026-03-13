@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
@@ -15,7 +15,7 @@ if ($method === 'GET') {
     $draftId = $_GET['draft_id'] ?? null;
 
     if ($draftId) {
-        // Obter jogadores de um draft específico
+        // Obter jogadores de um draft espec�fico
         $stmt = $pdo->prepare("SELECT * FROM draft_players WHERE draft_id = ? ORDER BY id");
         $stmt->execute([$draftId]);
         $players = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +35,7 @@ elseif ($method === 'POST') {
 
     if (!$year) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Ano do draft é obrigatório']);
+        echo json_encode(['success' => false, 'error' => 'Ano do draft � obrigat�rio']);
         exit;
     }
 
@@ -47,7 +47,7 @@ elseif ($method === 'POST') {
     } catch (PDOException $e) {
         if (strpos($e->getMessage(), 'Duplicate') !== false) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Draft deste ano já existe']);
+            echo json_encode(['success' => false, 'error' => 'Draft deste ano j� existe']);
         } else {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => 'Erro ao criar draft']);
@@ -59,7 +59,7 @@ elseif ($method === 'DELETE') {
 
     if (!$draftId) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'ID do draft é obrigatório']);
+        echo json_encode(['success' => false, 'error' => 'ID do draft � obrigat�rio']);
         exit;
     }
 
@@ -74,5 +74,6 @@ elseif ($method === 'DELETE') {
 }
 else {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+    echo json_encode(['success' => false, 'error' => 'M�todo n�o permitido']);
 }
+

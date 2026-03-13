@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
- * Migração - Sistema de Draft
- * Cria as tabelas necessárias para o novo sistema de draft
+ * Migra��o - Sistema de Draft
+ * Cria as tabelas necess�rias para o novo sistema de draft
  */
 
 require_once __DIR__ . '/backend/db.php';
@@ -9,7 +9,7 @@ require_once __DIR__ . '/backend/db.php';
 $pdo = db();
 
 try {
-    echo "Iniciando migração do sistema de draft...\n\n";
+    echo "Iniciando migra��o do sistema de draft...\n\n";
     
     // 1. Criar tabela draft_sessions
     echo "1. Criando tabela draft_sessions...\n";
@@ -32,7 +32,7 @@ try {
             FOREIGN KEY (season_id) REFERENCES seasons(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     ");
-    echo "   ✓ Tabela draft_sessions criada\n";
+    echo "   ? Tabela draft_sessions criada\n";
     
     // 2. Criar tabela draft_order
     echo "\n2. Criando tabela draft_order...\n";
@@ -42,7 +42,7 @@ try {
             draft_session_id INT NOT NULL,
             team_id INT NOT NULL COMMENT 'Time atual dono da pick',
             original_team_id INT NOT NULL COMMENT 'Time original da pick',
-            pick_position INT NOT NULL COMMENT 'Posição na rodada',
+            pick_position INT NOT NULL COMMENT 'Posi��o na rodada',
             round INT NOT NULL DEFAULT 1,
             traded_from_team_id INT NULL COMMENT 'De quem a pick foi adquirida (se foi trocada)',
             picked_player_id INT NULL COMMENT 'ID do jogador escolhido',
@@ -59,9 +59,9 @@ try {
             FOREIGN KEY (picked_player_id) REFERENCES draft_pool(id) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     ");
-    echo "   ✓ Tabela draft_order criada\n";
+    echo "   ? Tabela draft_order criada\n";
     
-    // 3. Verificar se draft_pool existe e adicionar colunas se necessário
+    // 3. Verificar se draft_pool existe e adicionar colunas se necess�rio
     echo "\n3. Verificando tabela draft_pool...\n";
     
     $columns = $pdo->query("SHOW COLUMNS FROM draft_pool")->fetchAll(PDO::FETCH_COLUMN);
@@ -69,23 +69,24 @@ try {
     if (!in_array('drafted_by_team_id', $columns)) {
         $pdo->exec("ALTER TABLE draft_pool ADD COLUMN drafted_by_team_id INT NULL");
         $pdo->exec("ALTER TABLE draft_pool ADD CONSTRAINT fk_draft_pool_team FOREIGN KEY (drafted_by_team_id) REFERENCES teams(id) ON DELETE SET NULL");
-        echo "   ✓ Coluna drafted_by_team_id adicionada\n";
+        echo "   ? Coluna drafted_by_team_id adicionada\n";
     } else {
-        echo "   - Coluna drafted_by_team_id já existe\n";
+        echo "   - Coluna drafted_by_team_id j� existe\n";
     }
     
     if (!in_array('draft_order', $columns)) {
         $pdo->exec("ALTER TABLE draft_pool ADD COLUMN draft_order INT NULL");
-        echo "   ✓ Coluna draft_order adicionada\n";
+        echo "   ? Coluna draft_order adicionada\n";
     } else {
-        echo "   - Coluna draft_order já existe\n";
+        echo "   - Coluna draft_order j� existe\n";
     }
     
     echo "\n========================================\n";
-    echo "✅ Migração concluída com sucesso!\n";
+    echo "? Migra��o conclu�da com sucesso!\n";
     echo "========================================\n";
     
 } catch (PDOException $e) {
-    echo "\n❌ ERRO: " . $e->getMessage() . "\n";
+    echo "\n? ERRO: " . $e->getMessage() . "\n";
     exit(1);
 }
+

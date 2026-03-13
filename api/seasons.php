@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -15,13 +15,13 @@ function columnExists(PDO $pdo, string $table, string $column): bool
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autenticado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autenticado']);
     exit;
 }
 
-// Libera o lock da sessão imediatamente após ler os dados do usuário.
-// Isso evita bloqueios quando múltiplas requisições são feitas em paralelo
-// (ex.: salvar histórico e, em seguida, carregar o histórico na aba).
+// Libera o lock da sess�o imediatamente ap�s ler os dados do usu�rio.
+// Isso evita bloqueios quando m�ltiplas requisi��es s�o feitas em paralelo
+// (ex.: salvar hist�rico e, em seguida, carregar o hist�rico na aba).
 if (session_status() === PHP_SESSION_ACTIVE) {
     session_write_close();
 }
@@ -77,7 +77,7 @@ function resolveSeasonYear(PDO $pdo, string $league): int {
             $yearCandidate = max($yearCandidate, $maxLeagueYear + 1);
         }
 
-        // Garantir que não exista conflito com combinação liga+ano, mesmo sem índice único
+        // Garantir que n�o exista conflito com combina��o liga+ano, mesmo sem �ndice �nico
         $stmtExists = $pdo->prepare('SELECT COUNT(*) FROM seasons WHERE league = ? AND year = ?');
         while (true) {
             $stmtExists->execute([$league, $yearCandidate]);
@@ -89,7 +89,7 @@ function resolveSeasonYear(PDO $pdo, string $league): int {
 
         return $yearCandidate;
     } catch (Exception $ignored) {
-        // Mantém ano atual se não for possível inspecionar os índices
+        // Mant�m ano atual se n�o for poss�vel inspecionar os �ndices
     }
 
     return $currentYear;
@@ -150,7 +150,7 @@ function getPickWindowYears(int $startYear, int $seasonNumber, int $maxSeasons, 
     $windowEnd = $windowStart + $horizon - 1;
 
     if ($maxSeasons > 0) {
-        // O último ano do sprint não pode ter pick, então vai até um ano antes do fim
+        // O �ltimo ano do sprint n�o pode ter pick, ent�o vai at� um ano antes do fim
         $endYear = $startYear + $maxSeasons - 1;
         $lastPickYear = $endYear - 1;
 
@@ -277,7 +277,7 @@ $pdo = db();
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Garante que a tabela de configuração esteja com os valores atualizados
+// Garante que a tabela de configura��o esteja com os valores atualizados
 ensureLeagueSprintDefaults($pdo);
 
 // ==================== ADMIN ONLY ACTIONS ====================
@@ -294,9 +294,9 @@ if (in_array($action, $adminActions) && ($user['user_type'] ?? 'jogador') !== 'a
 
 try {
     switch ($action) {
-        // ========== DEFINIR CLASSIFICAÇÃO (STANDINGS) E PONTOS DA TEMPORADA REGULAR ==========
+        // ========== DEFINIR CLASSIFICA��O (STANDINGS) E PONTOS DA TEMPORADA REGULAR ==========
         case 'set_standings':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
 
             // Somente admin
             if (($user['user_type'] ?? 'jogador') !== 'admin') {
@@ -309,14 +309,14 @@ try {
             $seasonId = isset($input['season_id']) ? (int)$input['season_id'] : null;
             $standings = isset($input['standings']) && is_array($input['standings']) ? $input['standings'] : [];
 
-            if (!$seasonId) throw new Exception('season_id é obrigatório');
-            if (empty($standings)) throw new Exception('standings (array) é obrigatório');
+            if (!$seasonId) throw new Exception('season_id � obrigat�rio');
+            if (empty($standings)) throw new Exception('standings (array) � obrigat�rio');
 
             // Buscar liga da temporada
             $stmtSeason = $pdo->prepare("SELECT league FROM seasons WHERE id = ?");
             $stmtSeason->execute([$seasonId]);
             $seasonRow = $stmtSeason->fetch(PDO::FETCH_ASSOC);
-            if (!$seasonRow) throw new Exception('Temporada não encontrada');
+            if (!$seasonRow) throw new Exception('Temporada n�o encontrada');
             $league = $seasonRow['league'];
 
             // Garantir tabela season_standings
@@ -337,8 +337,8 @@ try {
                 // Limpar standings anteriores desta temporada
                 $pdo->prepare('DELETE FROM season_standings WHERE season_id = ?')->execute([$seasonId]);
 
-                // Mapa de pontos por posição
-                // 1º: 4, 2º-4º: 3, 5º-8º: 2
+                // Mapa de pontos por posi��o
+                // 1�: 4, 2�-4�: 3, 5�-8�: 2
                 $pointsByPosition = function (int $pos): int {
                     if ($pos === 1) return 4;
                     if ($pos >= 2 && $pos <= 4) return 3;
@@ -386,14 +386,14 @@ try {
         // ========== MOEDAS POR TEMPORADA ==========
         case 'season_coins':
             $seasonId = $_GET['season_id'] ?? null;
-            if (!$seasonId) throw new Exception('Season ID não especificado');
+            if (!$seasonId) throw new Exception('Season ID n�o especificado');
 
             if ($method === 'GET') {
                 // Buscar times da temporada
                 $stmt = $pdo->prepare('SELECT league FROM seasons WHERE id = ?');
                 $stmt->execute([$seasonId]);
                 $season = $stmt->fetch();
-                if (!$season) throw new Exception('Temporada não encontrada');
+                if (!$season) throw new Exception('Temporada n�o encontrada');
                 $league = $season['league'];
 
                 $stmtTeams = $pdo->prepare('SELECT id, city, name, moedas FROM teams WHERE league = ? ORDER BY city, name');
@@ -412,7 +412,7 @@ try {
                 }
                 $data = json_decode(file_get_contents('php://input'), true);
                 $updates = $data['updates'] ?? [];
-                if (!is_array($updates) || empty($updates)) throw new Exception('Nenhuma atualização enviada');
+                if (!is_array($updates) || empty($updates)) throw new Exception('Nenhuma atualiza��o enviada');
 
                 $pdo->beginTransaction();
                 try {
@@ -431,13 +431,13 @@ try {
                 echo json_encode(['success' => true, 'message' => 'Moedas atualizadas']);
                 break;
             }
-            throw new Exception('Método não suportado');
+            throw new Exception('M�todo n�o suportado');
 
         // ========== BUSCAR TEMPORADA ATUAL ==========
         case 'current_season':
             $league = $_GET['league'] ?? null;
             if (!$league) {
-                throw new Exception('Liga não especificada');
+                throw new Exception('Liga n�o especificada');
             }
             
             $stmt = $pdo->prepare("
@@ -451,7 +451,7 @@ try {
                 ORDER BY s.id DESC LIMIT 1
             ");
 
-            // Substituir por UPSERT para mesclar com pontos da temporada regular (se já existirem)
+            // Substituir por UPSERT para mesclar com pontos da temporada regular (se j� existirem)
             $stmtInsertRanking = $pdo->prepare("
                 INSERT INTO team_ranking_points 
                 (team_id, season_id, league, 
@@ -499,13 +499,13 @@ try {
 
         // ========== CRIAR NOVA TEMPORADA (ADMIN) ==========
         case 'create_season':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $data = json_decode(file_get_contents('php://input'), true);
             $league = isset($data['league']) ? strtoupper($data['league']) : null;
             
             if (!$league || !in_array($league, ['ELITE', 'NEXT', 'RISE', 'ROOKIE'])) {
-                throw new Exception('Liga inválida');
+                throw new Exception('Liga inv�lida');
             }
             
             $pdo->beginTransaction();
@@ -565,7 +565,7 @@ try {
             $maxSeasons = $stmtConfig->fetch()['max_seasons'];
             
             if ($seasonCount >= $maxSeasons) {
-                throw new Exception("Sprint já completou o máximo de {$maxSeasons} temporadas. Inicie um novo sprint.");
+                throw new Exception("Sprint j� completou o m�ximo de {$maxSeasons} temporadas. Inicie um novo sprint.");
             }
             
             // Criar nova temporada
@@ -573,13 +573,13 @@ try {
             $year = calculateSeasonYear($startYear, $seasonNumber);
 
             if ($requestedYear > 0 && $requestedYear !== $year) {
-                throw new Exception("O ano informado ({$requestedYear}) não bate com o ano esperado para esta sprint ({$year}). Ajuste o ano inicial do sprint se necessário.");
+                throw new Exception("O ano informado ({$requestedYear}) n�o bate com o ano esperado para esta sprint ({$year}). Ajuste o ano inicial do sprint se necess�rio.");
             }
 
             $stmtVerify = $pdo->prepare("SELECT COUNT(*) FROM seasons WHERE league = ? AND year = ?");
             $stmtVerify->execute([$league, $year]);
             if ((int)$stmtVerify->fetchColumn() > 0) {
-                throw new Exception("Já existe uma temporada registrada para o ano {$year} na liga {$league}.");
+                throw new Exception("J� existe uma temporada registrada para o ano {$year} na liga {$league}.");
             }
             
             $stmtSeason = $pdo->prepare("
@@ -594,13 +594,13 @@ try {
                 ? syncAutoGeneratedPicks($pdo, $league, $teams, $seasonId, getPickWindowYears($startYear, $seasonNumber, (int)$maxSeasons))
                 : ['created' => 0, 'renamed' => 0, 'deleted' => 0, 'kept' => 0];
 
-            // Resetar moedas e contadores de FA (dispensas/contratações) da liga ao avançar temporada
+            // Resetar moedas e contadores de FA (dispensas/contrata��es) da liga ao avan�ar temporada
             $pdo->prepare("UPDATE teams SET moedas = 0 WHERE league = ?")->execute([$league]);
-            // Zera dispensas e contratações a cada temporada
+            // Zera dispensas e contrata��es a cada temporada
             try {
                 $pdo->prepare("UPDATE teams SET waivers_used = 0, fa_signings_used = 0 WHERE league = ?")->execute([$league]);
             } catch (Exception $e) {
-                // Colunas podem não existir em instalações antigas; ignorar silenciosamente
+                // Colunas podem n�o existir em instala��es antigas; ignorar silenciosamente
             }
 
             // Zerar (resetar) o ciclo de trades a cada 2 temporadas
@@ -619,7 +619,7 @@ try {
                 $pdo->prepare("UPDATE teams SET trades_used = 0, trades_cycle = ? WHERE league = ? AND trades_cycle <> ?")
                     ->execute([$tradeCycle, $league, $tradeCycle]);
             } catch (Exception $e) {
-                // Se a coluna current_cycle/trades_* não existir, ignorar
+                // Se a coluna current_cycle/trades_* n�o existir, ignorar
             }
 
             $pdo->commit();
@@ -633,7 +633,7 @@ try {
 
         // ========== AJUSTAR PICKS DO SPRINT (ADMIN) ==========
         case 'adjust_picks':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
 
             $data = json_decode(file_get_contents('php://input'), true);
             $league = isset($data['league']) ? strtoupper($data['league']) : null;
@@ -641,7 +641,7 @@ try {
             $requestedStartYear = isset($data['start_year']) ? (int)$data['start_year'] : 0;
 
             if (!$league) {
-                throw new Exception('Liga não especificada');
+                throw new Exception('Liga n�o especificada');
             }
 
             $whereClause = $seasonId ? "s.id = ?" : "s.league = ? AND s.status != 'completed'";
@@ -659,11 +659,11 @@ try {
             $season = $stmtSeason->fetch(PDO::FETCH_ASSOC);
 
             if (!$season) {
-                throw new Exception('Temporada não encontrada para ajustar picks.');
+                throw new Exception('Temporada n�o encontrada para ajustar picks.');
             }
 
             if (!empty($season['league']) && strtoupper($season['league']) !== strtoupper($league)) {
-                throw new Exception('A temporada informada não pertence à liga selecionada.');
+                throw new Exception('A temporada informada n�o pertence � liga selecionada.');
             }
 
             $startYear = ensureSprintStartYear(
@@ -693,7 +693,7 @@ try {
         // ========== BUSCAR JOGADORES DO DRAFT ==========
         case 'draft_players':
             $seasonId = $_GET['season_id'] ?? null;
-            if (!$seasonId) throw new Exception('Season ID não especificado');
+            if (!$seasonId) throw new Exception('Season ID n�o especificado');
             
             $stmt = $pdo->prepare("
                 SELECT 
@@ -712,7 +712,7 @@ try {
 
         // ========== ADICIONAR JOGADOR NO DRAFT POOL (ADMIN) ==========
         case 'add_draft_player':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $data = json_decode(file_get_contents('php://input'), true);
             
@@ -738,17 +738,17 @@ try {
 
             // ========== ATRIBUIR JOGADOR DRAFTADO A UM TIME (ADMIN) ==========
             case 'assign_draft_pick':
-                if ($method !== 'POST') throw new Exception('Método inválido');
+                if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
                 $data = json_decode(file_get_contents('php://input'), true);
             
                 if (!isset($data['team_id']) || !isset($data['player_id'])) {
-                    throw new Exception('team_id e player_id são obrigatórios');
+                    throw new Exception('team_id e player_id s�o obrigat�rios');
                 }
             
                 $pdo->beginTransaction();
             
-                // Buscar próximo draft_order
+                // Buscar pr�ximo draft_order
                 $stmtOrder = $pdo->prepare("SELECT COALESCE(MAX(draft_order), 0) + 1 as next_order FROM draft_pool WHERE draft_status = 'drafted'");
                 $stmtOrder->execute();
                 $nextOrder = $stmtOrder->fetch()['next_order'];
@@ -782,17 +782,17 @@ try {
             
                 echo json_encode(['success' => true]);
                 break;
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $data = json_decode(file_get_contents('php://input'), true);
             
             if (!isset($data['team_id']) || !isset($data['player_id'])) {
-                throw new Exception('team_id e player_id são obrigatórios');
+                throw new Exception('team_id e player_id s�o obrigat�rios');
             }
             
             $pdo->beginTransaction();
             
-            // Buscar próximo draft_order
+            // Buscar pr�ximo draft_order
             $stmtOrder = $pdo->prepare("SELECT COALESCE(MAX(draft_order), 0) + 1 as next_order FROM draft_pool WHERE draft_status = 'drafted'");
             $stmtOrder->execute();
             $nextOrder = $stmtOrder->fetch()['next_order'];
@@ -835,11 +835,11 @@ try {
                 $payload = json_decode(file_get_contents('php://input'), true);
                 $playerId = isset($payload['player_id']) ? (int)$payload['player_id'] : 0;
             } else {
-                throw new Exception('Método inválido');
+                throw new Exception('M�todo inv�lido');
             }
 
             if (!$playerId) {
-                throw new Exception('player_id é obrigatório');
+                throw new Exception('player_id � obrigat�rio');
             }
 
             $stmtDelete = $pdo->prepare('DELETE FROM draft_pool WHERE id = ?');
@@ -859,7 +859,7 @@ try {
         // ========== BUSCAR RANKING POR LIGA ==========
         case 'league_ranking':
             $league = $_GET['league'] ?? null;
-            if (!$league) throw new Exception('Liga não especificada');
+            if (!$league) throw new Exception('Liga n�o especificada');
             
             $stmt = $pdo->prepare("SELECT * FROM vw_league_ranking WHERE league = ?");
             $stmt->execute([$league]);
@@ -868,7 +868,7 @@ try {
             echo json_encode(['success' => true, 'ranking' => $ranking]);
             break;
 
-        // ========== HISTÓRICO DE CAMPEÕES ==========
+        // ========== HIST�RICO DE CAMPE�ES ==========
         case 'champions_history':
             $league = $_GET['league'] ?? null;
             $where = $league ? "WHERE league = ?" : "";
@@ -881,7 +881,7 @@ try {
             echo json_encode(['success' => true, 'history' => $history]);
             break;
 
-        // ========== HISTÓRICO COMPLETO COM PRÊMIOS ==========
+        // ========== HIST�RICO COMPLETO COM PR�MIOS ==========
         case 'full_history':
             $league = $_GET['league'] ?? null;
             
@@ -910,7 +910,7 @@ try {
                     'awards' => []
                 ];
                 
-                // Buscar campeão e vice
+                // Buscar campe�o e vice
                 $stmtPlayoffs = $pdo->prepare("
                     SELECT pr.position, t.id as team_id, t.city, t.name as team_name
                     FROM playoff_results pr
@@ -928,7 +928,7 @@ try {
                     }
                 }
                 
-                // Buscar prêmios individuais
+                // Buscar pr�mios individuais
                 $stmtAwards = $pdo->prepare("
                     SELECT sa.award_type, sa.player_name, t.id as team_id, t.city, t.name as team_name
                     FROM season_awards sa
@@ -954,9 +954,9 @@ try {
             echo json_encode(['success' => true, 'history' => $result]);
             break;
 
-        // ========== SALVAR HISTÓRICO DA TEMPORADA ==========
+        // ========== SALVAR HIST�RICO DA TEMPORADA ==========
             case 'save_history':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $input = json_decode(file_get_contents('php://input'), true);
             $seasonId = isset($input['season_id']) ? (int)$input['season_id'] : null;
@@ -969,30 +969,30 @@ try {
             $confFinal = isset($input['conference_final_losses']) && is_array($input['conference_final_losses']) ? array_map('intval', array_filter($input['conference_final_losses'])) : [];
             
             if (!$seasonId || !$champion || !$runnerUp) {
-                throw new Exception('Dados incompletos: season_id, champion e runner_up são obrigatórios');
+                throw new Exception('Dados incompletos: season_id, champion e runner_up s�o obrigat�rios');
             }
 
-            // Validar duplicações lógicas
+            // Validar duplica��es l�gicas
             $allEliminated = array_merge($firstRound, $secondRound, $confFinal);
             if (count(array_unique($allEliminated)) !== count($allEliminated)) {
-                throw new Exception('Um time não pode ser marcado em mais de uma fase eliminada');
+                throw new Exception('Um time n�o pode ser marcado em mais de uma fase eliminada');
             }
             if (in_array($champion, $allEliminated) || in_array($runnerUp, $allEliminated)) {
-                throw new Exception('Não inclua campeão ou vice nas fases de eliminados');
+                throw new Exception('N�o inclua campe�o ou vice nas fases de eliminados');
             }
             
             $pdo->beginTransaction();
             
-            // 1. Buscar informações da Liga (necessário para a tabela team_ranking_points)
+            // 1. Buscar informa��es da Liga (necess�rio para a tabela team_ranking_points)
             $stmtSeason = $pdo->prepare("SELECT league FROM seasons WHERE id = ?");
             $stmtSeason->execute([$seasonId]);
             $seasonData = $stmtSeason->fetch();
             
-            if (!$seasonData) throw new Exception('Temporada não encontrada');
+            if (!$seasonData) throw new Exception('Temporada n�o encontrada');
             $league = $seasonData['league'];
 
             // 2. Salvar Tabelas Auxiliares (Playoff Results e Awards)
-            // (Mantemos essa parte pois ela alimenta a exibição visual do histórico)
+            // (Mantemos essa parte pois ela alimenta a exibi��o visual do hist�rico)
             $pdo->prepare("DELETE FROM playoff_results WHERE season_id = ?")->execute([$seasonId]);
             $pdo->prepare("DELETE FROM season_awards WHERE season_id = ?")->execute([$seasonId]);
             
@@ -1003,10 +1003,10 @@ try {
             foreach ($secondRound as $tid) $stmtPlayoff->execute([$seasonId, $tid, 'second_round']);
             foreach ($confFinal as $tid) $stmtPlayoff->execute([$seasonId, $tid, 'conference_final']);
             
-            // Inserir prêmios na tabela auxiliar
+            // Inserir pr�mios na tabela auxiliar
             $stmtAward = $pdo->prepare("INSERT INTO season_awards (season_id, team_id, award_type, player_name) VALUES (?, ?, ?, ?)");
             $awardTypes = ['mvp', 'dpoy', 'mip', 'sixth_man', 'roy'];
-            $awardsMap = []; // Para usar no cálculo de pontos depois
+            $awardsMap = []; // Para usar no c�lculo de pontos depois
             
             foreach ($awardTypes as $type) {
                 $teamKey = $type . '_team_id'; // ex: mvp_team_id
@@ -1018,14 +1018,14 @@ try {
                     if (!isset($awardsMap[$tId])) {
                         $awardsMap[$tId] = 0;
                     }
-                    $awardsMap[$tId]++; // +1 prêmio para este time
+                    $awardsMap[$tId]++; // +1 pr�mio para este time
                 }
             }
 
-            // 3. Pontuação do ranking: removida do fluxo automático.
+            // 3. Pontua��o do ranking: removida do fluxo autom�tico.
             //    Use o endpoint 'set_season_points' para registrar pontos manualmente.
 
-            // Função helper para iniciar o time no array se não existir
+            // Fun��o helper para iniciar o time no array se n�o existir
             $initTeam = function($tId) use (&$teamStats) {
                 if (!isset($teamStats[$tId])) {
                     $teamStats[$tId] = [
@@ -1041,7 +1041,7 @@ try {
                 }
             };
 
-            // Processar Campeão (cumulativo conforme regra: 1ª(1) + 2ª(2) + F.Conf(3) + Vice(2) + Campeão(5) = 13)
+            // Processar Campe�o (cumulativo conforme regra: 1�(1) + 2�(2) + F.Conf(3) + Vice(2) + Campe�o(5) = 13)
             $initTeam($champion);
             $teamStats[$champion]['playoff_champion'] = 1;
             $teamStats[$champion]['playoff_points'] = 13; 
@@ -1051,32 +1051,32 @@ try {
             $teamStats[$runnerUp]['playoff_runner_up'] = 1;
             $teamStats[$runnerUp]['playoff_points'] = 8;
 
-            // Processar Finais de Conferência (6 pontos)
+            // Processar Finais de Confer�ncia (6 pontos)
             foreach ($confFinal as $tid) {
                 $initTeam($tid);
                 $teamStats[$tid]['playoff_conference_finals'] = 1;
                 $teamStats[$tid]['playoff_points'] = 6;
             }
 
-            // Processar 2ª Rodada (3 pontos)
+            // Processar 2� Rodada (3 pontos)
             foreach ($secondRound as $tid) {
                 $initTeam($tid);
                 $teamStats[$tid]['playoff_second_round'] = 1;
                 $teamStats[$tid]['playoff_points'] = 3;
             }
 
-            // Processar 1ª Rodada (1 ponto)
+            // Processar 1� Rodada (1 ponto)
             foreach ($firstRound as $tid) {
                 $initTeam($tid);
                 $teamStats[$tid]['playoff_first_round'] = 1;
                 $teamStats[$tid]['playoff_points'] = 1;
             }
 
-            // Processar Prêmios (1 ponto cada)
+            // Processar Pr�mios (1 ponto cada)
             foreach ($awardsMap as $tid => $count) {
                 $initTeam($tid);
                 $teamStats[$tid]['awards_count'] = $count;
-                $teamStats[$tid]['awards_points'] = $count * 1; // 1 ponto por prêmio
+                $teamStats[$tid]['awards_points'] = $count * 1; // 1 ponto por pr�mio
             }
 
             // Agora fazemos o INSERT final para cada time
@@ -1111,12 +1111,12 @@ try {
             
             $pdo->commit();
             
-                echo json_encode(['success' => true, 'message' => 'Histórico salvo!']);
+                echo json_encode(['success' => true, 'message' => 'Hist�rico salvo!']);
             break;
 
             // ========== DEFINIR PONTOS MANUAIS DA TEMPORADA (ADMIN) ==========
             case 'set_season_points':
-                if ($method !== 'POST') throw new Exception('Método inválido');
+                if ($method !== 'POST') throw new Exception('M�todo inv�lido');
 
                 // Somente admin pode ajustar
                 if (($user['user_type'] ?? 'jogador') !== 'admin') {
@@ -1129,7 +1129,7 @@ try {
                 $seasonId = isset($input['season_id']) ? (int)$input['season_id'] : null;
                 $items = isset($input['items']) && is_array($input['items']) ? $input['items'] : [];
 
-                if (!$seasonId) throw new Exception('season_id é obrigatório');
+                if (!$seasonId) throw new Exception('season_id � obrigat�rio');
 
                 $pdo->beginTransaction();
 
@@ -1153,18 +1153,18 @@ try {
         // ========== RESETAR SPRINT (NOVO CICLO) ==========
         // ========== RESETAR TIMES (MANTER PONTOS DO RANKING) ==========
         case 'reset_teams':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $input = json_decode(file_get_contents('php://input'), true);
             $league = $input['league'] ?? null;
             
             if (!$league) {
-                throw new Exception('Liga não especificada');
+                throw new Exception('Liga n�o especificada');
             }
             
             $pdo->beginTransaction();
             
-            // ATENÇÃO: Isso limpa jogadores, picks, trades e histórico, mas MANTÉM os pontos do ranking!
+            // ATEN��O: Isso limpa jogadores, picks, trades e hist�rico, mas MANT�M os pontos do ranking!
             
             // 1. Deletar picks relacionadas aos times da liga
             $pdo->exec("
@@ -1187,7 +1187,7 @@ try {
                 WHERE t.league = '$league'
             ");
             
-            // 4. Deletar prêmios das temporadas
+            // 4. Deletar pr�mios das temporadas
             $pdo->exec("
                 DELETE sa FROM season_awards sa
                 INNER JOIN seasons s ON sa.season_id = s.id
@@ -1234,7 +1234,7 @@ try {
             // 12. Resetar contadores de waivers/signings dos times
             $pdo->exec("UPDATE teams SET waivers_used = 0, fa_signings_used = 0 WHERE league = '$league'");
             
-            // IMPORTANTE: NÃO deletar team_ranking_points - os pontos são mantidos!
+            // IMPORTANTE: N�O deletar team_ranking_points - os pontos s�o mantidos!
             
             $pdo->commit();
             
@@ -1243,18 +1243,18 @@ try {
 
         // ========== RESETAR SPRINT COMPLETO (DELETA TUDO) ==========
         case 'reset_sprint':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $input = json_decode(file_get_contents('php://input'), true);
             $league = $input['league'] ?? null;
             
             if (!$league) {
-                throw new Exception('Liga não especificada');
+                throw new Exception('Liga n�o especificada');
             }
             
             $pdo->beginTransaction();
             
-            // ATENÇÃO: Isso limpa dados operacionais da liga e também zera pontos/títulos de ranking.
+            // ATEN��O: Isso limpa dados operacionais da liga e tamb�m zera pontos/t�tulos de ranking.
             
             // 1. Deletar picks relacionadas aos times da liga
             $pdo->exec("
@@ -1304,7 +1304,7 @@ try {
             // 8. Resetar tapas dos times
             $pdo->exec("UPDATE teams SET tapas = 0 WHERE league = '$league'");
 
-            // 9. Zerar ranking (pontos e tÃ­tulos) e limpar histÃ³rico detalhado da liga
+            // 9. Zerar ranking (pontos e títulos) e limpar histórico detalhado da liga
             if (columnExists($pdo, 'teams', 'ranking_points')) {
                 $stmtResetPoints = $pdo->prepare("UPDATE teams SET ranking_points = 0 WHERE league = ?");
                 $stmtResetPoints->execute([$league]);
@@ -1324,24 +1324,24 @@ try {
             echo json_encode(['success' => true, 'message' => 'Sprint resetado com sucesso']);
             break;
 
-        // ========== AVANÇAR CICLO DE TRADES (ADMIN) ==========
+        // ========== AVAN�AR CICLO DE TRADES (ADMIN) ==========
         case 'advance_cycle':
-            if ($method !== 'POST') throw new Exception('Método inválido');
+            if ($method !== 'POST') throw new Exception('M�todo inv�lido');
             
             $data = json_decode(file_get_contents('php://input'), true);
             $league = $data['league'] ?? null;
             
-            if (!$league) throw new Exception('Liga não especificada');
+            if (!$league) throw new Exception('Liga n�o especificada');
             
             // Incrementar ciclo de todos os times da liga
             $stmt = $pdo->prepare('UPDATE teams SET current_cycle = current_cycle + 1 WHERE league = ?');
             $stmt->execute([$league]);
             
-            echo json_encode(['success' => true, 'message' => 'Ciclo de trades avançado para todos os times da liga']);
+            echo json_encode(['success' => true, 'message' => 'Ciclo de trades avan�ado para todos os times da liga']);
             break;
 
         default:
-            throw new Exception('Ação inválida');
+            throw new Exception('A��o inv�lida');
     }
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -1350,3 +1350,4 @@ try {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
@@ -43,7 +43,7 @@ function playerOvrColumnForDetails(PDO $pdo): string {
 
 /**
  * Sincroniza contador de trades por time com base em current_cycle/trades_cycle.
- * Retorna o valor atual de trades_used (0 quando reseta ou não encontrado).
+ * Retorna o valor atual de trades_used (0 quando reseta ou n�o encontrado).
  */
 function syncTeamTradeCounterLocal(PDO $pdo, int $teamId): int {
     try {
@@ -77,7 +77,7 @@ if ($method === 'GET') {
     if ($action === 'list_players' || $action === 'search_player') {
         $user = getUserSession();
         if (!$user) {
-            jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+            jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
         }
         $isAdmin = ($user['user_type'] ?? '') === 'admin' || !empty($_SESSION['is_admin']);
         $league = $user['league'] ?? 'ROOKIE';
@@ -173,12 +173,12 @@ if ($method === 'GET') {
     if ($action === 'player_details') {
         $playerId = isset($_GET['player_id']) ? (int)$_GET['player_id'] : 0;
         if ($playerId <= 0) {
-            jsonResponse(400, ['error' => 'player_id é obrigatório.']);
+            jsonResponse(400, ['error' => 'player_id � obrigat�rio.']);
         }
 
         $user = getUserSession();
         if (!$user) {
-            jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+            jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
         }
 
         $isAdmin = ($user['user_type'] ?? '') === 'admin' || !empty($_SESSION['is_admin']);
@@ -195,11 +195,11 @@ if ($method === 'GET') {
         $stmtPlayer->execute([$playerId]);
         $player = $stmtPlayer->fetch(PDO::FETCH_ASSOC);
         if (!$player) {
-            jsonResponse(404, ['error' => 'Jogador não encontrado.']);
+            jsonResponse(404, ['error' => 'Jogador n�o encontrado.']);
         }
 
         if (!$isAdmin && isset($player['league']) && $player['league'] !== ($user['league'] ?? '')) {
-            jsonResponse(403, ['error' => 'Sem permissão para acessar este jogador.']);
+            jsonResponse(403, ['error' => 'Sem permiss�o para acessar este jogador.']);
         }
 
         $playerName = (string)($player['name'] ?? '');
@@ -393,10 +393,10 @@ if ($method === 'GET') {
     $userId = isset($_GET['user_id']) ? (int) $_GET['user_id'] : null;
     $leagueParam = isset($_GET['league']) ? strtoupper(trim($_GET['league'])) : null;
 
-    // Obter league do usuário da sessão ou do time vinculado
+    // Obter league do usu�rio da sess�o ou do time vinculado
     $user = getUserSession();
     if (!$user) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
 
     $league = null;
@@ -463,40 +463,41 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $body = readJsonBody();
     $name = trim($body['name'] ?? '');
-    $city = trim($body['city'] ?? '');
+    $cityProvided = array_key_exists('city', $body);
+    $city = $cityProvided ? trim((string)$body['city']) : '';
     $mascot = trim($body['mascot'] ?? '');
     $conference = strtoupper(trim($body['conference'] ?? ''));
     $divisionId = $body['division_id'] ?? null;
     $userId = $body['user_id'] ?? null;
     $photoUrl = trim($body['photo_url'] ?? '');
     
-    // Obter usuário e liga da sessão quando user_id não for fornecido
+    // Obter usu�rio e liga da sess�o quando user_id n�o for fornecido
     $sessionUser = getUserSession();
     if (!$userId && isset($sessionUser['id'])) {
         $userId = (int) $sessionUser['id'];
     }
     if (!$userId) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
 
-    // Obter league do usuário
+    // Obter league do usu�rio
     $userStmt = $pdo->prepare('SELECT league FROM users WHERE id = ? LIMIT 1');
     $userStmt->execute([$userId]);
     $userRow = $userStmt->fetch();
     if (!$userRow) {
-        jsonResponse(404, ['error' => 'Usuário não encontrado.']);
+        jsonResponse(404, ['error' => 'Usu�rio n�o encontrado.']);
     }
     $league = $sessionUser['league'] ?? $userRow['league'];
 
-    // Mascote é opcional no onboarding; permitir vazio
-    if ($name === '' || $city === '') {
-        jsonResponse(422, ['error' => 'Nome e cidade são obrigatórios.']);
+    // Mascote � opcional no onboarding; permitir vazio
+    if ($name === '') {
+        jsonResponse(422, ['error' => 'Nome do time � obrigat�rio.']);
     }
-    // Conferência é obrigatória somente se coluna existir
+    // Confer�ncia � obrigat�ria somente se coluna existir
     $hasConference = teamColumnExists($pdo, 'conference');
     if ($hasConference) {
         if (!in_array($conference, ['LESTE', 'OESTE'], true)) {
-            jsonResponse(422, ['error' => 'Conferência inválida. Escolha LESTE ou OESTE.']);
+            jsonResponse(422, ['error' => 'Confer�ncia inv�lida. Escolha LESTE ou OESTE.']);
         }
     }
 
@@ -524,11 +525,11 @@ if ($method === 'POST') {
             if (file_put_contents($fullPath, $binary) === false) {
                 throw new Exception('Falha ao salvar imagem.');
             }
-            // Caminho público
+            // Caminho p�blico
             $savedPath = '/img/teams/' . $filename;
             $photoUrl = $savedPath;
         } catch (Exception $e) {
-            // Se falhar, ignora a foto para não quebrar o cadastro
+            // Se falhar, ignora a foto para n�o quebrar o cadastro
             $photoUrl = '';
         }
     }
@@ -537,17 +538,18 @@ if ($method === 'POST') {
         $checkDiv = $pdo->prepare('SELECT id FROM divisions WHERE id = ?');
         $checkDiv->execute([$divisionId]);
         if (!$checkDiv->fetch()) {
-            jsonResponse(404, ['error' => 'Divisão não encontrada.']);
+            jsonResponse(404, ['error' => 'Divis�o n�o encontrada.']);
         }
     }
 
+    $cityValue = $city !== '' ? $city : null;
     if ($hasConference) {
         $stmt = $pdo->prepare('INSERT INTO teams (user_id, league, conference, name, city, mascot, division_id, photo_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$userId, $league, $conference, $name, $city, $mascot !== '' ? $mascot : '', $divisionId, $photoUrl ?: null]);
+        $stmt->execute([$userId, $league, $conference, $name, $cityValue, $mascot !== '' ? $mascot : '', $divisionId, $photoUrl ?: null]);
     } else {
         $stmt = $pdo->prepare('INSERT INTO teams (user_id, league, name, city, mascot, division_id, photo_url) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        // Mascote não pode ser NULL na tabela; use string vazia quando não fornecido
-        $stmt->execute([$userId, $league, $name, $city, $mascot !== '' ? $mascot : '', $divisionId, $photoUrl ?: null]);
+        // Mascote n�o pode ser NULL na tabela; use string vazia quando n�o fornecido
+        $stmt->execute([$userId, $league, $name, $cityValue, $mascot !== '' ? $mascot : '', $divisionId, $photoUrl ?: null]);
     }
     $teamId = (int) $pdo->lastInsertId();
 
@@ -557,23 +559,24 @@ if ($method === 'POST') {
 if ($method === 'PUT') {
     $body = readJsonBody();
     $name = trim($body['name'] ?? '');
-    $city = trim($body['city'] ?? '');
+    $cityProvided = array_key_exists('city', $body);
+    $city = $cityProvided ? trim((string)$body['city']) : '';
     $mascot = trim($body['mascot'] ?? '');
     $conference = strtoupper(trim($body['conference'] ?? ''));
     $photoUrl = trim($body['photo_url'] ?? '');
 
     $sessionUser = getUserSession();
     if (!isset($sessionUser['id'])) {
-        jsonResponse(401, ['error' => 'Sessão expirada ou usuário não autenticado.']);
+        jsonResponse(401, ['error' => 'Sess�o expirada ou usu�rio n�o autenticado.']);
     }
     $userId = (int) $sessionUser['id'];
 
-    // Buscar time do usuário
+    // Buscar time do usu�rio
     $stmt = $pdo->prepare('SELECT id, league FROM teams WHERE user_id = ? LIMIT 1');
     $stmt->execute([$userId]);
     $team = $stmt->fetch();
     if (!$team) {
-        jsonResponse(404, ['error' => 'Time não encontrado para o usuário.']);
+        jsonResponse(404, ['error' => 'Time n�o encontrado para o usu�rio.']);
     }
 
     // Salvar logo se vier como data URL
@@ -607,14 +610,15 @@ if ($method === 'PUT') {
 
     $hasConference = teamColumnExists($pdo, 'conference');
     if ($hasConference && $conference !== '' && !in_array($conference, ['LESTE', 'OESTE'], true)) {
-        jsonResponse(422, ['error' => 'Conferência inválida.']);
+        jsonResponse(422, ['error' => 'Confer�ncia inv�lida.']);
     }
 
+    $cityValue = $cityProvided ? ($city !== '' ? $city : null) : $team['city'];
     if ($hasConference) {
         $upd = $pdo->prepare('UPDATE teams SET name = ?, city = ?, mascot = ?, photo_url = ?, conference = ? WHERE id = ?');
         $upd->execute([
             $name !== '' ? $name : $team['name'],
-            $city !== '' ? $city : $team['city'],
+            $cityValue,
             $mascot !== '' ? $mascot : '',
             $photoUrl !== '' ? $photoUrl : $team['photo_url'],
             $conference !== '' ? $conference : $team['conference'] ?? null,
@@ -624,7 +628,7 @@ if ($method === 'PUT') {
         $upd = $pdo->prepare('UPDATE teams SET name = ?, city = ?, mascot = ?, photo_url = ? WHERE id = ?');
         $upd->execute([
             $name !== '' ? $name : $team['name'],
-            $city !== '' ? $city : $team['city'],
+            $cityValue,
             $mascot !== '' ? $mascot : '',
             $photoUrl !== '' ? $photoUrl : $team['photo_url'],
             (int) $team['id'],
@@ -635,3 +639,4 @@ if ($method === 'PUT') {
 }
 
 jsonResponse(405, ['error' => 'Method not allowed']);
+

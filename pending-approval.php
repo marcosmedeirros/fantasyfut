@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/backend/config.php';
 require_once __DIR__ . '/backend/db.php';
@@ -31,7 +31,7 @@ if ($user['approved'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguardando Aprovação - FBA Manager</title>
+    <title>Aguardando Aprovação - FUT Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -48,8 +48,8 @@ if ($user['approved'] == 1) {
         .approval-card {
             max-width: 500px;
             width: 100%;
-            background: var(--fba-panel);
-            border: 2px solid var(--fba-brand);
+            background: var(--FUT-panel);
+            border: 2px solid var(--FUT-brand);
             border-radius: 16px;
             padding: 40px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -60,7 +60,7 @@ if ($user['approved'] == 1) {
             width: 100px;
             height: 100px;
             margin: 0 auto 30px;
-            background: linear-gradient(135deg, var(--fba-brand) 0%, #ff2a44 100%);
+            background: linear-gradient(135deg, var(--FUT-brand) 0%, #ff2a44 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -76,14 +76,14 @@ if ($user['approved'] == 1) {
         }
 
         .approval-title {
-            color: var(--fba-text);
+            color: var(--FUT-text);
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
 
         .approval-message {
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 30px;
@@ -91,7 +91,7 @@ if ($user['approved'] == 1) {
 
         .user-info {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--fba-border);
+            border: 1px solid var(--FUT-border);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
@@ -101,7 +101,7 @@ if ($user['approved'] == 1) {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
         }
 
         .user-info-item:last-child {
@@ -109,12 +109,12 @@ if ($user['approved'] == 1) {
         }
 
         .user-info-label {
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             font-weight: 500;
         }
 
         .user-info-value {
-            color: var(--fba-text);
+            color: var(--FUT-text);
             font-weight: 600;
         }
     </style>
@@ -172,3 +172,5 @@ if ($user['approved'] == 1) {
     </div>
 </body>
 </html>
+
+

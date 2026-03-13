@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once 'backend/auth.php';
 require_once 'backend/db.php';
@@ -26,11 +26,11 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Draft - GM FBA</title>
+  <title>Draft - GM FUT</title>
   
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
   
-  <link rel="icon" type="image/png" href="/img/fba-logo.png?v=3">
+  <link rel="icon" type="image/png" href="/img/FUT-logo.png?v=3">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/styles.css" />
@@ -39,7 +39,7 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
       transition: all 0.3s ease;
     }
     .pick-card.current {
-      border: 2px solid var(--fba-orange) !important;
+      border: 2px solid var(--FUT-orange) !important;
       animation: pulse 2s infinite;
     }
     .pick-card.completed {
@@ -58,7 +58,7 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
     }
     .player-select-card:hover {
       transform: translateY(-2px);
-      border-color: var(--fba-orange) !important;
+      border-color: var(--FUT-orange) !important;
     }
     .traded-badge {
       font-size: 0.7rem;
@@ -81,7 +81,7 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
       <h6 class="text-white mb-1"><?= htmlspecialchars($team['name']) ?></h6>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($userLeague) ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -99,7 +99,7 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
       <?php endif; ?>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -282,7 +282,7 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
               </div>
               <div class="col-md-3">
                 <label class="form-label text-white">Posição</label>
-                <input type="text" class="form-control bg-dark text-white border-secondary" name="position" maxlength="3" placeholder="PG" required>
+                <input type="text" class="form-control bg-dark text-white border-secondary" name="position" maxlength="3" placeholder="GK" required>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-white">Idade</label>
@@ -1331,3 +1331,5 @@ $isAdmin = ($user['user_type'] ?? 'jogador') === 'admin';
   <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

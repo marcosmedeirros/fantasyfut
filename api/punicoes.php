@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
@@ -115,7 +115,7 @@ function ensurePunishmentsCatalog(PDO $pdo): void
 
     $defaultTypes = [
         ['Aviso formal', 'AVISO_FORMAL', 0, 0],
-        ['Perda da Pick 1º rodada', 'PERDA_PICK_1R', 0, 0],
+        ['Perda da Pick 1� rodada', 'PERDA_PICK_1R', 0, 0],
         ['Perda de pick especifica', 'PERDA_PICK_ESPECIFICA', 1, 0],
         ['Trades bloqueadas por uma temporada', 'BAN_TRADES', 0, 1],
         ['Trades sem picks', 'BAN_TRADES_PICKS', 0, 1],
@@ -217,7 +217,7 @@ if ($method === 'GET') {
         $league = strtoupper(trim($_GET['league'] ?? ''));
         if (!$league) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Liga inválida']);
+            echo json_encode(['success' => false, 'error' => 'Liga inv�lida']);
             exit;
         }
         $stmt = $pdo->prepare('SELECT id, city, name FROM teams WHERE league = ? ORDER BY city, name');
@@ -266,7 +266,7 @@ if ($method === 'GET') {
         $teamId = (int)($_GET['team_id'] ?? 0);
         if (!$teamId) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Time inválido']);
+            echo json_encode(['success' => false, 'error' => 'Time inv�lido']);
             exit;
         }
         $stmt = $pdo->prepare('SELECT id, season_year, round FROM picks WHERE team_id = ? ORDER BY season_year ASC, round ASC');
@@ -276,7 +276,7 @@ if ($method === 'GET') {
     }
 
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+    echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
     exit;
 }
 
@@ -285,7 +285,7 @@ if ($method === 'POST') {
     $action = $body['action'] ?? '';
     if (!in_array($action, ['add', 'add_motive', 'add_type', 'revert'], true)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Ação inválida']);
+        echo json_encode(['success' => false, 'error' => 'A��o inv�lida']);
         exit;
     }
 
@@ -293,7 +293,7 @@ if ($method === 'POST') {
         $label = trim($body['label'] ?? '');
         if ($label === '') {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Motivo obrigatório']);
+            echo json_encode(['success' => false, 'error' => 'Motivo obrigat�rio']);
             exit;
         }
         try {
@@ -314,7 +314,7 @@ if ($method === 'POST') {
         $requiresScope = !empty($body['requires_scope']) ? 1 : 0;
         if ($label === '' || $effectType === '') {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Punição e efeito obrigatórios']);
+            echo json_encode(['success' => false, 'error' => 'Puni��o e efeito obrigat�rios']);
             exit;
         }
         try {
@@ -323,7 +323,7 @@ if ($method === 'POST') {
             echo json_encode(['success' => true]);
         } catch (Exception $e) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Erro ao salvar punição']);
+            echo json_encode(['success' => false, 'error' => 'Erro ao salvar puni��o']);
         }
         exit;
     }
@@ -332,7 +332,7 @@ if ($method === 'POST') {
         $punishmentId = (int)($body['punishment_id'] ?? 0);
         if (!$punishmentId) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Punição inválida']);
+            echo json_encode(['success' => false, 'error' => 'Puni��o inv�lida']);
             exit;
         }
 
@@ -341,7 +341,7 @@ if ($method === 'POST') {
         $pun = $stmtPun->fetch(PDO::FETCH_ASSOC);
         if (!$pun) {
             http_response_code(404);
-            echo json_encode(['success' => false, 'error' => 'Punição não encontrada']);
+            echo json_encode(['success' => false, 'error' => 'Puni��o n�o encontrada']);
             exit;
         }
         if (!empty($pun['reverted_at'])) {
@@ -370,7 +370,7 @@ if ($method === 'POST') {
                             $seasonYear,
                             (string)$round,
                             $pun['removed_pick_last_owner_team_id'] ? (int)$pun['removed_pick_last_owner_team_id'] : null,
-                            'Reversão de punição'
+                            'Revers�o de puni��o'
                         ]);
                     }
                 }
@@ -401,7 +401,7 @@ if ($method === 'POST') {
         } catch (Exception $e) {
             $pdo->rollBack();
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Erro ao reverter punição']);
+            echo json_encode(['success' => false, 'error' => 'Erro ao reverter puni��o']);
         }
         exit;
     }
@@ -418,7 +418,7 @@ if ($method === 'POST') {
 
     if (!$teamId || !in_array($effectType, $allowedTypes, true)) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'error' => 'Dados inválidos']);
+        echo json_encode(['success' => false, 'error' => 'Dados inv�lidos']);
         exit;
     }
 
@@ -427,7 +427,7 @@ if ($method === 'POST') {
     $team = $stmtTeam->fetch(PDO::FETCH_ASSOC);
     if (!$team) {
         http_response_code(404);
-        echo json_encode(['success' => false, 'error' => 'Time não encontrado']);
+        echo json_encode(['success' => false, 'error' => 'Time n�o encontrado']);
         exit;
     }
 
@@ -487,7 +487,7 @@ if ($method === 'POST') {
             $stmt->execute([$banUntil, $teamId]);
         }
 
-        // Registrar punição
+        // Registrar puni��o
     $columns = 'team_id, league, type, motive, punishment_label, effect_type, notes, pick_id, season_scope, ban_until_cycle, removed_pick_season_year, removed_pick_round, removed_pick_original_team_id, removed_pick_last_owner_team_id, created_by';
         $values = '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?';
         $params = [
@@ -528,4 +528,5 @@ if ($method === 'POST') {
 }
 
 http_response_code(405);
-echo json_encode(['success' => false, 'error' => 'Método não suportado']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o suportado']);
+

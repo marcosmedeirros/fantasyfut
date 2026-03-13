@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 session_start();
 header('Content-Type: application/json');
 
 require_once dirname(__DIR__) . '/backend/auth.php';
 require_once dirname(__DIR__) . '/backend/db.php';
 
-// Verificar autenticação
+// Verificar autentica��o
 $user = getUserSession();
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Não autorizado']);
+    echo json_encode(['success' => false, 'error' => 'N�o autorizado']);
     exit;
 }
 
@@ -18,21 +18,21 @@ $pdo = db();
 // POST - Desabilitado: sistema gera picks automaticamente
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Edição manual de picks desabilitada. As picks são geradas automaticamente.']);
+    echo json_encode(['success' => false, 'error' => 'Edi��o manual de picks desabilitada. As picks s�o geradas automaticamente.']);
     exit;
 }
 
 // DELETE - Desabilitado
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Exclusão manual de picks desabilitada. As picks são geridas automaticamente.']);
+    echo json_encode(['success' => false, 'error' => 'Exclus�o manual de picks desabilitada. As picks s�o geridas automaticamente.']);
     exit;
 }
 
 // PUT - Desabilitado
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Atualização manual de picks desabilitada. As picks são geradas automaticamente.']);
+    echo json_encode(['success' => false, 'error' => 'Atualiza��o manual de picks desabilitada. As picks s�o geradas automaticamente.']);
     exit;
 }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $teamId = $_GET['team_id'] ?? null;
 
     if (!$teamId) {
-        echo json_encode(['success' => false, 'error' => 'Team ID não informado']);
+        echo json_encode(['success' => false, 'error' => 'Team ID n�o informado']);
         exit;
     }
 
@@ -62,4 +62,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
-echo json_encode(['success' => false, 'error' => 'Método não suportado']);
+echo json_encode(['success' => false, 'error' => 'M�todo n�o suportado']);
+

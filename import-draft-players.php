@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 requireAuth(true); // Admin apenas
 
@@ -109,7 +109,7 @@ Kevin Durant,PF,35,94</code>
                                 <input type="file" class="form-control bg-dark text-white border-orange" 
                                        id="csvFile" accept=".csv">
                                 <small class="text-light-gray">
-                                    Apenas arquivos .csv são aceitos
+                                    Apenas arquivos .csv s�o aceitos
                                 </small>
                             </div>
 
@@ -243,7 +243,7 @@ Kevin Durant,PF,35,94</code>
                     throw new Error(errorMsg);
                 }
             } catch (e) {
-                console.error('Erro na importação:', e);
+                console.error('Erro na importa��o:', e);
                 showResult('danger', 'Erro: ' + (e.message || e.error || 'Desconhecido'));
             }
         }
@@ -275,3 +275,4 @@ Kevin Durant,PF,35,94</code>
     <script src="js/sidebar.js"></script>
 </body>
 </html>
+

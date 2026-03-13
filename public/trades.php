@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
 require_once dirname(__DIR__) . '/backend/db.php';
@@ -23,14 +23,14 @@ if (!$userTeam) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Trades - FBA Manager</title>
+    <title>Trades - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <link rel="apple-touch-icon" href="/img/icon-192.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
@@ -38,15 +38,15 @@ if (!$userTeam) {
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .trade-card {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
             transition: all 0.3s ease;
         }
         .trade-card:hover {
-            border-color: var(--fba-orange);
+            border-color: var(--FUT-orange);
             box-shadow: 0 4px 12px rgba(241, 117, 7, 0.2);
         }
         .trade-header {
@@ -55,11 +55,11 @@ if (!$userTeam) {
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
         }
         .trade-date {
             font-size: 0.9rem;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .trade-status {
             display: inline-block;
@@ -88,14 +88,14 @@ if (!$userTeam) {
             margin-bottom: 15px;
         }
         .trade-side {
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             padding: 15px;
             border-radius: 6px;
-            border-left: 3px solid var(--fba-orange);
+            border-left: 3px solid var(--FUT-orange);
         }
         .trade-side-title {
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             margin-bottom: 10px;
             font-size: 0.9rem;
         }
@@ -103,7 +103,7 @@ if (!$userTeam) {
             display: flex;
             align-items: center;
             padding: 8px 0;
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
         .trade-player-info {
             flex: 1;
@@ -113,14 +113,14 @@ if (!$userTeam) {
         }
         .trade-player-stats {
             font-size: 0.8rem;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .trade-exchange {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
         }
         .trade-exchange i {
             font-size: 1.5rem;
@@ -131,7 +131,7 @@ if (!$userTeam) {
             justify-content: flex-end;
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid var(--fba-border);
+            border-top: 1px solid var(--FUT-border);
         }
         .btn-trade-accept {
             background: #00ff00;
@@ -166,16 +166,16 @@ if (!$userTeam) {
         .no-trades {
             text-align: center;
             padding: 40px 20px;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .no-trades i {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             opacity: 0.5;
         }
         .btn-new-trade {
-            background: var(--fba-orange);
+            background: var(--FUT-orange);
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -193,28 +193,28 @@ if (!$userTeam) {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
         }
         .tab-btn {
             padding: 10px 20px;
             background: transparent;
             border: none;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             cursor: pointer;
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             font-weight: 500;
         }
         .tab-btn.active {
-            color: var(--fba-orange);
-            border-bottom-color: var(--fba-orange);
+            color: var(--FUT-orange);
+            border-bottom-color: var(--FUT-orange);
         }
         .tab-btn:hover {
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
     </style>
 </head>
-<body class="fba-dark">
+<body class="FUT-dark">
     <div class="container-fluid">
         <div class="row" style="min-height: 100vh;">
             <!-- Sidebar -->
@@ -225,7 +225,7 @@ if (!$userTeam) {
                 <div class="mb-4">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <h1 class="display-5 mb-2" style="color: var(--fba-text);">
+                            <h1 class="display-5 mb-2" style="color: var(--FUT-text);">
                                 <i class="bi bi-arrow-left-right"></i> Trades
                             </h1>
                             <p class="text-muted">Negocie jogadores com outros times da sua liga</p>
@@ -247,7 +247,7 @@ if (!$userTeam) {
                 <!-- Trades List -->
                 <div id="trades-container">
                     <div class="text-center py-5">
-                        <div class="spinner-border" style="color: var(--fba-orange);" role="status">
+                        <div class="spinner-border" style="color: var(--FUT-orange);" role="status">
                             <span class="visually-hidden">Carregando...</span>
                         </div>
                     </div>
@@ -256,15 +256,15 @@ if (!$userTeam) {
                 <!-- New Trade Modal -->
                 <div class="modal fade" id="newTradeModal" tabindex="-1">
                     <div class="modal-dialog modal-lg">
-                        <div class="modal-content" style="background: var(--fba-card-bg); border: 1px solid var(--fba-border);">
-                            <div class="modal-header" style="border-color: var(--fba-border);">
+                        <div class="modal-content" style="background: var(--FUT-card-bg); border: 1px solid var(--FUT-border);">
+                            <div class="modal-header" style="border-color: var(--FUT-border);">
                                 <h5 class="modal-title">Nova Negociação</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
                                 <p class="text-muted mb-3">Funcionalidade em desenvolvimento. Em breve você poderá iniciar negociações com outros times.</p>
                             </div>
-                            <div class="modal-footer" style="border-color: var(--fba-border);">
+                            <div class="modal-footer" style="border-color: var(--FUT-border);">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             </div>
                         </div>
@@ -331,7 +331,7 @@ if (!$userTeam) {
                     <div class="trade-card">
                         <div class="trade-header">
                             <div>
-                                <h5 style="margin: 0; color: var(--fba-text);">${trade.team_from} vs ${trade.team_to}</h5>
+                                <h5 style="margin: 0; color: var(--FUT-text);">${trade.team_from} vs ${trade.team_to}</h5>
                                 <div class="trade-date">${new Date(trade.created_at).toLocaleDateString('pt-BR')}</div>
                             </div>
                             <span class="trade-status ${statusClass}">${statusText}</span>
@@ -419,3 +419,5 @@ if (!$userTeam) {
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

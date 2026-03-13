@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#fc0025">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
-    <title>FBA Manager Control - Sistema de Gest√£o de Franquias</title>
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
+    <title>FUT Manager Control - Sistema de Gest√£o de Franquias</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +35,8 @@
             <!-- Left Side - Branding -->
             <div class="col-lg-6 d-flex align-items-center justify-content-center bg-gradient-dark p-5">
                 <div class="text-center text-white">
-                    <img src="/img/fba-logo.png" alt="FBA Manager" class="img-fluid mb-4" style="max-height: 180px;">
-                    <h1 class="display-4 fw-bold mb-3">FBA Manager Control</h1>
+                    <img src="/img/FUT-logo.png" alt="FUT Manager" class="img-fluid mb-4" style="max-height: 180px;">
+                    <h1 class="display-4 fw-bold mb-3">FUT Manager Control</h1>
                     <p class="lead mb-4 text-light-gray">
                         Sistema completo de gest√£o da sua franquia de basquete.<br>
                         Gerencie times, jogadores, drafts e muito mais em um s√≥ lugar.
@@ -76,7 +76,7 @@
                             <div class="mb-3">
                                 <label class="form-label text-light-gray">Senha</label>
                                 <div class="input-group">
-                                    <input id="loginPassword" name="password" type="password" class="form-control form-control-lg" placeholder="ïïïïïïïï" required>
+                                    <input id="loginPassword" name="password" type="password" class="form-control form-control-lg" placeholder="ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ" required>
                                     <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword" aria-label="Mostrar/ocultar senha">
                                         <i class="bi bi-eye"></i>
                                     </button>
@@ -201,3 +201,5 @@
 </html>
 
 <script>document.addEventListener('DOMContentLoaded',()=>{const toggle=(btnId,inputId)=>{const btn=document.getElementById(btnId);const input=document.getElementById(inputId);if(!btn||!input)return;btn.addEventListener('click',()=>{const isPwd=input.type==='password';input.type=isPwd?'text':'password';const icon=btn.querySelector('i');if(icon) icon.className=isPwd?'bi bi-eye-slash':'bi bi-eye';});};toggle('toggleLoginPassword','loginPassword');toggle('toggleRegisterPassword','registerPassword');});</script>
+
+

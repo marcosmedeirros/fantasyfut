@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 session_start();
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 
-// Verificar se é admin
+// Verificar se � admin
 $user = getUserSession();
 if (!$user || $user['user_type'] !== 'admin') {
     http_response_code(403);
@@ -83,22 +83,22 @@ $duplicates_current = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="container mt-5">
     <div class="card">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">🧹 Limpeza de Times Duplicados</h4>
+            <h4 class="mb-0">?? Limpeza de Times Duplicados</h4>
         </div>
         <div class="card-body">
             
             <?php if ($result): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <h5>✓ Limpeza Concluída!</h5>
+                    <h5>? Limpeza Conclu�da!</h5>
                     <p class="mb-1"><strong>Removidos:</strong> <?= (int)$result['removed'] ?> times duplicados</p>
                     <p class="mb-1"><strong>Jogadores movidos:</strong> <?= (int)$result['moved_players'] ?></p>
-                    <p class="mb-0"><strong>Horário:</strong> <?= htmlspecialchars($result['timestamp']) ?></p>
+                    <p class="mb-0"><strong>Hor�rio:</strong> <?= htmlspecialchars($result['timestamp']) ?></p>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             <?php endif; ?>
 
             <div class="alert alert-info">
-                <h5>📊 Status Atual</h5>
+                <h5>?? Status Atual</h5>
                 <?php if (empty($duplicates_current)): ?>
                     <p class="mb-0 text-success"><i class="bi bi-check-circle"></i> <strong>Nenhuma duplicata encontrada!</strong></p>
                 <?php else: ?>
@@ -119,29 +119,29 @@ $duplicates_current = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (!empty($duplicates_current)): ?>
                 <form method="GET" class="mt-4">
                     <div class="alert alert-warning">
-                        <strong>⚠️ Aviso:</strong> Esta ação vai:
+                        <strong>?? Aviso:</strong> Esta a��o vai:
                         <ol class="mb-0">
                             <li>Mover todos os jogadores dos times duplicados para o mantido</li>
                             <li>Deletar os times duplicados</li>
-                            <li>A operação não pode ser desfeita</li>
+                            <li>A opera��o n�o pode ser desfeita</li>
                         </ol>
                     </div>
-                    <button type="submit" name="action" value="cleanup" class="btn btn-danger btn-lg w-100" onclick="return confirm('Tem certeza? Esta ação vai remover os times duplicados!')">
+                    <button type="submit" name="action" value="cleanup" class="btn btn-danger btn-lg w-100" onclick="return confirm('Tem certeza? Esta a��o vai remover os times duplicados!')">
                         <i class="bi bi-trash"></i> Executar Limpeza
                     </button>
                 </form>
             <?php else: ?>
                 <div class="alert alert-success text-center">
-                    <h5 class="mb-2">✓ Tudo limpo!</h5>
-                    <p class="mb-0">Você pode agora acessar /teams.php normalmente</p>
+                    <h5 class="mb-2">? Tudo limpo!</h5>
+                    <p class="mb-0">Voc� pode agora acessar /teams.php normalmente</p>
                 </div>
             <?php endif; ?>
 
             <hr class="my-4">
 
             <div class="text-center">
-                <a href="/admin.php" class="btn btn-secondary">← Voltar ao Admin</a>
-                <a href="<?= $_SERVER['REQUEST_URI'] ?>" class="btn btn-info">🔄 Recarregar</a>
+                <a href="/admin.php" class="btn btn-secondary">? Voltar ao Admin</a>
+                <a href="<?= $_SERVER['REQUEST_URI'] ?>" class="btn btn-info">?? Recarregar</a>
             </div>
 
         </div>
@@ -151,3 +151,4 @@ $duplicates_current = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

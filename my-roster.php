@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -25,15 +25,15 @@ if ($teamId) {
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Meu Elenco - FBA Manager</title>
+  <title>Meu Elenco - FUT Manager</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0a0a0c">
+  <meta name="theme-color" content="#080931">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
-  <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
+  <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -52,17 +52,17 @@ if ($teamId) {
       letter-spacing: 0.12em;
       text-transform: uppercase;
       font-size: 0.9rem;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
       margin-bottom: 1rem;
     }
     .roster-divider {
       width: min(320px, 80%);
       margin: 0 auto;
-      border-color: var(--fba-border);
+      border-color: var(--FUT-border);
       opacity: 0.5;
     }
     .roster-card {
-      background: var(--fba-panel);
+      background: var(--FUT-panel);
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 10px 24px rgba(0,0,0,0.35);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -82,7 +82,7 @@ if ($teamId) {
       gap: 0.75rem;
     }
     .roster-mobile-card {
-      background: var(--fba-panel);
+      background: var(--FUT-panel);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 0.9rem;
       padding: 1rem;
@@ -99,6 +99,85 @@ if ($teamId) {
     }
     .roster-mobile-actions .btn i {
       color: #fff;
+    }
+    .soccer-field {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.04) 0 10%,
+          transparent 10% 20%
+        ),
+        linear-gradient(180deg, #0a2a18 0%, #0e3b21 100%);
+      padding: 24px 20px;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow: hidden;
+    }
+    .soccer-field::before {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+    .soccer-field::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 96px;
+      height: 96px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .lineup-row {
+      display: flex;
+      justify-content: space-evenly;
+      gap: 12px;
+      z-index: 1;
+    }
+    .lineup-slot {
+      flex: 1;
+      max-width: 140px;
+      display: flex;
+      justify-content: center;
+    }
+    .lineup-player {
+      width: 100%;
+      background: rgba(8, 9, 49, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 8px 10px;
+      text-align: center;
+      color: var(--FUT-text);
+    }
+    .lineup-player .name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .lineup-player .meta {
+      font-size: 0.75rem;
+      color: var(--FUT-text-muted);
+    }
+    .lineup-placeholder {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+    .lineup-legend {
+      font-size: 0.85rem;
+      color: var(--FUT-text-muted);
+      text-align: center;
+      margin-top: 12px;
     }
     @media (max-width: 768px) {
       #players-table-wrapper,
@@ -130,11 +209,11 @@ if ($teamId) {
     <div class="text-center mb-4">
       <img src="<?= htmlspecialchars(($team['photo_url'] ?? '/img/default-team.png')) ?>" 
            alt="<?= htmlspecialchars($team['name'] ?? 'Time') ?>" class="team-avatar">
-      <h5 class="text-white mb-1"><?= isset($team['name']) ? htmlspecialchars(($team['city'] . ' ' . $team['name'])) : 'Sem time' ?></h5>
+      <h5 class="text-white mb-1"><?= isset($team['name']) ? htmlspecialchars($team['name']) : 'Sem time' ?></h5>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
     </div>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <ul class="sidebar-menu">
       <li>
@@ -153,12 +232,6 @@ if ($teamId) {
         <a href="/my-roster.php" class="active">
           <i class="bi bi-person-fill"></i>
           Meu Elenco
-        </a>
-      </li>
-      <li>
-        <a href="/picks.php">
-          <i class="bi bi-calendar-check-fill"></i>
-          Picks
         </a>
       </li>
       <li>
@@ -219,7 +292,7 @@ if ($teamId) {
       </li>
     </ul>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -228,7 +301,7 @@ if ($teamId) {
     </div>
 
     <div class="text-center mb-4">
-      <h5 class="text-white mb-1"><?php echo isset($team['name']) ? htmlspecialchars(($team['city'] . ' ' . $team['name'])) : 'Sem time'; ?></h5>
+      <h5 class="text-white mb-1"><?php echo isset($team['name']) ? htmlspecialchars($team['name']) : 'Sem time'; ?></h5>
       </small>
     </div>
   </div>
@@ -263,6 +336,19 @@ if ($teamId) {
       <div class="alert alert-warning">Você ainda não possui um time. Crie um no onboarding.</div>
     <?php else: ?>
     
+    <div class="card bg-dark-panel border-orange mb-4">
+      <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-0 text-white"><i class="bi bi-diagram-3 me-2 text-orange"></i>Campinho do Time</h5>
+          <small class="text-light-gray">Escale seus 11 titulares e visualize a formação base 4-4-2.</small>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="lineup-field" class="soccer-field"></div>
+        <div id="lineup-legend" class="lineup-legend">Formação base: 4-4-2 (ajuste os titulares por posição).</div>
+      </div>
+    </div>
+
     <?php if (strtoupper((string)($team['league'] ?? '')) === 'ELITE'): ?>
     <div class="card bg-dark-panel border-orange mb-4">
       <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -290,22 +376,20 @@ if ($teamId) {
                 <label class="form-label text-white">Posição</label>
                 <select class="form-select bg-dark text-white border-orange" name="position" required>
                   <option value="">Selecione</option>
-                  <option value="PG">PG</option>
-                  <option value="SG">SG</option>
-                  <option value="SF">SF</option>
-                  <option value="PF">PF</option>
-                  <option value="C">C</option>
+                  <option value="GK">Goleiro</option>
+                  <option value="DEF">Defensor</option>
+                  <option value="MID">Meio-campista</option>
+                  <option value="ATT">Atacante</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label class="form-label text-white">Posição Secundária</label>
                 <select class="form-select bg-dark text-white border-orange" name="secondary_position">
                   <option value="">Nenhuma</option>
-                  <option value="PG">PG</option>
-                  <option value="SG">SG</option>
-                  <option value="SF">SF</option>
-                  <option value="PF">PF</option>
-                  <option value="C">C</option>
+                  <option value="GK">Goleiro</option>
+                  <option value="DEF">Defensor</option>
+                  <option value="MID">Meio-campista</option>
+                  <option value="ATT">Atacante</option>
                 </select>
               </div>
               <div class="col-md-3">
@@ -313,8 +397,6 @@ if ($teamId) {
                 <select class="form-select bg-dark text-white border-orange" name="role" required>
                   <option value="Titular">Titular</option>
                   <option value="Banco">Banco</option>
-                  <option value="Outro">Outro</option>
-                  <option value="G-League">G-League</option>
                 </select>
               </div>
               <div class="col-md-2">
@@ -369,7 +451,6 @@ if ($teamId) {
                 <option value="">Todas as funções</option>
                 <option value="Titular">Titular</option>
                 <option value="Banco">Banco</option>
-                <option value="G-League">G-League</option>
                 <option value="Outro">Outro</option>
               </select>
             </div>
@@ -420,7 +501,7 @@ if ($teamId) {
               <label class="form-label text-white fw-bold">Foto do Jogador</label>
               <input type="file" id="edit-foto-adicional" class="form-control bg-dark text-white border-orange" accept="image/*">
               <div class="mt-2">
-                <img id="edit-foto-preview" src="/img/default-avatar.png" alt="Preview" style="width: 64px; height: 64px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;">
+                <img id="edit-foto-preview" src="/img/default-avatar.png" alt="Preview" style="width: 64px; height: 64px; object-fit: cover; border-radius: 50%; border: 1px solid var(--FUT-orange); background: #1a1a1a;">
               </div>
             </div>
             <div class="col-md-2">
@@ -430,22 +511,20 @@ if ($teamId) {
             <div class="col-md-2">
               <label class="form-label text-white fw-bold">Posição</label>
               <select id="edit-position" class="form-select bg-dark text-white border-orange" required>
-                <option value="PG">PG</option>
-                <option value="SG">SG</option>
-                <option value="SF">SF</option>
-                <option value="PF">PF</option>
-                <option value="C">C</option>
+                <option value="GK">Goleiro</option>
+                <option value="DEF">Defensor</option>
+                <option value="MID">Meio-campista</option>
+                <option value="ATT">Atacante</option>
               </select>
             </div>
             <div class="col-md-2">
               <label class="form-label text-white fw-bold">Pos. Sec.</label>
               <select id="edit-secondary-position" class="form-select bg-dark text-white border-orange">
                 <option value="">Nenhuma</option>
-                <option value="PG">PG</option>
-                <option value="SG">SG</option>
-                <option value="SF">SF</option>
-                <option value="PF">PF</option>
-                <option value="C">C</option>
+                <option value="GK">Goleiro</option>
+                <option value="DEF">Defensor</option>
+                <option value="MID">Meio-campista</option>
+                <option value="ATT">Atacante</option>
               </select>
             </div>
             <div class="col-md-2">
@@ -458,7 +537,6 @@ if ($teamId) {
                 <option value="Titular">Titular</option>
                 <option value="Banco">Banco</option>
                 <option value="Outro">Outro</option>
-                <option value="G-League">G-League</option>
               </select>
             </div>
             <div class="col-md-4 d-flex align-items-center">
@@ -487,3 +565,5 @@ if ($teamId) {
   <script src="/js/pwa.js?v=20260130"></script>
 </body>
 </html>
+
+

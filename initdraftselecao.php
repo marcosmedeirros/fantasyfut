@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/db.php';
 require_once __DIR__ . '/backend/auth.php';
 
 $token = $_GET['token'] ?? null;
 if (!$token) {
     http_response_code(403);
-    echo 'Token inválido.';
+    echo 'Token inv�lido.';
     exit;
 }
 
@@ -24,7 +24,7 @@ if ($user && isset($user['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Draft Inicial - Seleção</title>
+    <title>Draft Inicial - Sele��o</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -207,7 +207,7 @@ if ($user && isset($user['id'])) {
             padding: 0.35rem 0.5rem;
         }
 
-        /* Ordenação do pool */
+        /* Ordena��o do pool */
         th.sortable { cursor: pointer; user-select: none; }
         th.sortable .sort-indicator { margin-left: 6px; color: var(--draft-muted); font-size: 0.85em; }
         th.sortable.active .sort-indicator { color: #ffffff; }
@@ -220,7 +220,7 @@ if ($user && isset($user['id'])) {
             color: #D50826 !important;
         }
 
-        /* Relógio removido (sistema antigo sem timer) */
+        /* Rel�gio removido (sistema antigo sem timer) */
 
         .pick-logo {
             width: 46px;
@@ -328,7 +328,7 @@ if ($user && isset($user['id'])) {
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
                 <div>
                     <p class="text-uppercase text-warning fw-semibold mb-2">Draft Inicial</p>
-                    <h1 class="mb-2">Sala de Seleção</h1>
+                    <h1 class="mb-2">Sala de Sele��o</h1>
                     <p class="mb-0 text-light">Acompanhe o andamento do draft, picks atuais e elencos montados.</p>
                 </div>
                 <div class="text-lg-end">
@@ -346,7 +346,7 @@ if ($user && isset($user['id'])) {
                         </button>
                         <?php if ($isAdmin): ?>
                         <button class="btn btn-danger btn-sm" type="button" id="openRoundNowButton" onclick="adminOpenNextRoundNow()">
-                            <i class="bi bi-lightning-charge me-1"></i>Iniciar próxima rodada agora
+                            <i class="bi bi-lightning-charge me-1"></i>Iniciar pr�xima rodada agora
                         </button>
                         <?php endif; ?>
                     </div>
@@ -362,7 +362,7 @@ if ($user && isset($user['id'])) {
                     <div class="mb-2" id="clockBanner"></div>
                     <div id="currentPickCard"></div>
                     <hr class="border-secondary my-4">
-                    <h6 class="text-uppercase accent-label">Próximo Pick</h6>
+                    <h6 class="text-uppercase accent-label">Pr�ximo Pick</h6>
                     <div id="nextPickCard" class="mt-3"></div>
                 </div>
                 <div class="card-dark p-4">
@@ -383,7 +383,7 @@ if ($user && isset($user['id'])) {
                         </div>
                         <div class="col-md-4">
                             <select id="poolPositionFilter" class="form-select">
-                                <option value="">Todas as posições</option>
+                                <option value="">Todas as posi��es</option>
                                 <option value="PG">PG</option>
                                 <option value="SG">SG</option>
                                 <option value="SF">SF</option>
@@ -394,7 +394,7 @@ if ($user && isset($user['id'])) {
                         <div class="col-md-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="poolOnlyAvailable" checked>
-                                <label class="form-check-label" for="poolOnlyAvailable">Apenas disponíveis</label>
+                                <label class="form-check-label" for="poolOnlyAvailable">Apenas dispon�veis</label>
                             </div>
                         </div>
                     </div>
@@ -404,10 +404,10 @@ if ($user && isset($user['id'])) {
                                 <tr>
                                     <th>#</th>
                                     <th class="sortable" data-sort="name">Jogador <span class="sort-indicator"></span></th>
-                                    <th>Posição</th>
+                                    <th>Posi��o</th>
                                     <th class="sortable" data-sort="ovr">OVR <span class="sort-indicator"></span></th>
                                     <th class="sortable" data-sort="age">Idade <span class="sort-indicator"></span></th>
-                                    <th class="text-end">Ação</th>
+                                    <th class="text-end">A��o</th>
                                 </tr>
                             </thead>
                             <tbody id="poolTable"></tbody>
@@ -484,10 +484,10 @@ if ($user && isset($user['id'])) {
             return Number.isFinite(ms) ? ms : null;
         }
 
-        // Relógio removido (sistema antigo sem timer)
+        // Rel�gio removido (sistema antigo sem timer)
 
         function teamLabel(pick) {
-            if (!pick) return '—';
+            if (!pick) return '�';
             return `${pick.team_city || ''} ${pick.team_name || ''}`.trim();
         }
 
@@ -505,9 +505,9 @@ if ($user && isset($user['id'])) {
             const statusLabel = (session.status === 'in_progress')
                 ? 'Em andamento'
                 : (session.status === 'completed')
-                    ? 'Concluído'
+                    ? 'Conclu�do'
                     : (session.status === 'setup')
-                        ? 'Preparação'
+                        ? 'Prepara��o'
                         : (session.status || '-');
 
             elements.statGrid.innerHTML = `
@@ -540,7 +540,7 @@ if ($user && isset($user['id'])) {
 
         function renderPickCard(target, pick, label, highlightClass = '') {
             if (!pick) {
-                target.innerHTML = `<div class="text-muted">Nenhuma pick disponível.</div>`;
+                target.innerHTML = `<div class="text-muted">Nenhuma pick dispon�vel.</div>`;
                 return;
             }
             target.innerHTML = `
@@ -561,7 +561,7 @@ if ($user && isset($user['id'])) {
 
         function renderOrderList(currentPick, nextPick) {
             if (!state.order.length) {
-                elements.orderList.innerHTML = '<div class="text-muted">Ordem ainda não definida.</div>';
+                elements.orderList.innerHTML = '<div class="text-muted">Ordem ainda n�o definida.</div>';
                 return;
             }
             const displayRound = Number(state.session?.current_round || 1);
@@ -573,7 +573,7 @@ if ($user && isset($user['id'])) {
                     const picked = !!pick.picked_player_id;
                     const reactions = Array.isArray(pick.reactions) ? pick.reactions : [];
                     const mineEmoji = reactions.find(r => r.mine)?.emoji || null;
-                    const emojiList = ['👍','❤️','😂','😮','😢','😡'];
+                    const emojiList = ['??','??','??','??','??','??'];
                     const countsMap = Object.fromEntries(reactions.map(r => [r.emoji, r.count]));
 
                     const chips = emojiList.map(e => {
@@ -588,7 +588,7 @@ if ($user && isset($user['id'])) {
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-light">
                                     ${pick.player_name}
-                                    <span class="accent-red">(${pick.player_position ?? ''} • ${pick.player_ovr ?? '-'}${pick.player_age ? '/' + pick.player_age + 'y' : ''})</span>
+                                    <span class="accent-red">(${pick.player_position ?? ''} � ${pick.player_ovr ?? '-'}${pick.player_age ? '/' + pick.player_age + 'y' : ''})</span>
                                 </div>
                                 <div class="reaction-bar">${chips}</div>
                             </div>
@@ -625,7 +625,7 @@ if ($user && isset($user['id'])) {
                 return matchesSearch && matchesPosition && matchesAvailability;
             });
 
-            // Ordenação (clique no cabeçalho): default OVR desc
+            // Ordena��o (clique no cabe�alho): default OVR desc
             const sortField = uiState.poolSortField || 'ovr';
             const asc = !!uiState.poolSortAsc;
             filtered.sort((a, b) => {
@@ -652,7 +652,7 @@ if ($user && isset($user['id'])) {
 
             elements.poolMeta.textContent = `${total} jogadores`;
             if (!pageItems.length) {
-                elements.poolTable.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Nenhum jogador disponível.</td></tr>';
+                elements.poolTable.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Nenhum jogador dispon�vel.</td></tr>';
                 elements.poolPagination.innerHTML = '';
                 updatePoolSortIndicators();
                 return;
@@ -669,20 +669,20 @@ if ($user && isset($user['id'])) {
                         <tr>
                             <td data-label="#">${startIndex + index + 1}</td>
                             <td data-label="Jogador">${player.name}</td>
-                            <td data-label="Posição">${player.position}</td>
+                            <td data-label="Posi��o">${player.position}</td>
                             <td data-label="OVR">${player.ovr}</td>
                             <td data-label="Idade">${player.age || '-'}</td>
-                            <td class="text-end" data-label="Ação">${action}</td>
+                            <td class="text-end" data-label="A��o">${action}</td>
                         </tr>
                     `;
                 })
                 .join('');
 
             elements.poolPagination.innerHTML = `
-                <div class="text-white">Página ${uiState.poolPage} de ${totalPages}</div>
+                <div class="text-white">P�gina ${uiState.poolPage} de ${totalPages}</div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-outline-light" ${uiState.poolPage === 1 ? 'disabled' : ''} onclick="changePoolPage(${uiState.poolPage - 1})">Anterior</button>
-                    <button class="btn btn-sm btn-outline-light" ${uiState.poolPage === totalPages ? 'disabled' : ''} onclick="changePoolPage(${uiState.poolPage + 1})">Próxima</button>
+                    <button class="btn btn-sm btn-outline-light" ${uiState.poolPage === totalPages ? 'disabled' : ''} onclick="changePoolPage(${uiState.poolPage + 1})">Pr�xima</button>
                 </div>
             `;
             updatePoolSortIndicators();
@@ -722,7 +722,7 @@ if ($user && isset($user['id'])) {
                         .map((pick) => {
                             const ovr = (pick.player_ovr ?? '-')
                             const age = (pick.player_age != null && pick.player_age !== '') ? `${pick.player_age}y` : '-';
-                            return `<li>${pick.player_name} <span class="accent-red">(${pick.player_position ?? ''} • ${ovr}/${age})</span></li>`;
+                            return `<li>${pick.player_name} <span class="accent-red">(${pick.player_position ?? ''} � ${ovr}/${age})</span></li>`;
                         })
                         .join('');
                     return `
@@ -758,9 +758,9 @@ if ($user && isset($user['id'])) {
                 const currentPick = state.order.find((pick) => !pick.picked_player_id);
                 const nextPick = state.order.find((pick, idx) => !pick.picked_player_id && idx > state.order.indexOf(currentPick));
                 handlePickChange(currentPick);
-                // sem relógio
+                // sem rel�gio
                 renderPickCard(elements.currentPickCard, currentPick, 'Pick Atual', 'current-pick-highlight pick-card-lg');
-                renderPickCard(elements.nextPickCard, nextPick, 'Próximo', 'next-pick-highlight pick-card-sm');
+                renderPickCard(elements.nextPickCard, nextPick, 'Pr�ximo', 'next-pick-highlight pick-card-sm');
                 renderOrderList(currentPick, nextPick);
                 renderPool(currentPick);
                 renderRosters();
@@ -807,7 +807,7 @@ if ($user && isset($user['id'])) {
             if (!confirm('Abrir rodada imediatamente?')) return;
             try {
                 const sessionId = state.session?.id;
-                if (!sessionId) throw new Error('Sessão não carregada');
+                if (!sessionId) throw new Error('Sess�o n�o carregada');
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -844,7 +844,7 @@ if ($user && isset($user['id'])) {
                     body: JSON.stringify({ action: 'remove_reaction', token: TOKEN, pick_id: pickId })
                 });
                 const data = await res.json();
-                if (!data.success) throw new Error(data.error || 'Erro ao remover reação');
+                if (!data.success) throw new Error(data.error || 'Erro ao remover rea��o');
                 await loadState();
             } catch (error) {
                 alert(error.message);
@@ -854,7 +854,7 @@ if ($user && isset($user['id'])) {
         async function toggleReaction(pickId, emoji) {
             try {
                 const emo = decodeURIComponent(emoji);
-                // Descobre reação atual do usuário nessa pick
+                // Descobre rea��o atual do usu�rio nessa pick
                 const pick = state.order.find(p => p.id === pickId);
                 const mineEmoji = (pick && Array.isArray(pick.reactions)) ? (pick.reactions.find(r => r.mine)?.emoji || null) : null;
                 if (mineEmoji === emo) {
@@ -896,7 +896,7 @@ if ($user && isset($user['id'])) {
                 oscillator.stop(audioCtx.currentTime + 0.25);
                 oscillator.onended = () => audioCtx.close();
             } catch (error) {
-                console.warn('Audio não disponível');
+                console.warn('Audio n�o dispon�vel');
             }
         }
 
@@ -966,7 +966,7 @@ if ($user && isset($user['id'])) {
                 if (field === uiState.poolSortField) {
                     th.classList.add('active');
                     const indicator = th.querySelector('.sort-indicator');
-                    if (indicator) indicator.textContent = uiState.poolSortAsc ? '▲' : '▼';
+                    if (indicator) indicator.textContent = uiState.poolSortAsc ? '?' : '?';
                 }
             });
         }
@@ -979,3 +979,4 @@ if ($user && isset($user['id'])) {
     </script>
 </body>
 </html>
+

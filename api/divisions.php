@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
 
@@ -18,19 +18,20 @@ if ($method === 'POST') {
     $champions = trim($body['champions'] ?? '');
 
     if ($name === '') {
-        jsonResponse(422, ['error' => 'Nome da divisão é obrigatório.']);
+        jsonResponse(422, ['error' => 'Nome da divis�o � obrigat�rio.']);
     }
 
     $exists = $pdo->prepare('SELECT id FROM divisions WHERE name = ?');
     $exists->execute([$name]);
     if ($exists->fetch()) {
-        jsonResponse(409, ['error' => 'Divisão já existe.']);
+        jsonResponse(409, ['error' => 'Divis�o j� existe.']);
     }
 
     $stmt = $pdo->prepare('INSERT INTO divisions (name, importance, champions) VALUES (?, ?, ?)');
     $stmt->execute([$name, $importance, $champions]);
 
-    jsonResponse(201, ['message' => 'Divisão criada.', 'division_id' => $pdo->lastInsertId()]);
+    jsonResponse(201, ['message' => 'Divis�o criada.', 'division_id' => $pdo->lastInsertId()]);
 }
 
 jsonResponse(405, ['error' => 'Method not allowed']);
+

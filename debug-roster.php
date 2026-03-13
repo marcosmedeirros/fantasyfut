@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
- * Script de diagnóstico para problemas no "Meu Elenco"
+ * Script de diagn�stico para problemas no "Meu Elenco"
  */
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 
-// Verificar sessão
+// Verificar sess�o
 $user = getUserSession();
 if (!$user) {
-    echo "<h2>Não autenticado</h2>";
+    echo "<h2>N�o autenticado</h2>";
     echo "<pre>" . print_r($_SESSION, true) . "</pre>";
     exit;
 }
 
 $pdo = db();
 
-// Buscar time do usuário
+// Buscar time do usu�rio
 $stmtTeam = $pdo->prepare('SELECT * FROM teams WHERE user_id = ?');
 $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch();
@@ -23,7 +23,7 @@ $team = $stmtTeam->fetch();
 // Contar todos os jogadores no sistema
 $totalPlayers = $pdo->query('SELECT COUNT(*) FROM players')->fetchColumn();
 
-// Buscar jogadores do time específico
+// Buscar jogadores do time espec�fico
 $playersInTeam = 0;
 $playersList = [];
 if ($team) {
@@ -33,7 +33,7 @@ if ($team) {
     $playersInTeam = count($playersList);
 }
 
-// Buscar distribuição de jogadores por time
+// Buscar distribui��o de jogadores por time
 $playersByTeam = $pdo->query('SELECT team_id, COUNT(*) as count FROM players GROUP BY team_id')->fetchAll();
 
 ?>
@@ -53,29 +53,29 @@ $playersByTeam = $pdo->query('SELECT team_id, COUNT(*) as count FROM players GRO
     </style>
 </head>
 <body>
-    <h1>🔍 Diagnóstico do Meu Elenco</h1>
+    <h1>?? Diagn�stico do Meu Elenco</h1>
     
     <div class="card">
-        <h2>👤 Usuário Logado</h2>
+        <h2>?? Usu�rio Logado</h2>
         <p><strong>ID:</strong> <?= $user['id'] ?></p>
         <p><strong>Nome:</strong> <?= htmlspecialchars($user['name']) ?></p>
         <p><strong>Liga:</strong> <?= $user['league'] ?></p>
     </div>
     
     <div class="card">
-        <h2>🏀 Time do Usuário</h2>
+        <h2>?? Time do Usu�rio</h2>
         <?php if ($team): ?>
-            <p class="success">✅ Time encontrado!</p>
+            <p class="success">? Time encontrado!</p>
             <p><strong>ID do Time:</strong> <?= $team['id'] ?></p>
             <p><strong>Nome:</strong> <?= htmlspecialchars($team['city'] . ' ' . $team['name']) ?></p>
             <p><strong>Liga:</strong> <?= $team['league'] ?></p>
         <?php else: ?>
-            <p class="error">❌ Usuário não possui time!</p>
+            <p class="error">? Usu�rio n�o possui time!</p>
         <?php endif; ?>
     </div>
     
     <div class="card">
-        <h2>👥 Jogadores</h2>
+        <h2>?? Jogadores</h2>
         <p><strong>Total de jogadores no sistema:</strong> <?= $totalPlayers ?></p>
         <p><strong>Jogadores no time <?= $team['id'] ?? 'N/A' ?>:</strong> 
             <span class="<?= $playersInTeam > 0 ? 'success' : 'error' ?>">
@@ -84,10 +84,10 @@ $playersByTeam = $pdo->query('SELECT team_id, COUNT(*) as count FROM players GRO
         </p>
         
         <?php if ($playersInTeam == 0 && $team): ?>
-            <p class="warning">⚠️ O time existe mas não tem jogadores! Você pode adicionar jogadores na página Meu Elenco.</p>
+            <p class="warning">?? O time existe mas n�o tem jogadores! Voc� pode adicionar jogadores na p�gina Meu Elenco.</p>
         <?php endif; ?>
         
-        <h3>Distribuição por Time:</h3>
+        <h3>Distribui��o por Time:</h3>
         <table>
             <tr><th>Team ID</th><th>Quantidade</th></tr>
             <?php foreach ($playersByTeam as $row): ?>
@@ -104,9 +104,9 @@ $playersByTeam = $pdo->query('SELECT team_id, COUNT(*) as count FROM players GRO
     
     <?php if ($playersInTeam > 0): ?>
     <div class="card">
-        <h2>📋 Lista de Jogadores do Time</h2>
+        <h2>?? Lista de Jogadores do Time</h2>
         <table>
-            <tr><th>ID</th><th>Nome</th><th>Posição</th><th>OVR</th><th>Função</th></tr>
+            <tr><th>ID</th><th>Nome</th><th>Posi��o</th><th>OVR</th><th>Fun��o</th></tr>
             <?php foreach ($playersList as $p): ?>
                 <tr>
                     <td><?= $p['id'] ?></td>
@@ -121,11 +121,12 @@ $playersByTeam = $pdo->query('SELECT team_id, COUNT(*) as count FROM players GRO
     <?php endif; ?>
     
     <div class="card">
-        <h2>🔧 Ações</h2>
-        <p><a href="/my-roster.php" style="color: #00aaff;">← Voltar para Meu Elenco</a></p>
+        <h2>?? A��es</h2>
+        <p><a href="/my-roster.php" style="color: #00aaff;">? Voltar para Meu Elenco</a></p>
         <?php if ($team && $playersInTeam == 0): ?>
-            <p class="warning">O time está vazio. Use o formulário em "Meu Elenco" para adicionar jogadores.</p>
+            <p class="warning">O time est� vazio. Use o formul�rio em "Meu Elenco" para adicionar jogadores.</p>
         <?php endif; ?>
     </div>
 </body>
 </html>
+

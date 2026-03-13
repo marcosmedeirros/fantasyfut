@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Schema Migration System
  * Verifica e cria/atualiza schema automaticamente
@@ -9,7 +9,7 @@ require_once __DIR__ . '/db.php';
 function runMigrations() {
     $pdo = db();
     
-    // Array de migrações com nome único para rastrear execução
+    // Array de migra��es com nome �nico para rastrear execu��o
     $migrations = [
         'create_rumors' => [
             'sql' => "CREATE TABLE IF NOT EXISTS rumors (
@@ -63,8 +63,8 @@ function runMigrations() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 season_id INT NOT NULL,
                 name VARCHAR(120) NOT NULL,
-                position ENUM('PG','SG','SF','PF','C') NOT NULL,
-                secondary_position ENUM('PG','SG','SF','PF','C') NULL,
+                position ENUM('GK','DEF','MID','ATT') NOT NULL,
+                secondary_position ENUM('GK','DEF','MID','ATT') NULL,
                 age INT NOT NULL,
                 ovr INT NOT NULL,
                 photo_url VARCHAR(255) NULL,
@@ -165,8 +165,8 @@ function runMigrations() {
             'condition' => "SELECT COUNT(*) as cnt FROM leagues",
             'sql' => "INSERT IGNORE INTO leagues (name, description) VALUES 
                 ('ELITE', 'Liga Elite - Jogadores experientes'),
-                ('NEXT', 'Liga Next - Jogadores intermediários avançados'),
-                ('RISE', 'Liga Rise - Jogadores intermediários'),
+                ('NEXT', 'Liga Next - Jogadores intermedi�rios avan�ados'),
+                ('RISE', 'Liga Rise - Jogadores intermedi�rios'),
                 ('ROOKIE', 'Liga Rookie - Jogadores iniciantes');"
         ],
         'create_users' => [
@@ -207,7 +207,7 @@ function runMigrations() {
         current_cycle INT NOT NULL DEFAULT 1,
                 conference ENUM('LESTE','OESTE') NULL,
                 name VARCHAR(120) NOT NULL,
-                city VARCHAR(120) NOT NULL,
+        city VARCHAR(120) NULL,
                 mascot VARCHAR(120) NOT NULL,
                 photo_url VARCHAR(255) NULL,
                 division_id INT NULL,
@@ -227,7 +227,7 @@ function runMigrations() {
                 seasons_in_league INT NOT NULL DEFAULT 0,
                 position VARCHAR(20) NOT NULL,
                 secondary_position VARCHAR(20) NULL,
-                role ENUM('Titular','Banco','Outro','G-League') NOT NULL DEFAULT 'Titular',
+            role ENUM('Titular','Banco','Outro') NOT NULL DEFAULT 'Titular',
                 available_for_trade TINYINT(1) NOT NULL DEFAULT 0,
                 ovr INT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -300,8 +300,8 @@ function runMigrations() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 season_id INT NOT NULL,
                 name VARCHAR(120) NOT NULL,
-                position ENUM('PG','SG','SF','PF','C') NOT NULL,
-                secondary_position ENUM('PG','SG','SF','PF','C') NULL,
+            position ENUM('GK','DEF','MID','ATT') NOT NULL,
+            secondary_position ENUM('GK','DEF','MID','ATT') NULL,
                 age INT NOT NULL,
                 ovr INT NOT NULL,
                 photo_url VARCHAR(255) NULL,
@@ -476,13 +476,13 @@ function runMigrations() {
 
     foreach ($migrations as $name => $migration) {
         try {
-            // Executar a migração
+            // Executar a migra��o
             $pdo->exec($migration['sql']);
             $executed++;
-            error_log("[MIGRATION] ✓ {$name} executada com sucesso");
+            error_log("[MIGRATION] ? {$name} executada com sucesso");
         } catch (PDOException $e) {
             $errors[] = "{$name}: " . $e->getMessage();
-            error_log("[MIGRATION] ✗ {$name} falhou: " . $e->getMessage());
+            error_log("[MIGRATION] ? {$name} falhou: " . $e->getMessage());
         }
     }
 
@@ -606,7 +606,7 @@ function runMigrations() {
                 $pdo->exec("ALTER TABLE seasons ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at");
             }
 
-            // Garantir índices básicos
+            // Garantir �ndices b�sicos
             $idxLeague = $pdo->query("SHOW INDEX FROM seasons WHERE Key_name = 'idx_season_league'")->fetch();
             if (!$idxLeague) {
                 $pdo->exec("CREATE INDEX idx_season_league ON seasons(league)");
@@ -622,7 +622,7 @@ function runMigrations() {
                 $pdo->exec("ALTER TABLE seasons DROP INDEX `year`");
             }
 
-            // Garante associação entre temporadas existentes e um sprint
+            // Garante associa��o entre temporadas existentes e um sprint
             $seasonsMissingSprint = $pdo->query("SELECT DISTINCT league FROM seasons WHERE sprint_id IS NULL OR sprint_id = 0")->fetchAll(PDO::FETCH_COLUMN);
             foreach ($seasonsMissingSprint as $league) {
                 $stmtSprint = $pdo->prepare("SELECT id FROM sprints WHERE league = ? ORDER BY id ASC LIMIT 1");
@@ -639,7 +639,7 @@ function runMigrations() {
                 $stmtUpdateSeason->execute([$sprintId, $league]);
             }
 
-            // Tornar sprint_id obrigatório após preenchimento
+            // Tornar sprint_id obrigat�rio ap�s preenchimento
             $pdo->exec("ALTER TABLE seasons MODIFY sprint_id INT NOT NULL");
 
             // Foreign key sprint
@@ -692,7 +692,7 @@ function runMigrations() {
                 $pdo->exec("CREATE INDEX idx_pick_season ON picks(season_id)");
             }
 
-            // Consolidar duplicatas de picks para garantir que cada combinação exista apenas uma vez
+            // Consolidar duplicatas de picks para garantir que cada combina��o exista apenas uma vez
             $dupStmt = $pdo->query("SELECT original_team_id, season_year, round
                 FROM picks
                 GROUP BY original_team_id, season_year, round
@@ -745,7 +745,7 @@ function runMigrations() {
                 }
             }
 
-            // Garantir índice único correto para picks (considera time original)
+            // Garantir �ndice �nico correto para picks (considera time original)
             $stmtUniqPick = $pdo->prepare("SELECT GROUP_CONCAT(column_name ORDER BY seq_in_index) as cols
                 FROM information_schema.STATISTICS
                 WHERE TABLE_SCHEMA = DATABASE()
@@ -816,6 +816,33 @@ function runMigrations() {
         }
     } catch (PDOException $e) {
         $errors[] = "ajuste_players: " . $e->getMessage();
+    }
+
+    try {
+        $hasTeamsTable = $pdo->query("SHOW TABLES LIKE 'teams'")->fetch();
+        if ($hasTeamsTable) {
+            $stmtCity = $pdo->query("SHOW COLUMNS FROM teams LIKE 'city'")->fetch(PDO::FETCH_ASSOC);
+            if ($stmtCity && strtoupper($stmtCity['Null']) === 'NO') {
+                $pdo->exec("ALTER TABLE teams MODIFY city VARCHAR(120) NULL");
+            }
+        }
+    } catch (PDOException $e) {
+        $errors[] = "ajuste_teams_city_nullable: " . $e->getMessage();
+    }
+
+    try {
+        $hasInitPool = $pdo->query("SHOW TABLES LIKE 'initdraft_pool'")->fetch();
+        if ($hasInitPool) {
+            $pdo->exec("ALTER TABLE initdraft_pool MODIFY position ENUM('GK','DEF','MID','ATT') NOT NULL");
+            $pdo->exec("ALTER TABLE initdraft_pool MODIFY secondary_position ENUM('GK','DEF','MID','ATT') NULL");
+        }
+        $hasDraftPool = $pdo->query("SHOW TABLES LIKE 'draft_pool'")->fetch();
+        if ($hasDraftPool) {
+            $pdo->exec("ALTER TABLE draft_pool MODIFY position ENUM('GK','DEF','MID','ATT') NOT NULL");
+            $pdo->exec("ALTER TABLE draft_pool MODIFY secondary_position ENUM('GK','DEF','MID','ATT') NULL");
+        }
+    } catch (PDOException $e) {
+        $errors[] = "ajuste_draft_positions: " . $e->getMessage();
     }
 
     try {
@@ -965,3 +992,4 @@ if (php_sapi_name() === 'cli' || (isset($_GET['run_migrations']) && $_GET['run_m
     echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     exit;
 }
+

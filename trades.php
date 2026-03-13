@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -89,14 +89,14 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Trades - FBA Manager</title>
+  <title>Trades - FUT Manager</title>
   
   <!-- PWA Meta Tags -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0a0a0c">
+  <meta name="theme-color" content="#080931">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
   <link rel="apple-touch-icon" href="/img/icon-192.png">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -105,12 +105,12 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
   <link rel="stylesheet" href="/css/styles.css" />
   <style>
     .nav-tabs {
-      border-bottom: 2px solid var(--fba-border);
+      border-bottom: 2px solid var(--FUT-border);
     }
     .nav-tabs .nav-link {
       background: transparent;
       border: none;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
       font-weight: 500;
       padding: 12px 24px;
       transition: all 0.3s ease;
@@ -119,19 +119,19 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
     }
     .nav-tabs .nav-link:hover {
       background: rgba(241, 117, 7, 0.1);
-      color: var(--fba-orange);
-      border-bottom-color: var(--fba-orange);
+      color: var(--FUT-orange);
+      border-bottom-color: var(--FUT-orange);
     }
     .nav-tabs .nav-link.active {
       background: rgba(241, 117, 7, 0.15);
-      color: var(--fba-orange);
-      border-bottom-color: var(--fba-orange);
+      color: var(--FUT-orange);
+      border-bottom-color: var(--FUT-orange);
       font-weight: 600;
     }
 
     .trade-list-panel {
-      background: var(--fba-card-bg);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-card-bg);
+      border: 1px solid var(--FUT-border);
       border-radius: 10px;
       padding: 20px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
@@ -139,20 +139,20 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
 
     .trade-list-search .form-control,
     .trade-list-search .form-select {
-      background: var(--fba-dark-bg);
-      color: var(--fba-text);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-dark-bg);
+      color: var(--FUT-text);
+      border: 1px solid var(--FUT-border);
     }
 
     .trade-list-search .form-control:focus,
     .trade-list-search .form-select:focus {
-      border-color: var(--fba-orange);
+      border-color: var(--FUT-orange);
       box-shadow: 0 0 0 0.25rem rgba(241, 117, 7, 0.25);
     }
 
     .player-card {
-      background: var(--fba-dark-bg);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-dark-bg);
+      border: 1px solid var(--FUT-border);
       border-radius: 10px;
       padding: 16px;
       margin-bottom: 12px;
@@ -160,20 +160,20 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
     }
 
     .player-card:hover {
-      border-color: var(--fba-orange);
+      border-color: var(--FUT-orange);
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(241, 117, 7, 0.25);
     }
 
     .player-name {
       font-weight: 600;
-      color: var(--fba-text);
+      color: var(--FUT-text);
       font-size: 1.05rem;
     }
 
     .player-meta {
       font-size: 0.9rem;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
     }
 
     /* Ocultar seção de pick swaps (temporariamente) */
@@ -188,7 +188,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       align-items: center;
       gap: 8px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--fba-border);
+      border: 1px solid var(--FUT-border);
       border-radius: 30px;
       padding: 6px 14px;
     }
@@ -205,18 +205,18 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       font-weight: 600;
       font-size: 0.85rem;
       letter-spacing: 0.05em;
-      color: var(--fba-text);
+      color: var(--FUT-text);
     }
 
     #playersList .alert {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--fba-border);
-      color: var(--fba-text);
+      border: 1px solid var(--FUT-border);
+      color: var(--FUT-text);
     }
 
     .pick-selector {
       background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--fba-border);
+      border: 1px solid var(--FUT-border);
       border-radius: 12px;
       padding: 16px;
       box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
@@ -235,15 +235,15 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--fba-dark-bg);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-dark-bg);
+      border: 1px solid var(--FUT-border);
       border-radius: 10px;
       padding: 10px 14px;
       transition: border 0.2s ease, transform 0.2s ease;
     }
 
     .pick-option-card:hover {
-      border-color: var(--fba-orange);
+      border-color: var(--FUT-orange);
       transform: translateY(-1px);
     }
 
@@ -264,33 +264,33 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       gap: 6px;
       padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid var(--fba-border);
+      border: 1px solid var(--FUT-border);
       background: rgba(255, 255, 255, 0.04);
-      color: var(--fba-text);
+      color: var(--FUT-text);
       font-size: 0.85rem;
       cursor: pointer;
       transition: border 0.2s ease, background 0.2s ease;
     }
 
     .reaction-chip.active {
-      border-color: var(--fba-orange);
+      border-color: var(--FUT-orange);
       background: rgba(241, 117, 7, 0.15);
     }
 
     .reaction-count {
       font-size: 0.75rem;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
     }
 
     .pick-title {
-      color: var(--fba-text);
+      color: var(--FUT-text);
       font-weight: 600;
       margin-bottom: 2px;
     }
 
     .pick-meta {
       font-size: 0.85rem;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
     }
 
     .selected-picks {
@@ -325,7 +325,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
     .pick-protection-select {
       background: #ffffff;
       color: #000000;
-      border: 1px solid var(--fba-orange);
+      border: 1px solid var(--FUT-orange);
       border-radius: 8px;
       padding: 6px 10px;
       min-width: 140px;
@@ -346,9 +346,9 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       text-align: center;
       padding: 12px;
       background: rgba(255, 255, 255, 0.03);
-      border: 1px dashed var(--fba-border);
+      border: 1px dashed var(--FUT-border);
       border-radius: 10px;
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
       font-size: 0.9rem;
     }
   </style>
@@ -359,11 +359,11 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
     <div class="text-center mb-4">
       <img src="<?= htmlspecialchars(($team['photo_url'] ?? '/img/default-team.png')) ?>" 
            alt="<?= htmlspecialchars($team['name'] ?? 'Time') ?>" class="team-avatar">
-      <h5 class="text-white mb-1"><?= isset($team['name']) ? htmlspecialchars(($team['city'] . ' ' . $team['name'])) : 'Sem time' ?></h5>
+      <h5 class="text-white mb-1"><?= isset($team['name']) ? htmlspecialchars($team['name']) : 'Sem time' ?></h5>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
     </div>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <ul class="sidebar-menu">
       <li>
@@ -382,12 +382,6 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
         <a href="/my-roster.php">
           <i class="bi bi-person-badge-fill"></i>
           Meu Elenco
-        </a>
-      </li>
-      <li>
-        <a href="/picks.php">
-          <i class="bi bi-trophy-fill"></i>
-          Picks
         </a>
       </li>
       <li>
@@ -448,7 +442,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
       </li>
     </ul>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -598,7 +592,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
           <!-- Formulário de novo rumor (GM) -->
           <div class="mb-3">
             <label class="form-label text-white">Seu rumor</label>
-            <textarea class="form-control bg-dark text-white border-orange" id="rumorContent" rows="2" placeholder="Ex.: Procuro SG com OVR 80+ ou vendo PF"></textarea>
+            <textarea class="form-control bg-dark text-white border-orange" id="rumorContent" rows="2" placeholder="Ex.: Procuro DEF com OVR 80+ ou vendo ATT"></textarea>
             <div class="d-flex justify-content-end mt-2">
               <button class="btn btn-orange" id="submitRumorBtn"><i class="bi bi-megaphone-fill me-1"></i>Publicar</button>
             </div>
@@ -674,16 +668,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
                     <div class="selected-picks" id="offerPlayersSelected"></div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label class="form-label text-white mb-0">Picks</label>
-                    <small class="text-light-gray">Adicione picks na proposta</small>
-                  </div>
-                  <div class="pick-selector">
-                    <div class="pick-options" id="offerPicksOptions"></div>
-                    <div class="selected-picks" id="offerPicksSelected"></div>
-                  </div>
-                </div>
+                
               </div>
 
               <!-- O que você quer -->
@@ -699,16 +684,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
                     <div class="selected-picks" id="requestPlayersSelected"></div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label class="form-label text-white mb-0">Picks</label>
-                    <small class="text-light-gray">Selecione picks do time alvo</small>
-                  </div>
-                  <div class="pick-selector">
-                    <div class="pick-options" id="requestPicksOptions"></div>
-                    <div class="selected-picks" id="requestPicksSelected"></div>
-                  </div>
-                </div>
+                
               </div>
             </div>
 
@@ -814,7 +790,7 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
     window.__TEAM_ID__ = <?= $teamId ? (int)$teamId : 'null' ?>;
     window.__USER_LEAGUE__ = '<?= htmlspecialchars($user['league'], ENT_QUOTES) ?>';
     window.__CURRENT_SEASON_YEAR__ = <?= (int)$currentSeasonYear ?>;
-    window.__TEAM_NAME__ = '<?= htmlspecialchars(trim(($team['city'] ?? '') . ' ' . ($team['name'] ?? '')), ENT_QUOTES) ?>';
+    window.__TEAM_NAME__ = '<?= htmlspecialchars(($team['name'] ?? 'Time'), ENT_QUOTES) ?>';
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/sidebar.js"></script>
@@ -858,3 +834,5 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
   <?php endif; ?>
 </body>
 </html>
+
+

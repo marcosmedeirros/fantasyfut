@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
  * Migração para adicionar coluna reset_token_expiry
- * Execute acessando: https://fbabrasil.com.br/backend/migrate-reset-token.php
+ * Execute acessando: https://FUTbrasil.com.br/backend/migrate-reset-token.php
  */
 
 require_once __DIR__ . '/db.php';
@@ -49,3 +49,5 @@ try {
         'error' => 'Erro na migração: ' . $e->getMessage()
     ]);
 }
+
+

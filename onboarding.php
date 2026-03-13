@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 requireAuth();
 
@@ -9,15 +9,15 @@ $user = getUserSession();
 <head>
     <meta charset="UTF-8" />
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-    <title>Configuração Inicial - FBA Manager</title>
+    <title>Configuração Inicial - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0a0a0c">
+    <meta name="theme-color" content="#080931">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@ $user = getUserSession();
     <div class="container py-5">
         <div class="onboarding-container">
             <div class="text-center mb-5">
-                <img src="/img/fba-logo.png" alt="FBA" height="80" class="mb-3">
+                <img src="/img/FUT-logo.png" alt="FUT" height="80" class="mb-3">
                 <h1 class="fw-bold text-white">Bem-vindo, <?= htmlspecialchars($user['name']) ?>!</h1>
                 <p class="text-light-gray">Vamos configurar sua franquia em 3 passos simples</p>
             </div>
@@ -114,8 +114,9 @@ $user = getUserSession();
                                     <input type="text" name="name" class="form-control form-control-lg" placeholder="Ex: Lakers" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label text-white fw-bold">Cidade *</label>
-                                    <input type="text" name="city" class="form-control form-control-lg" placeholder="Ex: Los Angeles" required>
+                                    <label class="form-label text-white fw-bold">Cidade</label>
+                                    <input type="text" name="city" class="form-control form-control-lg" placeholder="Opcional">
+                                    <small class="text-light-gray">Se preferir, deixe apenas o nome do time.</small>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -160,3 +161,5 @@ $user = getUserSession();
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

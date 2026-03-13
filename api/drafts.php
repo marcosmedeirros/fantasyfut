@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
 
@@ -49,7 +49,7 @@ if ($method === 'POST') {
         $league = isset($_GET['league']) ? $_GET['league'] : null;
         
         if (!$year || !$league) {
-            jsonResponse(422, ['error' => 'Ano e liga são obrigatórios.']);
+            jsonResponse(422, ['error' => 'Ano e liga s�o obrigat�rios.']);
         }
         
         // Busca draft existente
@@ -87,17 +87,17 @@ if ($method === 'POST') {
     $players = $body['players'] ?? [];
 
     if (!$year) {
-        jsonResponse(422, ['error' => 'Ano é obrigatório.']);
+        jsonResponse(422, ['error' => 'Ano � obrigat�rio.']);
     }
     
     if (!$league) {
-        jsonResponse(422, ['error' => 'Liga é obrigatória.']);
+        jsonResponse(422, ['error' => 'Liga � obrigat�ria.']);
     }
 
     $exists = $pdo->prepare('SELECT id FROM drafts WHERE year = ? AND league = ?');
     $exists->execute([$year, $league]);
     if ($exists->fetch()) {
-        jsonResponse(409, ['error' => 'Draft para esse ano e liga já existe.']);
+        jsonResponse(409, ['error' => 'Draft para esse ano e liga j� existe.']);
     }
 
     $pdo->beginTransaction();
@@ -129,3 +129,4 @@ if ($method === 'POST') {
 }
 
 jsonResponse(405, ['error' => 'Method not allowed']);
+

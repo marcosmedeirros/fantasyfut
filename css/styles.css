@@ -8,15 +8,16 @@
 	min-height: 100vh;
 }
 /* =========================================================
-   FBA BRASIL – CSS Modernizado v2 (mantém classes existentes)
-   Paleta (IDV): #fc0025, #ffffff, #0a0a0c, #828282
+	FUT BRASIL – CSS Modernizado v2 (mantém classes existentes)
+	Paleta (IDV): #080931, #ffffff, #0a0a0c, #828282
    ========================================================= */
 
 /* ---------- Design Tokens ---------- */
 :root{
 	/* Brand (IDV) */
-	--fba-brand: #fc0025;
-	--fba-brand-2: #ff2a44; /* usado só em gradiente (mesma identidade do seu CSS) */
+	--fba-brand: #080931;
+	--fba-brand-2: #0f1550; /* usado só em gradiente */
+	--fba-orange: var(--fba-brand);
 	--fba-white: #ffffff;
 	--fba-black: #0a0a0c;
 	--fba-gray:  #828282;
@@ -42,10 +43,10 @@
 	--shadow-0: 0 6px 18px rgba(0,0,0,.32);
 	--shadow-1: 0 10px 34px rgba(0,0,0,.45);
 	--shadow-2: 0 18px 60px rgba(0,0,0,.55);
-	--shadow-brand: 0 14px 44px rgba(252,0,37,.25);
+	--shadow-brand: 0 14px 44px rgba(8,9,49,.25);
 
 	/* Rings / Focus */
-	--ring: 0 0 0 .25rem rgba(252,0,37,.25);
+	--ring: 0 0 0 .25rem rgba(8,9,49,.25);
 
 	/* Motion */
 	--ease: cubic-bezier(.2,.8,.2,1);

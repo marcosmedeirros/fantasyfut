@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Garantir que a conexão está disponível
 if (!function_exists('db')) {
     require_once __DIR__ . '/../backend/db.php';
@@ -46,7 +46,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league'] ?? 'ELITE') ?></span>
     </div>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <ul class="sidebar-menu">
         <li>
@@ -137,7 +137,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         </li>
     </ul>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <div class="text-center">
         <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -145,3 +145,5 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         </a>
     </div>
 </div>
+
+

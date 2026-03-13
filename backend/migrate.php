@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
  * Script de migração para adicionar suporte a múltiplas ligas
- * Execute este arquivo acessando: https://fbabrasil.com.br/backend/migrate.php
+ * Execute este arquivo acessando: https://FUTbrasil.com.br/backend/migrate.php
  */
 
 require_once __DIR__ . '/db.php';
@@ -145,3 +145,5 @@ try {
         'error' => 'Erro na migração: ' . $e->getMessage()
     ]);
 }
+
+

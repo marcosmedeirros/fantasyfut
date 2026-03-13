@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
 require_once dirname(__DIR__) . '/backend/db.php';
@@ -23,50 +23,50 @@ if (!$userTeam) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Drafts - FBA Manager</title>
+    <title>Drafts - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .draft-card {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
             transition: all 0.3s ease;
         }
         .draft-card:hover {
-            border-color: var(--fba-orange);
+            border-color: var(--FUT-orange);
             box-shadow: 0 4px 12px rgba(241, 117, 7, 0.2);
         }
         .draft-year {
             font-size: 2rem;
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             margin-bottom: 10px;
         }
         .draft-team {
             display: flex;
             align-items: center;
             padding: 10px;
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             border-radius: 6px;
             margin-bottom: 8px;
-            border-left: 3px solid var(--fba-orange);
+            border-left: 3px solid var(--FUT-orange);
         }
         .draft-pick-order {
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             min-width: 40px;
         }
         .draft-player-name {
@@ -77,7 +77,7 @@ if (!$userTeam) {
             display: flex;
             gap: 15px;
             font-size: 0.9rem;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .draft-player-stat {
             display: flex;
@@ -86,7 +86,7 @@ if (!$userTeam) {
         }
         .draft-player-stat-value {
             font-weight: bold;
-            color: var(--fba-text);
+            color: var(--FUT-text);
             font-size: 1.1rem;
         }
         .draft-player-stat-label {
@@ -94,7 +94,7 @@ if (!$userTeam) {
             text-transform: uppercase;
         }
         .btn-draft-action {
-            background: var(--fba-orange);
+            background: var(--FUT-orange);
             border: none;
             color: #fff;
             padding: 8px 16px;
@@ -111,12 +111,12 @@ if (!$userTeam) {
         .no-drafts {
             text-align: center;
             padding: 40px 20px;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .no-drafts i {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             opacity: 0.5;
         }
         .draft-actions {
@@ -130,7 +130,7 @@ if (!$userTeam) {
         }
     </style>
 </head>
-<body class="fba-dark">
+<body class="FUT-dark">
     <div class="container-fluid">
         <div class="row" style="min-height: 100vh;">
             <!-- Sidebar -->
@@ -139,7 +139,7 @@ if (!$userTeam) {
             <!-- Main Content -->
             <div class="col-md-9 p-4">
                 <div class="mb-4">
-                    <h1 class="display-5 mb-2" style="color: var(--fba-text);">
+                    <h1 class="display-5 mb-2" style="color: var(--FUT-text);">
                         <i class="bi bi-calendar2-event"></i> Drafts
                     </h1>
                     <p class="text-muted">Acompanhe os drafts da sua liga e gerencie as seleções do seu time</p>
@@ -148,7 +148,7 @@ if (!$userTeam) {
                 <!-- Drafts List -->
                 <div id="drafts-container">
                     <div class="text-center py-5">
-                        <div class="spinner-border" style="color: var(--fba-orange);" role="status">
+                        <div class="spinner-border" style="color: var(--FUT-orange);" role="status">
                             <span class="visually-hidden">Carregando...</span>
                         </div>
                     </div>
@@ -157,8 +157,8 @@ if (!$userTeam) {
                 <!-- New Draft Modal -->
                 <div class="modal fade" id="newDraftModal" tabindex="-1">
                     <div class="modal-dialog">
-                        <div class="modal-content" style="background: var(--fba-card-bg); border: 1px solid var(--fba-border);">
-                            <div class="modal-header" style="border-color: var(--fba-border);">
+                        <div class="modal-content" style="background: var(--FUT-card-bg); border: 1px solid var(--FUT-border);">
+                            <div class="modal-header" style="border-color: var(--FUT-border);">
                                 <h5 class="modal-title">Novo Draft</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
@@ -168,9 +168,9 @@ if (!$userTeam) {
                                     <input type="number" class="form-control" id="draftYear" min="2024" max="2030" value="2026">
                                 </div>
                             </div>
-                            <div class="modal-footer" style="border-color: var(--fba-border);">
+                            <div class="modal-footer" style="border-color: var(--FUT-border);">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn" style="background: var(--fba-orange); color: #fff;" onclick="createDraft()">Criar Draft</button>
+                                <button type="button" class="btn" style="background: var(--FUT-orange); color: #fff;" onclick="createDraft()">Criar Draft</button>
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@ if (!$userTeam) {
                             <i class="bi bi-calendar-x"></i>
                             <h5>Nenhum draft cadastrado</h5>
                             <p>Crie um novo draft para começar a gerenciar as seleções da sua liga</p>
-                            <button class="btn" style="background: var(--fba-orange); color: #fff;" data-bs-toggle="modal" data-bs-target="#newDraftModal">
+                            <button class="btn" style="background: var(--FUT-orange); color: #fff;" data-bs-toggle="modal" data-bs-target="#newDraftModal">
                                 <i class="bi bi-plus-circle"></i> Novo Draft
                             </button>
                         </div>
@@ -354,3 +354,5 @@ if (!$userTeam) {
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

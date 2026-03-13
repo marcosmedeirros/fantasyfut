@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * API Free Agency - Propostas com moedas
  */
@@ -269,7 +269,7 @@ function ensureFaEnabledColumn(PDO $pdo): void
 function getFaEnabled(PDO $pdo, ?string $league): bool
 {
     if (!$league || !tableExists($pdo, 'league_settings')) {
-        return true; // padrão: aberto
+        return true; // padr�o: aberto
     }
     ensureFaEnabledColumn($pdo);
     try {
@@ -394,9 +394,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 jsonError('Acesso negado', 403);
             }
             $league = getLeagueFromRequest($valid_leagues, null);
-            error_log("🔍 Free Agency Admin - Liga recebida via GET: " . ($_GET['league'] ?? 'null'));
-            error_log("🔍 Free Agency Admin - Liga processada: " . ($league ?? 'null'));
-            error_log("🔍 Free Agency Admin - Team league (não deve interferir): " . ($team_league ?? 'null'));
+            error_log("?? Free Agency Admin - Liga recebida via GET: " . ($_GET['league'] ?? 'null'));
+            error_log("?? Free Agency Admin - Liga processada: " . ($league ?? 'null'));
+            error_log("?? Free Agency Admin - Team league (n�o deve interferir): " . ($team_league ?? 'null'));
             if (!$league) {
                 jsonError('Liga invalida');
             }
@@ -467,7 +467,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $team_ids = isset($_GET['team_ids']) ? explode(',', $_GET['team_ids']) : [];
             faSigningsCount($pdo, $team_ids);
             break;
-        // Conta quantos jogadores cada time já contratou na FA
+        // Conta quantos jogadores cada time j� contratou na FA
         function faSigningsCount($pdo, $team_ids) {
             $counts = [];
             if (empty($team_ids)) {
@@ -658,7 +658,7 @@ function listMyOffers(PDO $pdo, ?int $teamId): void
 
 function listAdminFreeAgents(PDO $pdo, string $league): void
 {
-    error_log("🏀 listAdminFreeAgents chamada com league: " . $league);
+    error_log("?? listAdminFreeAgents chamada com league: " . $league);
     $ovrColumn = freeAgentOvrColumn($pdo);
     $secondaryColumn = freeAgentSecondaryColumn($pdo);
     $hasSeasonId = columnExists($pdo, 'free_agents', 'season_id');
@@ -668,19 +668,19 @@ function listAdminFreeAgents(PDO $pdo, string $league): void
 
     if (freeAgentsUseLeagueEnum($pdo) && columnExists($pdo, 'free_agents', 'league_id')) {
         $leagueId = resolveLeagueId($pdo, $league);
-        error_log("🔑 Usando league enum + league_id. League: $league, LeagueId: " . ($leagueId ?? 'null'));
+        error_log("?? Usando league enum + league_id. League: $league, LeagueId: " . ($leagueId ?? 'null'));
         $where .= ' AND (fa.league = ?' . ($leagueId ? ' OR fa.league_id = ?' : '') . ')';
         $params[] = $league;
         if ($leagueId) {
             $params[] = $leagueId;
         }
     } elseif (freeAgentsUseLeagueEnum($pdo)) {
-        error_log("🔑 Usando apenas league enum. League: $league");
+        error_log("?? Usando apenas league enum. League: $league");
         $where .= ' AND fa.league = ?';
         $params[] = $league;
     } elseif (freeAgentsUseLeagueId($pdo)) {
         $leagueId = resolveLeagueId($pdo, $league);
-        error_log("🔑 Usando apenas league_id. League: $league, LeagueId: " . ($leagueId ?? 'null'));
+        error_log("?? Usando apenas league_id. League: $league, LeagueId: " . ($leagueId ?? 'null'));
         if (!$leagueId) {
             jsonSuccess(['league' => $league, 'players' => []]);
         }
@@ -688,8 +688,8 @@ function listAdminFreeAgents(PDO $pdo, string $league): void
         $params[] = $leagueId;
     }
 
-    error_log("📝 Query WHERE: $where");
-    error_log("📝 Query PARAMS: " . json_encode($params));
+    error_log("?? Query WHERE: $where");
+    error_log("?? Query PARAMS: " . json_encode($params));
 
     $select = "fa.id, fa.name, fa.age, fa.position, fa.{$ovrColumn} AS ovr";
     if ($secondaryColumn) {
@@ -887,7 +887,7 @@ function listWaivers(PDO $pdo, string $league): void
         $where .= ' AND (fa.is_retirement = 0 OR fa.is_retirement IS NULL)';
     }
 
-    // Somente ainda disponíveis (não assinados)
+    // Somente ainda dispon�veis (n�o assinados)
     if (columnExists($pdo, 'free_agents', 'status')) {
         $where .= " AND (fa.status IS NULL OR fa.status = 'available')";
     }
@@ -1066,12 +1066,12 @@ function requestNewFaPlayer(PDO $pdo, array $body, ?int $teamId, ?string $teamLe
     }
 
     if (isTeamFaBanned($pdo, (int)$teamId)) {
-        jsonError('Seu time está bloqueado de usar a Free Agency nesta temporada');
+        jsonError('Seu time est� bloqueado de usar a Free Agency nesta temporada');
     }
 
     $league = strtoupper(trim((string)($body['league'] ?? $teamLeague ?? '')));
     $name = trim((string)($body['name'] ?? ''));
-    $position = trim((string)($body['position'] ?? 'PG')) ?: 'PG';
+    $position = trim((string)($body['position'] ?? 'MID')) ?: 'MID';
     $secondary = trim((string)($body['secondary_position'] ?? ''));
     $age = (int)($body['age'] ?? 24);
     $ovr = (int)($body['ovr'] ?? 70);
@@ -1352,7 +1352,7 @@ function addPlayer(PDO $pdo, array $body): void
 {
     $league = strtoupper(trim((string)($body['league'] ?? '')));
     $name = trim((string)($body['name'] ?? ''));
-    $position = trim((string)($body['position'] ?? 'PG'));
+    $position = trim((string)($body['position'] ?? 'MID'));
     $secondary = trim((string)($body['secondary_position'] ?? ''));
     $age = (int)($body['age'] ?? 25);
     $ovr = (int)($body['ovr'] ?? 70);
@@ -1687,3 +1687,4 @@ function closeWithoutWinner(PDO $pdo, array $body): void
         jsonError('Erro ao encerrar sem vencedor: ' . $e->getMessage(), 500);
     }
 }
+

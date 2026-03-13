@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 require_once __DIR__ . '/backend/helpers.php';
@@ -89,7 +89,7 @@ foreach ($teams as &$t) {
 }
 unset($t); // Importante: limpar referência do foreach
 
-$whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas franquias na FBA?');
+$whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas franquias na FUT?');
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -97,14 +97,14 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-    <title>Times - FBA Manager</title>
+    <title>Times - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <link rel="apple-touch-icon" href="/img/icon-192.png">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -130,7 +130,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <ul class="sidebar-menu">
             <li>
@@ -215,7 +215,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
             </li>
         </ul>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -283,7 +283,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                                     <div class="d-flex align-items-center gap-2" style="flex-wrap: nowrap;">
                                         <img src="<?= htmlspecialchars(getTeamPhoto($t['photo_url'] ?? null)) ?>"
                                              alt="<?= htmlspecialchars($t['name']) ?>"
-                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 2px solid var(--fba-orange);">
+                                             style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px; border: 2px solid var(--FUT-orange);">
                                         <img src="<?= htmlspecialchars(getUserPhoto($t['owner_photo'] ?? null)) ?>"
                                             alt="<?= htmlspecialchars($t['owner_name'] ?? 'GM') ?>"
                                              style="width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3);">
@@ -455,7 +455,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                     <div id="content" style="display: none;">
                         <div class="table-responsive">
                             <table class="table table-dark table-hover mb-0">
-                                <thead style="background: var(--fba-orange); color: #000;">
+                                <thead style="background: var(--FUT-orange); color: #000;">
                                     <tr>
                                         <th>Jogador</th>
                                         <th>OVR</th>
@@ -487,7 +487,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                     <div id="picksContent" style="display: none;">
                         <div class="table-responsive">
                             <table class="table table-dark table-hover mb-0">
-                                <thead style="background: var(--fba-orange); color: #000;">
+                                <thead style="background: var(--FUT-orange); color: #000;">
                                     <tr>
                                         <th>Ano</th>
                                         <th>Rodada</th>
@@ -566,7 +566,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
                                         <img src="${photoUrl}" alt="${p.name}"
-                                             style="width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fba-orange); background: #1a1a1a;"
+                                             style="width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 1px solid var(--FUT-orange); background: #1a1a1a;"
                                              onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=121212&color=f17507&rounded=true&bold=true'">
                                         <strong>${p.name}</strong>
                                     </div>
@@ -666,7 +666,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                 let picks = picksData.picks || [];
                 picks = picks.filter((pk) => Number(pk.season_year) > Number(currentSeasonYear));
 
-                const positions = ['PG', 'SG', 'SF', 'PF', 'C'];
+                const positions = ['GK', 'DEF', 'MID', 'ATT'];
                 const startersMap = {};
                 positions.forEach((pos) => startersMap[pos] = null);
 
@@ -865,3 +865,4 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+

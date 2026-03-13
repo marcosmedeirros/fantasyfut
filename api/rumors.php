@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 /**
  * API de Rumores (aba Rumores ao lado de Trades Gerais)
- * - GMs podem publicar e remover seus próprios rumores
- * - Admin pode comentar (máx 3 por liga; ao criar o 4º, apaga o mais antigo) e remover qualquer comentário
+ * - GMs podem publicar e remover seus pr�prios rumores
+ * - Admin pode comentar (m�x 3 por liga; ao criar o 4�, apaga o mais antigo) e remover qualquer coment�rio
  * - Admin pode remover qualquer rumor
  */
 
@@ -29,13 +29,13 @@ function getUserTeam(PDO $pdo, int $userId) {
 }
 
 if ($method === 'GET') {
-    // Listar rumores e comentários do admin por liga do usuário (ou query param)
+    // Listar rumores e coment�rios do admin por liga do usu�rio (ou query param)
     $league = $_GET['league'] ?? null;
     if (!$league) {
         $team = $user && isset($user['id']) ? getUserTeam($pdo, (int)$user['id']) : null;
         $league = $team['league'] ?? ($_GET['league'] ?? null);
     }
-    if (!$league) jsonErr('league obrigatório');
+    if (!$league) jsonErr('league obrigat�rio');
 
     try {
         $stmtR = $pdo->prepare('SELECT r.*, t.city, t.name, t.photo_url, u.phone as gm_phone, u.name as gm_name FROM rumors r INNER JOIN teams t ON r.team_id = t.id INNER JOIN users u ON r.user_id = u.id WHERE r.league = ? ORDER BY r.created_at DESC');
@@ -72,12 +72,12 @@ if ($method === 'POST') {
     try {
         switch ($action) {
             case 'add_rumor': {
-                if (!$user || !isset($user['id'])) jsonErr('Não autenticado', 401);
+                if (!$user || !isset($user['id'])) jsonErr('N�o autenticado', 401);
                 $team = getUserTeam($pdo, (int)$user['id']);
-                if (!$team) jsonErr('Usuário sem time', 400);
+                if (!$team) jsonErr('Usu�rio sem time', 400);
                 $content = trim((string)($data['content'] ?? ''));
-                if ($content === '') jsonErr('Conteúdo obrigatório');
-                if (mb_strlen($content) > 500) jsonErr('Máximo 500 caracteres');
+                if ($content === '') jsonErr('Conte�do obrigat�rio');
+                if (mb_strlen($content) > 500) jsonErr('M�ximo 500 caracteres');
 
                 $stmt = $pdo->prepare('INSERT INTO rumors (user_id, team_id, league, content) VALUES (?, ?, ?, ?)');
                 $stmt->execute([(int)$user['id'], (int)$team['id'], $team['league'], $content]);
@@ -86,7 +86,7 @@ if ($method === 'POST') {
             }
             case 'delete_rumor': {
                 $rumorId = (int)($data['rumor_id'] ?? 0);
-                if (!$rumorId) jsonErr('rumor_id obrigatório');
+                if (!$rumorId) jsonErr('rumor_id obrigat�rio');
 
                 $stmt = $pdo->prepare('SELECT * FROM rumors WHERE id = ?');
                 $stmt->execute([$rumorId]);
@@ -94,7 +94,7 @@ if ($method === 'POST') {
                 if (!$rumor) jsonErr('Rumor inexistente', 404);
 
                 $canDelete = $isAdmin || ($user && isset($user['id']) && (int)$rumor['user_id'] === (int)$user['id']);
-                if (!$canDelete) jsonErr('Não autorizado', 403);
+                if (!$canDelete) jsonErr('N�o autorizado', 403);
 
                 $pdo->prepare('DELETE FROM rumors WHERE id = ?')->execute([$rumorId]);
                 echo json_encode(['success' => true]);
@@ -104,11 +104,11 @@ if ($method === 'POST') {
                 if (!$isAdmin) jsonErr('Apenas administradores', 403);
                 $league = (string)($data['league'] ?? '');
                 $content = trim((string)($data['content'] ?? ''));
-                if ($league === '') jsonErr('league obrigatório');
-                if ($content === '') jsonErr('Conteúdo obrigatório');
-                if (mb_strlen($content) > 500) jsonErr('Máximo 500 caracteres');
+                if ($league === '') jsonErr('league obrigat�rio');
+                if ($content === '') jsonErr('Conte�do obrigat�rio');
+                if (mb_strlen($content) > 500) jsonErr('M�ximo 500 caracteres');
 
-                // Inserir comentário
+                // Inserir coment�rio
                 $pdo->prepare('INSERT INTO rumor_admin_comments (user_id, league, content) VALUES (?, ?, ?)')
                     ->execute([(int)$user['id'], $league, $content]);
 
@@ -117,7 +117,7 @@ if ($method === 'POST') {
                 $stmtCnt->execute([$league]);
                 $count = (int)$stmtCnt->fetchColumn();
                 if ($count > 3) {
-                    // apagar os mais antigos além do top 3
+                    // apagar os mais antigos al�m do top 3
                     $stmtOld = $pdo->prepare('SELECT id FROM rumor_admin_comments WHERE league = ? ORDER BY created_at ASC');
                     $stmtOld->execute([$league]);
                     $rows = $stmtOld->fetchAll(PDO::FETCH_COLUMN);
@@ -133,13 +133,13 @@ if ($method === 'POST') {
             case 'delete_admin_comment': {
                 if (!$isAdmin) jsonErr('Apenas administradores', 403);
                 $commentId = (int)($data['comment_id'] ?? 0);
-                if (!$commentId) jsonErr('comment_id obrigatório');
+                if (!$commentId) jsonErr('comment_id obrigat�rio');
                 $pdo->prepare('DELETE FROM rumor_admin_comments WHERE id = ?')->execute([$commentId]);
                 echo json_encode(['success' => true]);
                 break;
             }
             default:
-                jsonErr('Ação inválida');
+                jsonErr('A��o inv�lida');
         }
     } catch (Exception $e) {
         jsonErr($e->getMessage());
@@ -147,6 +147,7 @@ if ($method === 'POST') {
     exit;
 }
 
-jsonErr('Método não suportado', 405);
+jsonErr('M�todo n�o suportado', 405);
 
 ?>
+

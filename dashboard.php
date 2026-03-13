@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -538,11 +538,11 @@ try {
     <meta name="theme-color" content="#fc0025">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="/manifest.json?v=3">
-    <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
-    <title>Dashboard - FBA Manager</title>
+    <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
+    <title>Dashboard - FUT Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -566,7 +566,7 @@ try {
         }
 
         .quick-action-card:hover {
-            border-color: var(--fba-orange);
+            border-color: var(--FUT-orange);
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
             transform: translateY(-3px);
         }
@@ -625,7 +625,7 @@ try {
             height: 70px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--fba-orange);
+            border: 3px solid var(--FUT-orange);
         }
 
         .draft-live-card .draft-meta {
@@ -662,7 +662,7 @@ try {
             <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
         </div>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <ul class="sidebar-menu">
             <li>
@@ -747,7 +747,7 @@ try {
             </li>
         </ul>
 
-        <hr style="border-color: var(--fba-border);">
+        <hr style="border-color: var(--FUT-border);">
 
         <div class="text-center">
             <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100">
@@ -933,11 +933,11 @@ try {
                             </div>
 
                             <div class="col-md-4">
-                                <a href="https://games.fbabrasil.com.br/auth/login.php" class="text-decoration-none" target="_blank" rel="noopener">
+                                <a href="https://games.FUTbrasil.com.br/auth/login.php" class="text-decoration-none" target="_blank" rel="noopener">
                                     <div class="quick-action-card">
                                         <div class="text-center py-3">
                                             <i class="bi bi-controller display-1 text-warning mb-2"></i>
-                                            <h5 class="text-white mb-1">FBA GAMES</h5>
+                                            <h5 class="text-white mb-1">FUT GAMES</h5>
                                             <p class="text-light-gray small mb-0">Acesse os mini jogos</p>
                                         </div>
                                     </div>
@@ -1013,7 +1013,7 @@ try {
                                 <img src="<?= htmlspecialchars($latestRumor['photo_url'] ?? '/img/default-team.png') ?>"
                                      alt="<?= htmlspecialchars(($latestRumor['city'] ?? '') . ' ' . ($latestRumor['name'] ?? 'Time')) ?>"
                                      class="rounded-circle"
-                                     style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--fba-orange);">
+                                     style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--FUT-orange);">
                                 <div class="flex-grow-1">
                                     <div class="text-white fw-bold">
                                         <?= htmlspecialchars(($latestRumor['city'] ?? '') . ' ' . ($latestRumor['name'] ?? '')) ?>
@@ -1072,7 +1072,7 @@ try {
                                             <img src="<?= htmlspecialchars($lastTrade['from_photo'] ?? '/img/default-team.png') ?>" 
                                                  alt="<?= htmlspecialchars($lastTrade['from_city'] . ' ' . $lastTrade['from_name']) ?>"
                                                  class="rounded-circle" 
-                                                 style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--fba-orange); display: block; margin: 0 auto;">
+                                                 style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--FUT-orange); display: block; margin: 0 auto;">
                                         </div>
                                         <h6 class="text-white mb-0 small"><?= htmlspecialchars($lastTrade['from_city'] . ' ' . $lastTrade['from_name']) ?></h6>
                                     </div>
@@ -1088,7 +1088,7 @@ try {
                                             <img src="<?= htmlspecialchars($lastTrade['to_photo'] ?? '/img/default-team.png') ?>" 
                                                  alt="<?= htmlspecialchars($lastTrade['to_city'] . ' ' . $lastTrade['to_name']) ?>"
                                                  class="rounded-circle" 
-                                                 style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--fba-orange); display: block; margin: 0 auto;">
+                                                 style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--FUT-orange); display: block; margin: 0 auto;">
                                         </div>
                                         <h6 class="text-white mb-0 small"><?= htmlspecialchars($lastTrade['to_city'] . ' ' . $lastTrade['to_name']) ?></h6>
                                     </div>
@@ -1414,7 +1414,7 @@ try {
                                             <div class="card-body text-center p-3">
                                                    <img src="<?= htmlspecialchars($playerPhoto) ?>" alt="<?= htmlspecialchars($playerName) ?>"
                                                        class="d-block mx-auto"
-                                                       style="width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 2px solid var(--fba-orange); background: #1a1a1a;"
+                                                       style="width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 2px solid var(--FUT-orange); background: #1a1a1a;"
                                                        onerror="this.src='https://ui-avatars.com/api/?name=<?= rawurlencode($playerName) ?>&background=121212&color=f17507&rounded=true&bold=true'">
                                                 <span class="badge bg-orange mb-2"><?= htmlspecialchars($player['position']) ?></span>
                                                 <h6 class="mb-1"><?= htmlspecialchars($player['name']) ?></h6>
@@ -1512,7 +1512,7 @@ try {
         };
 
         function buildTeamSummary() {
-            const positions = ['PG','SG','SF','PF','C'];
+            const positions = ['GK','DEF','MID','ATT'];
             const startersMap = {};
             positions.forEach(pos => startersMap[pos] = null);
 
@@ -1691,3 +1691,5 @@ try {
     </script>
 </body>
 </html>
+
+

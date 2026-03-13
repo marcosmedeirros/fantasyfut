@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
 require_once dirname(__DIR__) . '/backend/db.php';
@@ -58,14 +58,14 @@ foreach ($standings as $team) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Ranking da Liga - FBA Manager</title>
+    <title>Ranking da Liga - FUT Manager</title>
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FBA Manager">
+    <meta name="apple-mobile-web-app-title" content="FUT Manager">
     <link rel="apple-touch-icon" href="/img/icon-192.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
@@ -73,18 +73,18 @@ foreach ($standings as $team) {
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .standings-container {
-            background: var(--fba-card-bg);
-            border: 1px solid var(--fba-border);
+            background: var(--FUT-card-bg);
+            border: 1px solid var(--FUT-border);
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 30px;
         }
         .conference-header {
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             padding: 15px 20px;
-            border-bottom: 2px solid var(--fba-orange);
+            border-bottom: 2px solid var(--FUT-orange);
             font-weight: bold;
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             font-size: 1.1rem;
             display: flex;
             align-items: center;
@@ -95,15 +95,15 @@ foreach ($standings as $team) {
             border-collapse: collapse;
         }
         .standings-header {
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
             padding: 12px 15px;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             font-size: 0.9rem;
             text-transform: uppercase;
             display: grid;
             grid-template-columns: 50px 1fr 100px 80px 80px 100px 80px;
             gap: 15px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
             font-weight: 500;
             letter-spacing: 0.5px;
         }
@@ -113,17 +113,17 @@ foreach ($standings as $team) {
             grid-template-columns: 50px 1fr 100px 80px 80px 100px 80px;
             gap: 15px;
             align-items: center;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
             transition: all 0.3s ease;
         }
         .standings-row:hover {
-            background: var(--fba-dark-bg);
+            background: var(--FUT-dark-bg);
         }
         .standings-row:last-child {
             border-bottom: none;
         }
         .position-badge {
-            background: var(--fba-orange);
+            background: var(--FUT-orange);
             color: #000;
             width: 40px;
             height: 40px;
@@ -141,22 +141,22 @@ foreach ($standings as $team) {
         }
         .team-name {
             font-weight: 500;
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
         .team-owner {
             font-size: 0.8rem;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .stat-value {
-            color: var(--fba-text);
+            color: var(--FUT-text);
             font-weight: 500;
         }
         .stat-muted {
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             font-size: 0.9rem;
         }
         .ovr-value {
-            color: var(--fba-orange);
+            color: var(--FUT-orange);
             font-weight: bold;
             font-size: 1.1rem;
         }
@@ -190,34 +190,34 @@ foreach ($standings as $team) {
         .no-teams {
             text-align: center;
             padding: 40px 20px;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
         }
         .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            border-bottom: 1px solid var(--fba-border);
+            border-bottom: 1px solid var(--FUT-border);
         }
         .tab-btn {
             padding: 10px 20px;
             background: transparent;
             border: none;
-            color: var(--fba-text-muted);
+            color: var(--FUT-text-muted);
             cursor: pointer;
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             font-weight: 500;
         }
         .tab-btn.active {
-            color: var(--fba-orange);
-            border-bottom-color: var(--fba-orange);
+            color: var(--FUT-orange);
+            border-bottom-color: var(--FUT-orange);
         }
         .tab-btn:hover {
-            color: var(--fba-text);
+            color: var(--FUT-text);
         }
     </style>
 </head>
-<body class="fba-dark">
+<body class="FUT-dark">
     <div class="container-fluid">
         <div class="row" style="min-height: 100vh;">
             <!-- Sidebar -->
@@ -226,7 +226,7 @@ foreach ($standings as $team) {
             <!-- Main Content -->
             <div class="col-md-9 p-4">
                 <div class="mb-4">
-                    <h1 class="display-5 mb-2" style="color: var(--fba-text);">
+                    <h1 class="display-5 mb-2" style="color: var(--FUT-text);">
                         <i class="bi bi-trophy"></i> Ranking da Liga
                     </h1>
                     <p class="text-muted">Posicionamento de todos os times da <?= htmlspecialchars($league) ?></p>
@@ -336,3 +336,5 @@ foreach ($standings as $team) {
     <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

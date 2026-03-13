@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/db.php';
 require_once __DIR__ . '/backend/auth.php';
 
 $token = $_GET['token'] ?? null;
 if (!$token) {
     http_response_code(403);
-    echo 'Token inválido.';
+    echo 'Token inv�lido.';
     exit;
 }
 ?>
@@ -405,7 +405,7 @@ if (!$token) {
             background: transparent;
         }
 
-        /* Paginação */
+        /* Pagina��o */
         .pagination {
             --bs-pagination-bg: #fff;
             --bs-pagination-color: #000;
@@ -467,7 +467,7 @@ if (!$token) {
     <section class="session-card">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-start">
             <div>
-                <h5 class="mb-1">Status da Sessão</h5>
+                <h5 class="mb-1">Status da Sess�o</h5>
                 <div id="sessionSummary" class="text-muted"></div>
             </div>
             <div class="d-flex flex-wrap gap-2" id="actionButtons"></div>
@@ -488,7 +488,7 @@ if (!$token) {
             <div class="card-dark h-100 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <h5 class="mb-1">Ordem da 1ª Rodada</h5>
+                        <h5 class="mb-1">Ordem da 1� Rodada</h5>
                         <p class="text-muted mb-0 small" id="orderEditHint">Edite manualmente ou utilize o sorteio animado.</p>
                     </div>
                     <button class="btn btn-outline-light btn-sm" id="orderEditButton" onclick="openOrderModal()">
@@ -525,7 +525,7 @@ if (!$token) {
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" id="poolSearch" class="form-control search-input" placeholder="Filtrar por nome ou posição" />
+                            <input type="text" id="poolSearch" class="form-control search-input" placeholder="Filtrar por nome ou posi��o" />
                         </div>
                         <div class="table-responsive" id="poolWrapper">
                             <table class="table table-dark table-hover align-middle mb-0">
@@ -533,11 +533,11 @@ if (!$token) {
                                     <tr>
                                         <th>#</th>
                                         <th>Jogador</th>
-                                        <th>Posição</th>
+                                        <th>Posi��o</th>
                                         <th>OVR</th>
                                         <th>Idade</th>
                                         <th>Status</th>
-                                        <th class="text-end">Ações</th>
+                                        <th class="text-end">A��es</th>
                                     </tr>
                                 </thead>
                                 <tbody id="poolTable"></tbody>
@@ -568,7 +568,7 @@ if (!$token) {
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning small">
-                    Utilize os botões para ajustar manualmente ou clique em "Sortear" para gerar uma ordem aleatória estilo lottery. O formato snake será aplicado automaticamente nas demais rodadas.
+                    Utilize os bot�es para ajustar manualmente ou clique em "Sortear" para gerar uma ordem aleat�ria estilo lottery. O formato snake ser� aplicado automaticamente nas demais rodadas.
                 </div>
                 <div class="d-flex flex-column flex-md-row gap-2 mb-3">
                     <button class="btn btn-outline-light flex-fill" type="button" id="orderModeManual" onclick="setOrderMode('manual')">
@@ -586,7 +586,7 @@ if (!$token) {
                     <div class="lottery-results" id="lotteryResults"></div>
                 </div>
                 <div id="manualSection" class="d-none">
-                    <div class="text-light-gray small mb-2">Defina a posição de cada time antes de aplicar.</div>
+                    <div class="text-light-gray small mb-2">Defina a posi��o de cada time antes de aplicar.</div>
                     <div id="manualOrderList" class="d-grid gap-2"></div>
                 </div>
             </div>
@@ -623,7 +623,7 @@ if (!$token) {
                             <input type="text" name="name" class="form-control" required />
                         </div>
                         <div class="col-sm-6">
-                            <label class="form-label">Posição</label>
+                            <label class="form-label">Posi��o</label>
                             <select name="position" class="form-select">
                                 <option value="PG">PG</option>
                                 <option value="SG">SG</option>
@@ -668,7 +668,7 @@ if (!$token) {
                             <input type="text" name="name" id="editPlayerName" class="form-control" required />
                         </div>
                         <div class="col-sm-6">
-                            <label class="form-label">Posição</label>
+                            <label class="form-label">Posi��o</label>
                             <select name="position" id="editPlayerPosition" class="form-select">
                                 <option value="PG">PG</option>
                                 <option value="SG">SG</option>
@@ -781,7 +781,7 @@ if (!$token) {
 
     document.getElementById('poolSearch').addEventListener('input', (event) => {
         state.search = event.target.value.toLowerCase();
-        state.poolPage = 1; // Reset para primeira página ao buscar
+        state.poolPage = 1; // Reset para primeira p�gina ao buscar
         renderPool();
     });
 
@@ -807,7 +807,7 @@ if (!$token) {
     }
 
     function copyToken() {
-        navigator.clipboard.writeText(TOKEN).then(() => showMessage('Token copiado para a área de transferência.'));
+        navigator.clipboard.writeText(TOKEN).then(() => showMessage('Token copiado para a �rea de transfer�ncia.'));
     }
 
     function shuffle(list) {
@@ -830,7 +830,7 @@ if (!$token) {
                 fetch(`${API_URL}?action=pool&token=${TOKEN}`).then((r) => r.json()),
             ]);
 
-            if (!stateRes.success) throw new Error(stateRes.error || 'Erro ao carregar sessão');
+            if (!stateRes.success) throw new Error(stateRes.error || 'Erro ao carregar sess�o');
             state.session = stateRes.session;
             state.order = stateRes.order || [];
             state.teams = stateRes.teams || [];
@@ -863,7 +863,7 @@ if (!$token) {
         if (elements.orderEditHint) {
             elements.orderEditHint.textContent = canEdit
                 ? 'Edite manualmente ou utilize o sorteio animado.'
-                : 'Ordem definida (não editável).';
+                : 'Ordem definida (n�o edit�vel).';
         }
     }
 
@@ -898,7 +898,7 @@ if (!$token) {
         const total = order.length || (session.total_rounds ?? 0) * (state.teams.length || 0);
         const progress = total ? Math.round((drafted / total) * 100) : 0;
         const nextPick = order.find((pick) => !pick.picked_player_id);
-        const statusLabel = { setup: 'Configuração', in_progress: 'Em andamento', completed: 'Concluído' }[session.status] || 'Status';
+        const statusLabel = { setup: 'Configura��o', in_progress: 'Em andamento', completed: 'Conclu�do' }[session.status] || 'Status';
 
         elements.statGrid.innerHTML = `
             <div class="stat-card">
@@ -910,7 +910,7 @@ if (!$token) {
                 <p class="stat-value">${session.current_round ?? '-'}</p>
             </div>
             <div class="stat-card">
-                <p class="stat-label">Próximo Time</p>
+                <p class="stat-label">Pr�ximo Time</p>
                 <p class="stat-value">${formatTeamLabel(nextPick)}</p>
             </div>
             <div class="stat-card">
@@ -965,7 +965,7 @@ if (!$token) {
             });
             const data = await res.json();
             if (!data.success) throw new Error(data.error || 'Erro ao salvar agendamento');
-            showMessage('Agendamento salvo. O draft iniciará automaticamente às 00:00:01 (Brasília) no Dia 01 informado.', 'success');
+            showMessage('Agendamento salvo. O draft iniciar� automaticamente �s 00:00:01 (Bras�lia) no Dia 01 informado.', 'success');
             const modal = bootstrap.Modal.getInstance(document.getElementById('dailyScheduleModal'));
             modal?.hide();
             await loadState();
@@ -990,23 +990,23 @@ if (!$token) {
             if (startDate) {
                 buttons.push(`
                     <div class="small text-muted">
-                        Início: <strong>${formatDateBr(startDate)}</strong><br>
+                        In�cio: <strong>${formatDateBr(startDate)}</strong><br>
                         Fim: <strong>${formatDateBr(endDate) || '-'}</strong>
                     </div>
                 `);
             } else {
-                buttons.push(`<button class="btn btn-success btn-sm" onclick="openScheduleStartPicker()"><i class="bi bi-calendar-event me-1"></i>Definir dia de início</button>`);
+                buttons.push(`<button class="btn btn-success btn-sm" onclick="openScheduleStartPicker()"><i class="bi bi-calendar-event me-1"></i>Definir dia de in�cio</button>`);
             }
         }
 
         if (session.status === 'in_progress') {
             buttons.push(`<button class="btn btn-outline-info btn-sm" onclick="loadState()"><i class="bi bi-arrow-clockwise me-1"></i>Atualizar</button>`);
-            buttons.push(`<button class="btn btn-outline-light btn-sm" onclick="openDraftViewer()"><i class="bi bi-eye me-1"></i>Ver página do draft</button>`);
+            buttons.push(`<button class="btn btn-outline-light btn-sm" onclick="openDraftViewer()"><i class="bi bi-eye me-1"></i>Ver p�gina do draft</button>`);
             buttons.push(`<button class="btn btn-danger btn-sm" onclick="finalizeDraft()"><i class="bi bi-flag me-1"></i>Finalizar</button>`);
         }
 
         if (session.status === 'completed') {
-            buttons.push(`<span class="badge bg-success">Draft concluído</span>`);
+            buttons.push(`<span class="badge bg-success">Draft conclu�do</span>`);
         }
 
         elements.actionButtons.innerHTML = buttons.join('');
@@ -1134,11 +1134,11 @@ if (!$token) {
             if (!elements.lotteryButton) return;
             elements.lotteryButton.disabled = state.lotteryDrawn;
             if (state.lotteryDrawn) {
-                elements.lotteryButton.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Sorteio concluído';
+                elements.lotteryButton.innerHTML = '<i class="bi bi-check2-circle me-1"></i>Sorteio conclu�do';
                 return;
             }
             elements.lotteryButton.innerHTML = state.lotteryQueue.length
-                ? '<i class="bi bi-shuffle me-1"></i>Sortear próximo'
+                ? '<i class="bi bi-shuffle me-1"></i>Sortear pr�ximo'
                 : '<i class="bi bi-shuffle me-1"></i>Iniciar sorteio';
         }
 
@@ -1166,7 +1166,7 @@ if (!$token) {
             state.lotteryDrawn = true;
             localStorage.setItem(LOTTERY_STORAGE_KEY, '1');
             updateLotteryButton();
-            showMessage('Sorteio concluído.');
+            showMessage('Sorteio conclu�do.');
             return;
         }
 
@@ -1200,9 +1200,9 @@ if (!$token) {
             try {
                 if (state.session?.total_rounds) {
                     await submitLotteryOrder();
-                    showMessage('Sorteio concluído e ordem salva automaticamente.');
+                    showMessage('Sorteio conclu�do e ordem salva automaticamente.');
                 } else {
-                    showMessage('Sorteio concluído. Clique em Aplicar para definir o número de rodadas e salvar.', 'info');
+                    showMessage('Sorteio conclu�do. Clique em Aplicar para definir o n�mero de rodadas e salvar.', 'info');
                 }
             } catch (error) {
                 showMessage(error.message || 'Erro ao salvar ordem do sorteio', 'danger');
@@ -1248,7 +1248,7 @@ if (!$token) {
             return;
         }
 
-        // Paginação
+        // Pagina��o
         const totalPages = Math.ceil(filtered.length / state.poolPerPage);
         if (state.poolPage > totalPages) state.poolPage = totalPages;
         const start = (state.poolPage - 1) * state.poolPerPage;
@@ -1284,13 +1284,13 @@ if (!$token) {
                         <td>${player.position}</td>
                         <td>${player.ovr}</td>
                         <td>${player.age ?? '-'}</td>
-                        <td><span class="badge badge-${drafted ? 'drafted' : 'available'}">${drafted ? 'Drafted' : 'Disponível'}</span></td>
+                        <td><span class="badge badge-${drafted ? 'drafted' : 'available'}">${drafted ? 'Drafted' : 'Dispon�vel'}</span></td>
                         <td class="text-end">${actions}</td>
                     </tr>`;
             })
             .join('');
 
-        // Renderizar paginação
+        // Renderizar pagina��o
         renderPoolPagination(totalPages, filtered.length);
     }
 
@@ -1310,12 +1310,12 @@ if (!$token) {
 
         let html = '<nav><ul class="pagination pagination-sm mb-0">';
         
-        // Botão anterior
+        // Bot�o anterior
         html += `<li class="page-item ${state.poolPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changePoolPage(${state.poolPage - 1}); return false;">&laquo;</a>
         </li>`;
 
-        // Primeira página
+        // Primeira p�gina
         if (startPage > 1) {
             html += `<li class="page-item"><a class="page-link" href="#" onclick="changePoolPage(1); return false;">1</a></li>`;
             if (startPage > 2) {
@@ -1323,14 +1323,14 @@ if (!$token) {
             }
         }
 
-        // Páginas numeradas
+        // P�ginas numeradas
         for (let i = startPage; i <= endPage; i++) {
             html += `<li class="page-item ${i === state.poolPage ? 'active' : ''}">
                 <a class="page-link" href="#" onclick="changePoolPage(${i}); return false;">${i}</a>
             </li>`;
         }
 
-        // Última página
+        // �ltima p�gina
         if (endPage < totalPages) {
             if (endPage < totalPages - 1) {
                 html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
@@ -1338,7 +1338,7 @@ if (!$token) {
             html += `<li class="page-item"><a class="page-link" href="#" onclick="changePoolPage(${totalPages}); return false;">${totalPages}</a></li>`;
         }
 
-        // Botão próximo
+        // Bot�o pr�ximo
         html += `<li class="page-item ${state.poolPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changePoolPage(${state.poolPage + 1}); return false;">&raquo;</a>
         </li>`;
@@ -1377,7 +1377,7 @@ if (!$token) {
             return acc;
         }, {});
 
-        elements.roundsMeta.textContent = `${Object.keys(grouped).length} rodadas · ${state.order.length} picks`;
+        elements.roundsMeta.textContent = `${Object.keys(grouped).length} rodadas � ${state.order.length} picks`;
 
         const roundsHtml = Object.keys(grouped)
             .sort((a, b) => a - b)
@@ -1385,7 +1385,7 @@ if (!$token) {
                 const picks = grouped[round].sort((a, b) => a.pick_position - b.pick_position);
                 const rows = picks
                     .map((pick) => {
-                        const player = pick.player_name ? `${pick.player_name} (${pick.player_position ?? ''} - ${pick.player_ovr ?? '-'})` : '<span class="text-muted">—</span>';
+                        const player = pick.player_name ? `${pick.player_name} (${pick.player_position ?? ''} - ${pick.player_ovr ?? '-'})` : '<span class="text-muted">�</span>';
                         return `
                             <tr class="${pick.picked_player_id ? 'table-success' : ''}">
                                 <td class="fw-semibold">${pick.pick_position}</td>
@@ -1465,7 +1465,7 @@ if (!$token) {
 
     async function randomizeOrder() {
         if (state.lotteryDrawn) {
-            showMessage('O sorteio já foi realizado. Você pode ajustar a ordem manualmente.', 'warning');
+            showMessage('O sorteio j� foi realizado. Voc� pode ajustar a ordem manualmente.', 'warning');
             return;
         }
         if (!state.teams.length) {
@@ -1514,11 +1514,11 @@ if (!$token) {
                 return;
             }
 
-            // 2. PRIMEIRO perguntar o número de rodadas e salvar
+            // 2. PRIMEIRO perguntar o n�mero de rodadas e salvar
             const roundsOk = await ensureTotalRounds();
             if (!roundsOk) return;
 
-            // 3. DEPOIS salvar a ordem (que vai gerar as picks usando total_rounds já salvo)
+            // 3. DEPOIS salvar a ordem (que vai gerar as picks usando total_rounds j� salvo)
             const res = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1527,7 +1527,7 @@ if (!$token) {
             const data = await res.json();
             if (!data.success) throw new Error(data.error || 'Erro ao aplicar ordem');
 
-            // 4. Marcar loteria como concluída e atualizar UI
+            // 4. Marcar loteria como conclu�da e atualizar UI
             state.lotteryDrawn = true;
             updateOrderEditVisibility();
             
@@ -1544,13 +1544,13 @@ if (!$token) {
 
     async function ensureTotalRounds() {
         const currentRounds = state.session?.total_rounds ?? '';
-        const inputRounds = prompt('Quantas rodadas o draft terá?', currentRounds);
+        const inputRounds = prompt('Quantas rodadas o draft ter�?', currentRounds);
         if (inputRounds === null) {
             return false;
         }
         const roundsValue = parseInt(inputRounds, 10);
         if (Number.isNaN(roundsValue) || roundsValue < 1 || roundsValue > 10) {
-            showMessage('Informe um número de rodadas entre 1 e 10.', 'warning');
+            showMessage('Informe um n�mero de rodadas entre 1 e 10.', 'warning');
             return false;
         }
 
@@ -1663,7 +1663,7 @@ if (!$token) {
     function openEditPlayer(playerId) {
         const player = state.pool.find(p => p.id === playerId);
         if (!player) {
-            showMessage('Jogador não encontrado.', 'warning');
+            showMessage('Jogador n�o encontrado.', 'warning');
             return;
         }
         
@@ -1712,7 +1712,7 @@ if (!$token) {
             const res = await fetch(API_URL, { method: 'POST', body: formData });
             const data = await res.json();
             if (!data.success) throw new Error(data.error || 'Erro ao importar CSV');
-            showMessage(`Importação concluída: ${data.imported} jogadores.`);
+            showMessage(`Importa��o conclu�da: ${data.imported} jogadores.`);
             form.reset();
             bootstrap.Modal.getInstance(document.getElementById('importCSVModal')).hide();
             loadState();
@@ -1733,8 +1733,8 @@ if (!$token) {
     }
 
     function formatTeamLabel(pick) {
-        if (!pick) return '—';
-        return `${pick.team_city ?? ''} ${pick.team_name ?? ''}`.trim() || '—';
+        if (!pick) return '�';
+        return `${pick.team_city ?? ''} ${pick.team_name ?? ''}`.trim() || '�';
     }
 
     loadState();
@@ -1750,14 +1750,14 @@ if (!$token) {
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-2 small text-muted">00:01 libera o round do dia (Brasília). Sem relógio: as picks avançam somente quando alguém (ou admin) escolhe.</div>
+                <div class="mb-2 small text-muted">00:01 libera o round do dia (Bras�lia). Sem rel�gio: as picks avan�am somente quando algu�m (ou admin) escolhe.</div>
                         <div class="row g-2 align-items-end">
                             <div class="col-sm-6">
                         <label class="form-label mb-1">Dia 01 (DD/MM/AAAA)</label>
                         <input type="text" id="modalDailyScheduleStart" class="form-control" placeholder="dd/mm/aaaa">
                     </div>
                             <div class="col-sm-6">
-                        <label class="form-label mb-1">Previsão de término</label>
+                        <label class="form-label mb-1">Previs�o de t�rmino</label>
                         <input type="text" class="form-control" id="modalDailyScheduleEnd" readonly>
                     </div>
                     <div class="col-12 d-flex justify-content-end mt-2">
@@ -1770,3 +1770,4 @@ if (!$token) {
         </div>
     </div>
 </div>
+

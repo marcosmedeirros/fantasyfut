@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Helper para consultar a API oficial da NBA (stats.nba.com)
@@ -69,7 +69,7 @@ function nbaOfficialFetchAllPlayers(bool $onlyCurrentSeason = true, string $seas
 }
 
 /**
- * Busca um jogador específico pelo nome
+ * Busca um jogador espec�fico pelo nome
  * @param string $name Nome do jogador
  * @param bool $onlyCurrentSeason Se true, busca apenas entre jogadores ativos
  * @return array|null Array com ['id' => string, 'name' => string] ou null
@@ -91,7 +91,7 @@ function nbaOfficialFetchPlayerIdByName(string $name, bool $onlyCurrentSeason = 
     $headers = $data['resultSets'][0]['headers'] ?? [];
     $rows = $data['resultSets'][0]['rowSet'] ?? [];
     
-    // Encontrar índices das colunas
+    // Encontrar �ndices das colunas
     $personIdIdx = array_search('PERSON_ID', $headers);
     $displayNameIdx = array_search('DISPLAY_FIRST_LAST', $headers);
     
@@ -116,7 +116,7 @@ function nbaOfficialFetchPlayerIdByName(string $name, bool $onlyCurrentSeason = 
         }
     }
     
-    // Busca parcial (caso não encontre exato)
+    // Busca parcial (caso n�o encontre exato)
     foreach ($rows as $row) {
         $playerName = $row[$displayNameIdx] ?? '';
         $normalizedPlayer = normalizePlayerName($playerName);
@@ -134,7 +134,7 @@ function nbaOfficialFetchPlayerIdByName(string $name, bool $onlyCurrentSeason = 
 }
 
 /**
- * Normaliza nome de jogador para comparação
+ * Normaliza nome de jogador para compara��o
  */
 function normalizePlayerName(string $name): string
 {
@@ -142,13 +142,13 @@ function normalizePlayerName(string $name): string
     $name = mb_strtolower($name);
     // Remove acentos e caracteres especiais
     $name = preg_replace('/[^a-z0-9\s]/i', '', $name);
-    // Remove espaços extras
+    // Remove espa�os extras
     $name = preg_replace('/\s+/', ' ', $name);
     return $name;
 }
 
 /**
- * Cache em memória dos jogadores para evitar múltiplas requisições
+ * Cache em mem�ria dos jogadores para evitar m�ltiplas requisi��es
  */
 $_nbaPlayersCache = null;
 
@@ -162,3 +162,4 @@ function nbaOfficialGetCachedPlayers(bool $forceRefresh = false): ?array
     
     return $_nbaPlayersCache;
 }
+

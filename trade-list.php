@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/backend/auth.php';
 require_once __DIR__ . '/backend/db.php';
 requireAuth();
@@ -17,13 +17,13 @@ $league = $team['league'] ?? '';
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Trade List - FBA Manager</title>
+  <title>Trade List - FUT Manager</title>
   
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0a0a0c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
   <link rel="apple-touch-icon" href="/img/icon-192.png">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,11 +31,11 @@ $league = $team['league'] ?? '';
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/styles.css" />
   <style>
-    .player-card { background: var(--fba-card-bg); border: 1px solid var(--fba-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-    .player-card:hover { border-color: var(--fba-orange); box-shadow: 0 4px 12px rgba(241, 117, 7, 0.15); }
-    .player-name { font-weight: 600; color: var(--fba-text); }
-    .player-meta { font-size: 0.9rem; color: var(--fba-text-muted); }
-    .team-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--fba-dark-bg); border: 1px solid var(--fba-border); padding: 6px 10px; border-radius: 20px; }
+    .player-card { background: var(--FUT-card-bg); border: 1px solid var(--FUT-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .player-card:hover { border-color: var(--FUT-orange); box-shadow: 0 4px 12px rgba(241, 117, 7, 0.15); }
+    .player-name { font-weight: 600; color: var(--FUT-text); }
+    .player-meta { font-size: 0.9rem; color: var(--FUT-text-muted); }
+    .team-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--FUT-dark-bg); border: 1px solid var(--FUT-border); padding: 6px 10px; border-radius: 20px; }
     .team-chip img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
     .search-bar { display: flex; gap: 10px; }
   </style>
@@ -57,7 +57,7 @@ $league = $team['league'] ?? '';
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($league) ?></span>
     </div>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
@@ -78,7 +78,7 @@ $league = $team['league'] ?? '';
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configurações</a></li>
     </ul>
 
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
 
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
@@ -124,3 +124,5 @@ $league = $team['league'] ?? '';
   <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+

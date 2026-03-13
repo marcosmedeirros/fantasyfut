@@ -1,7 +1,7 @@
-<?php
+﻿<?php
 /**
- * Corrige o ano das temporadas com base no ano inicial do sprint e no número da temporada.
- * Fórmula: season.year = sprints.start_year + seasons.season_number - 1
+ * Corrige o ano das temporadas com base no ano inicial do sprint e no n�mero da temporada.
+ * F�rmula: season.year = sprints.start_year + seasons.season_number - 1
  * Execute via CLI: php migrate-fix-season-years.php
  */
 
@@ -17,7 +17,7 @@ try {
     $hasSeasons = $pdo->query("SHOW TABLES LIKE 'seasons'")->fetch();
     $hasSprints = $pdo->query("SHOW TABLES LIKE 'sprints'")->fetch();
     if (!$hasSeasons || !$hasSprints) {
-        out('[ERRO] Tabelas seasons/sprints não encontradas.');
+        out('[ERRO] Tabelas seasons/sprints n�o encontradas.');
         exit(1);
     }
 
@@ -46,7 +46,7 @@ try {
     }
 
     $pdo->commit();
-    out("[OK] Migração concluída. Corrigidos: {$fixCount}. Inalterados: {$unchanged}.");
+    out("[OK] Migra��o conclu�da. Corrigidos: {$fixCount}. Inalterados: {$unchanged}.");
     exit(0);
 } catch (Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
@@ -55,3 +55,4 @@ try {
     out('[ERRO] ' . $e->getMessage());
     exit(1);
 }
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 require_once dirname(__DIR__) . '/backend/auth.php';
@@ -13,7 +13,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'GET') {
     $userTeamId = $_GET['team_id'] ?? null;
     
-    // Se não foi especificado, obter o time do usuário
+    // Se n�o foi especificado, obter o time do usu�rio
     if (!$userTeamId) {
         $stmt = $pdo->prepare("SELECT id FROM teams WHERE user_id = ? AND league = ? LIMIT 1");
         $stmt->execute([$user['id'], $user['league']]);
@@ -26,7 +26,7 @@ if ($method === 'GET') {
         exit;
     }
 
-    // Obter negociações do time
+    // Obter negocia��es do time
     $stmt = $pdo->prepare("
         SELECT 
             t.*,
@@ -41,7 +41,7 @@ if ($method === 'GET') {
     $stmt->execute([$userTeamId, $userTeamId]);
     $trades = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Preparar resposta com informações adicionais
+    // Preparar resposta com informa��es adicionais
     foreach ($trades as &$trade) {
         $trade['is_receiver'] = $trade['team_to_id'] == $userTeamId;
     }
@@ -50,5 +50,6 @@ if ($method === 'GET') {
 }
 else {
     http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Método não permitido']);
+    echo json_encode(['success' => false, 'error' => 'M�todo n�o permitido']);
 }
+

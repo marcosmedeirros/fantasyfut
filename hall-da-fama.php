@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once 'backend/auth.php';
 require_once 'backend/db.php';
@@ -17,21 +17,21 @@ $team = $stmtTeam->fetch();
 <head>
   <meta charset="UTF-8" />
   <?php include __DIR__ . '/includes/head-pwa.php'; ?>
-  <title>Hall da Fama - GM FBA</title>
+  <title>Hall da Fama - GM FUT</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0a0a0c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FBA Manager">
-  <link rel="apple-touch-icon" href="/img/fba-logo.png?v=3">
-  <link rel="icon" type="image/png" href="/img/fba-logo.png?v=3">
+  <meta name="apple-mobile-web-app-title" content="FUT Manager">
+  <link rel="apple-touch-icon" href="/img/FUT-logo.png?v=3">
+  <link rel="icon" type="image/png" href="/img/FUT-logo.png?v=3">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/styles.css" />
   <style>
     .hof-card {
-      background: var(--fba-card-bg);
-      border: 1px solid var(--fba-border);
+      background: var(--FUT-card-bg);
+      border: 1px solid var(--FUT-border);
       border-radius: 14px;
       padding: 16px;
     }
@@ -42,24 +42,24 @@ $team = $stmtTeam->fetch();
       font-size: 1.15rem;
     }
     .hof-meta {
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
       font-size: 0.9rem;
     }
     .hof-subtitle {
-      color: var(--fba-text-muted);
+      color: var(--FUT-text-muted);
       font-size: 0.85rem;
     }
     .hof-status {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--fba-orange);
+      color: var(--FUT-orange);
       font-weight: 600;
     }
     .hof-titles {
       font-size: 1.35rem;
       font-weight: 700;
-      color: var(--fba-orange);
+      color: var(--FUT-orange);
     }
   </style>
 </head>
@@ -75,7 +75,7 @@ $team = $stmtTeam->fetch();
       <h5 class="text-white mb-1"><?= htmlspecialchars(($team['city'] ?? '') . ' ' . ($team['name'] ?? '')) ?></h5>
       <span class="badge bg-gradient-orange"><?= htmlspecialchars($team['league'] ?? $user['league'] ?? 'LEAGUE') ?></span>
     </div>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <ul class="sidebar-menu">
       <li><a href="/dashboard.php"><i class="bi bi-house-door-fill"></i>Dashboard</a></li>
       <li><a href="/teams.php"><i class="bi bi-people-fill"></i>Times</a></li>
@@ -94,7 +94,7 @@ $team = $stmtTeam->fetch();
       <?php endif; ?>
       <li><a href="/settings.php"><i class="bi bi-gear-fill"></i>Configuracoes</a></li>
     </ul>
-    <hr style="border-color: var(--fba-border);">
+    <hr style="border-color: var(--FUT-border);">
     <div class="text-center">
       <a href="/logout.php" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-box-arrow-right me-2"></i>Sair</a>
     </div>
@@ -197,3 +197,5 @@ $team = $stmtTeam->fetch();
   <script src="/js/pwa.js"></script>
 </body>
 </html>
+
+
