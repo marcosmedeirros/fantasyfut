@@ -329,6 +329,7 @@ if ($method === 'PUT') {
         jsonResponse(422, ['error' => 'Campos obrigat�rios: nome, idade, posi��o, ovr.']);
     }
 
+
     // CAP check: recalcular considerando o novo OVR substituindo o anterior
     $ovrsStmt = $pdo->prepare('SELECT ovr FROM players WHERE team_id = ? AND id <> ? ORDER BY ovr DESC LIMIT 8');
     $ovrsStmt->execute([(int)$player['team_id'], $playerId]);

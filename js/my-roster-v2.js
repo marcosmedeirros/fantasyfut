@@ -382,7 +382,7 @@ function renderPlayersTable(players) {
   if (!wrapper || !tbody) return;
   tbody.innerHTML = '';
   if (!players || players.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-light-gray">Nenhum jogador encontrado.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-light-gray">Nenhum jogador encontrado.</td></tr>';
     wrapper.style.display = '';
     return;
   }
@@ -449,7 +449,15 @@ async function loadPlayers() {
   }
   if (mobileCardsEl) mobileCardsEl.style.display = 'none';
   try {
-    const data = await api(`players.php?team_id=${teamId}`);
+    let data = await api(`players.php?team_id=${teamId}`);
+    if (!Array.isArray(data.players) || data.players.length === 0) {
+      try {
+        const fallback = await api('team-players.php');
+        data = fallback || data;
+      } catch (fallbackErr) {
+        // ignore fallback errors
+      }
+    }
     allPlayers = data.players || [];
     currentSort = { field: 'position', ascending: true };
     renderPlayers(allPlayers);
