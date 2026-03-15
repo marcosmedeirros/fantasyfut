@@ -72,16 +72,12 @@ $stmtTeam = $pdo->prepare('
 $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch();
 
-$hasPunishments = tableExists($pdo, 'team_punishments');
-$punishmentsSelect = $hasPunishments
-    ? '(SELECT COUNT(*) FROM team_punishments tp WHERE tp.team_id = t.id AND tp.reverted_at IS NULL)'
-    : '0';
 $hasTapas = columnExists($pdo, 'teams', 'tapas');
 $tapasSelect = $hasTapas ? 't.tapas' : '0';
 $stmt = $pdo->prepare('
     SELECT t.id, t.city, t.name, t.mascot, t.photo_url, t.user_id, ' . $tapasSelect . ' AS tapas,
              u.name AS owner_name, u.phone AS owner_phone, u.photo_url AS owner_photo,
-             ' . $punishmentsSelect . ' as punicoes_count
+             0 as punicoes_count
     FROM teams t
     INNER JOIN users u ON u.id = t.user_id
     WHERE t.league = ?
@@ -294,7 +290,6 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                                     <span id="capSortIcon" class="text-orange" style="font-size: 0.85rem;">⇅</span>
                                 </th>
                                 <th class="text-white fw-bold text-center">Tapas</th>
-                                <th class="text-white fw-bold text-center">Punições</th>
                                 <th class="text-white fw-bold text-center" style="width: 100px;">Ações</th>
                             </tr>
                         </thead>
@@ -357,9 +352,6 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                                 </td>
                                 <td class="text-center">
                                     <span class="badge bg-warning text-dark"><?= (int)($t['tapas'] ?? 0) ?></span>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-secondary"><?= (int)($t['punicoes_count'] ?? 0) ?></span>
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
@@ -432,10 +424,6 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                             <div class="team-card-mobile-stat">
                                 <span class="stat-label">CAP</span>
                                 <span class="stat-value text-warning"><?= (int)$t['cap_top8'] ?></span>
-                            </div>
-                            <div class="team-card-mobile-stat">
-                                <span class="stat-label">Punições</span>
-                                <span class="stat-value"><?= (int)($t['punicoes_count'] ?? 0) ?></span>
                             </div>
                             <div class="team-card-mobile-stat">
                                 <span class="stat-label">Tapas</span>

@@ -107,36 +107,6 @@ try {
 }
 
 // Buscar temporada atual da liga
-// Buscar prazo ativo de diretrizes (somente se ainda não expirou - usando horário de Brasília)
-$activeDirectiveDeadline = null;
-$hasActiveDirectiveSubmission = false;
-try {
-    // Calcular horário atual de Brasília via PHP para comparação
-    $nowBrasilia = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d H:i:s');
-    
-    $stmtDirective = $pdo->prepare("
-        SELECT * FROM directive_deadlines 
-        WHERE league = ? AND is_active = 1 AND deadline_date > ?
-        ORDER BY deadline_date ASC LIMIT 1
-    ");
-    $stmtDirective->execute([$team['league'], $nowBrasilia]);
-    $activeDirectiveDeadline = $stmtDirective->fetch();
-        if ($activeDirectiveDeadline && !empty($activeDirectiveDeadline['deadline_date'])) {
-            try {
-                $deadlineDateTime = new DateTime($activeDirectiveDeadline['deadline_date'], new DateTimeZone('America/Sao_Paulo'));
-                $activeDirectiveDeadline['deadline_date_display'] = $deadlineDateTime->format('d/m/Y \à\s H:i');
-            } catch (Exception $e) {
-                $activeDirectiveDeadline['deadline_date_display'] = date('d/m/Y', strtotime($activeDirectiveDeadline['deadline_date']));
-            }
-        }
-    if ($activeDirectiveDeadline && !empty($team['id'])) {
-        $stmtHasDirective = $pdo->prepare("SELECT id FROM team_directives WHERE team_id = ? AND deadline_id = ? LIMIT 1");
-        $stmtHasDirective->execute([(int)$team['id'], (int)$activeDirectiveDeadline['id']]);
-        $hasActiveDirectiveSubmission = (bool)$stmtHasDirective->fetchColumn();
-    }
-} catch (Exception $e) {
-    // Tabela pode não existir ainda
-}
 
 // Buscar última diretriz enviada pelo time
 $lastDirective = null;
@@ -436,23 +406,6 @@ try {
     // Pode falhar
 }
 
-// Buscar último rumor postado
-$latestRumor = null;
-try {
-    $stmtLatestRumor = $pdo->prepare('
-        SELECT r.content, r.created_at, t.city, t.name, t.photo_url, u.name as gm_name
-        FROM rumors r
-        INNER JOIN teams t ON r.team_id = t.id
-        INNER JOIN users u ON r.user_id = u.id
-        WHERE r.league = ?
-        ORDER BY r.created_at DESC
-        LIMIT 1
-    ');
-    $stmtLatestRumor->execute([$team['league']]);
-    $latestRumor = $stmtLatestRumor->fetch(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    // Pode falhar se tabela não existir
-}
 
 // Buscar último campeão, vice e MVP
 $lastChampion = null;
@@ -863,39 +816,6 @@ try {
             </div>
         </div>
 
-        <?php if ($activeDirectiveDeadline): ?>
-        <div class="row g-4 mb-4">
-            <div class="col-12">
-                <a href="/diretrizes.php" class="text-decoration-none">
-                    <div class="card bg-dark-panel border-orange">
-                        <div class="card-header bg-transparent border-orange">
-                            <h4 class="mb-0 text-white">
-                                <i class="bi bi-clipboard-check text-orange me-2"></i>Envio de Rotações
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-                                <div>
-                                    <p class="text-light-gray mb-1"><?= htmlspecialchars($activeDirectiveDeadline['description'] ?? 'Diretrizes de jogo') ?></p>
-                                    <p class="text-danger mb-0 fw-bold">
-                                        <i class="bi bi-clock-fill me-1"></i>
-                                        Prazo: <?= htmlspecialchars($activeDirectiveDeadline['deadline_date_display'] ?? '') ?>
-                                    </p>
-                                </div>
-                                <span class="btn btn-outline-orange">
-                                    <?php if ($hasActiveDirectiveSubmission): ?>
-                                        <i class="bi bi-search me-2"></i>Revisar
-                                    <?php else: ?>
-                                        <i class="bi bi-arrow-right-circle me-2"></i>Enviar Rotação
-                                    <?php endif; ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <?php endif; ?>
 
         <!-- Ações Rápidas -->
         <div class="row g-4 mb-4">
@@ -996,57 +916,9 @@ try {
         </div>
         <?php endif; ?>
 
-        <!-- Rumores e Trades (2 na mesma linha) -->
+        <!-- Trades -->
         <div class="row g-4 mb-4">
-            <!-- Último rumor -->
-            <div class="col-md-6">
-                <div class="card bg-dark-panel border-orange h-100">
-                    <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0 text-white">
-                            <i class="bi bi-chat-left-text me-2 text-orange"></i>Último rumor
-                        </h4>
-                        <a href="/trades.php" class="btn btn-sm btn-outline-orange">Ver Rumores</a>
-                    </div>
-                    <div class="card-body">
-                        <?php if ($latestRumor): ?>
-                            <div class="d-flex align-items-start gap-3">
-                                <img src="<?= htmlspecialchars($latestRumor['photo_url'] ?? '/img/default-team.png') ?>"
-                                     alt="<?= htmlspecialchars(($latestRumor['city'] ?? '') . ' ' . ($latestRumor['name'] ?? 'Time')) ?>"
-                                     class="rounded-circle"
-                                     style="width: 60px; height: 60px; object-fit: cover; border: 2px solid var(--FUT-orange);">
-                                <div class="flex-grow-1">
-                                    <div class="text-white fw-bold">
-                                        <?= htmlspecialchars(($latestRumor['city'] ?? '') . ' ' . ($latestRumor['name'] ?? '')) ?>
-                                    </div>
-                                    <?php if (!empty($latestRumor['gm_name'])): ?>
-                                        <div class="text-light-gray small mb-2">GM: <?= htmlspecialchars($latestRumor['gm_name']) ?></div>
-                                    <?php else: ?>
-                                        <div class="text-light-gray small mb-2">GM não informado</div>
-                                    <?php endif; ?>
-                                    <div class="text-white" style="font-size: 0.95rem;">
-                                        <?= nl2br(htmlspecialchars($latestRumor['content'])) ?>
-                                    </div>
-                                    <?php if (!empty($latestRumor['created_at'])): ?>
-                                        <div class="text-light-gray small mt-2">
-                                            <i class="bi bi-clock me-1"></i>
-                                            <?= date('d/m/Y H:i', strtotime($latestRumor['created_at'])) ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php else: ?>
-                            <div class="text-center text-light-gray py-4">
-                                <i class="bi bi-chat-left-text display-4"></i>
-                                <p class="mt-3 mb-0 text-white fw-bold">Nenhum rumor por aqui</p>
-                                <small>Aguarde os próximos rumores da liga</small>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Última Trade -->
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card bg-dark-panel border-orange h-100">
                     <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-white">

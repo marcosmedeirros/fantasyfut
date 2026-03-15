@@ -521,11 +521,6 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="rumors-tab" data-bs-toggle="tab" data-bs-target="#rumors" type="button">
-          <i class="bi bi-megaphone me-1"></i>Rumores
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
         <button class="nav-link" id="trade-list-tab" data-bs-toggle="tab" data-bs-target="#trade-list" type="button">
           <i class="bi bi-list-stars me-1"></i>Trade List
         </button>
@@ -567,41 +562,6 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
         </div>
       </div>
 
-      <!-- Rumores (GMs e comentários do Admin) -->
-      <div class="tab-pane fade" id="rumors" role="tabpanel">
-        <div class="trade-list-panel">
-          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <div>
-              <h5 class="text-white mb-1"><i class="bi bi-megaphone me-2 text-orange"></i>Rumores da Liga</h5>
-              <p class="text-light-gray mb-0 small">Compartilhe o que está procurando ou quais jogadores quer negociar.</p>
-            </div>
-            <span class="badge bg-secondary" id="rumorsCount">0 rumores</span>
-          </div>
-
-          <!-- Comentários do Admin -->
-          <div class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="text-white mb-0"><i class="bi bi-pin-angle-fill me-2 text-orange"></i>Comentários do Admin</h6>
-              <?php if (($user['user_type'] ?? 'jogador') === 'admin'): ?>
-              <button class="btn btn-sm btn-outline-orange" id="addAdminCommentBtn"><i class="bi bi-plus-lg me-1"></i>Adicionar</button>
-              <?php endif; ?>
-            </div>
-            <div id="adminCommentsList" class="list-group"></div>
-          </div>
-
-          <!-- Formulário de novo rumor (GM) -->
-          <div class="mb-3">
-            <label class="form-label text-white">Seu rumor</label>
-            <textarea class="form-control bg-dark text-white border-orange" id="rumorContent" rows="2" placeholder="Ex.: Procuro DEF com OVR 80+ ou vendo ATT"></textarea>
-            <div class="d-flex justify-content-end mt-2">
-              <button class="btn btn-orange" id="submitRumorBtn"><i class="bi bi-megaphone-fill me-1"></i>Publicar</button>
-            </div>
-          </div>
-
-          <!-- Lista de rumores -->
-          <div id="rumorsList"></div>
-        </div>
-      </div>
 
       <!-- Trade List (Disponíveis para troca na sua liga) -->
       <div class="tab-pane fade" id="trade-list" role="tabpanel">
@@ -796,7 +756,6 @@ $tradeCount = (int)($team['trades_used'] ?? 0);
   <script src="/js/sidebar.js"></script>
   <script src="/js/trades.js?v=20260309"></script>
   <script src="/js/trade-list.js?v=20260130"></script>
-  <script src="/js/rumors.js?v=20260130"></script>
   <script src="/js/pwa.js?v=20260130"></script>
   <?php if (($user['user_type'] ?? 'jogador') === 'admin'): ?>
   <script>
