@@ -110,11 +110,7 @@ $team = $stmtTeam->fetch();
 
     <div class="d-flex flex-wrap gap-2 mb-3">
       <select class="form-select form-select-sm bg-dark text-white border-orange" id="hofLeagueFilter" style="max-width: 220px;">
-        <option value="ALL">Todas as ligas</option>
-        <option value="ELITE">ELITE</option>
-        <option value="NEXT">NEXT</option>
-        <option value="RISE">RISE</option>
-        <option value="ROOKIE">ROOKIE</option>
+        <option value="ELITE">SERIE A</option>
       </select>
     </div>
 
@@ -137,7 +133,7 @@ $team = $stmtTeam->fetch();
         return;
       }
       container.innerHTML = items.map(item => {
-        const league = item.league ? `<span class="badge bg-gradient-orange">${item.league}</span>` : '';
+        const league = item.league ? `<span class="badge bg-gradient-orange">SERIE A</span>` : '';
         const gmName = item.gm_name || 'GM não informado';
         const isActive = Number(item.is_active) === 1;
   const subtitle = isActive ? (item.team_name || 'Time não informado') : '';

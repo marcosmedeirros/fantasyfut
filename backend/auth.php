@@ -46,7 +46,7 @@ function getUserSession() {
         'name' => $_SESSION['user_name'] ?? '',
         'email' => $_SESSION['user_email'] ?? '',
         'user_type' => $_SESSION['user_type'] ?? 'jogador',
-        'league' => $_SESSION['user_league'] ?? 'ROOKIE',
+        'league' => $_SESSION['user_league'] ?? 'ELITE',
         'photo_url' => $_SESSION['user_photo'] ?? null,
         'phone' => $_SESSION['user_phone'] ?? null,
         'approved' => $_SESSION['user_approved'] ?? 1,

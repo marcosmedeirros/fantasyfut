@@ -12,7 +12,7 @@ $pdo = db();
 
 // Obter league do usu�rio da sess�o
 $user = getUserSession();
-$league = $user['league'] ?? 'ROOKIE';
+$league = $user['league'] ?? 'ELITE';
 
 $sql = 'SELECT t.id, t.name, t.city, t.mascot, t.photo_url AS team_photo, t.league, t.division_id,
                d.name AS division_name,
@@ -27,7 +27,7 @@ $teamsStmt = $pdo->prepare($sql);
 $teamsStmt->execute([$league]);
 $teams = $teamsStmt->fetchAll();
 
-$playerStmt = $pdo->prepare('SELECT id, team_id, name, nba_player_id, foto_adicional, age, position, role, ovr, available_for_trade FROM players WHERE team_id = ? ORDER BY ovr DESC, id DESC');
+$playerStmt = $pdo->prepare('SELECT id, team_id, name, foto_adicional, age, position, role, ovr, available_for_trade FROM players WHERE team_id = ? ORDER BY ovr DESC, id DESC');
 $pickStmt = $pdo->prepare('
     SELECT p.id, p.season_year, p.round, p.notes, p.original_team_id, p.team_id, p.last_owner_team_id,
            orig.city AS original_city, orig.name AS original_name,

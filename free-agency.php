@@ -59,15 +59,8 @@ $team_league = $team_league ?? ($_SESSION['user_league'] ?? null);
 $leagues = [];
 $leagues_admin = [];
 if ($is_admin) {
-    $stmt = $pdo->query("SELECT id, name FROM leagues ORDER BY name");
-    $leagues_admin = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $leagues = array_map(static function ($league) {
-        return $league['name'];
-    }, $leagues_admin);
-    if (!$leagues) {
-        $leagues = ['ELITE', 'NEXT', 'RISE', 'ROOKIE'];
-        $leagues_admin = [];
-    }
+    $leagues = ['ELITE'];
+    $leagues_admin = [['id' => null, 'name' => 'ELITE']];
 }
 $default_admin_league = $team_league ?? ($leagues[0] ?? 'ELITE');
 ?>

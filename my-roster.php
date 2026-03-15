@@ -221,7 +221,7 @@ if ($teamId) {
       <img src="<?= htmlspecialchars(($team['photo_url'] ?? '/img/default-team.png')) ?>" 
            alt="<?= htmlspecialchars($team['name'] ?? 'Time') ?>" class="team-avatar">
       <h5 class="text-white mb-1"><?= isset($team['name']) ? htmlspecialchars($team['name']) : 'Sem time' ?></h5>
-      <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league']) ?></span>
+      <span class="badge bg-gradient-orange">SERIE A</span>
     </div>
 
     <hr style="border-color: var(--FUT-border);">
@@ -324,7 +324,7 @@ if ($teamId) {
         <h1 class="text-white fw-bold mb-0"><i class="bi bi-people-fill me-2 text-orange"></i>Meu Elenco</h1>
         <div class="d-flex gap-2 gap-md-3 flex-wrap justify-content-start justify-content-md-end w-100 w-md-auto">
           <div class="text-center flex-fill flex-md-grow-0" style="min-width: 60px;">
-            <small class="text-light-gray d-block" style="font-size: 0.7rem;">Total</small>
+            <small class="text-light-gray d-block" style="font-size: 0.7rem;">Total (16)</small>
             <div class="text-white fw-bold" id="total-players" style="font-size: 1.2rem;">0</div>
           </div>
           <div class="text-center flex-fill flex-md-grow-0" style="min-width: 70px;">
@@ -351,12 +351,12 @@ if ($teamId) {
       <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div>
           <h5 class="mb-0 text-white"><i class="bi bi-diagram-3 me-2 text-orange"></i>Campinho do Time</h5>
-          <small class="text-light-gray">Clique em cada posição para selecionar o jogador (formação base 4-4-2).</small>
+          <small class="text-light-gray">Clique em cada posição para selecionar o jogador (formação base 4-3-3).</small>
         </div>
       </div>
       <div class="card-body">
         <div id="lineup-field" class="soccer-field"></div>
-        <div id="lineup-legend" class="lineup-legend">Formação base: 4-4-2 (ajuste os titulares por posição).</div>
+        <div id="lineup-legend" class="lineup-legend">Formação base: 4-3-3 (ajuste os titulares por posição).</div>
       </div>
     </div>
 

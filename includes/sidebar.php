@@ -43,7 +43,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <img src="<?= htmlspecialchars($team['photo_url'] ?? '/img/default-team.png') ?>" 
              alt="<?= htmlspecialchars($team['name'] ?? 'Time') ?>" class="team-avatar">
         <h5 class="text-white mb-1"><?= htmlspecialchars($team['name'] ?? '') ?></h5>
-        <span class="badge bg-gradient-orange"><?= htmlspecialchars($user['league'] ?? 'ELITE') ?></span>
+        <span class="badge bg-gradient-orange">SERIE A</span>
     </div>
 
     <hr style="border-color: var(--FUT-border);">

@@ -107,9 +107,9 @@ function ensureLeagueSprintDefaults(PDO $pdo): void
     try {
         $pdo->exec("
             INSERT INTO league_sprint_config (league, max_seasons) VALUES
-            ('ELITE', 20),
-            ('NEXT', 20),
-            ('RISE', 15),
+            ('ELITE', 10),
+            ('NEXT', 10),
+            ('RISE', 10),
             ('ROOKIE', 10)
             ON DUPLICATE KEY UPDATE max_seasons = VALUES(max_seasons)
         ");

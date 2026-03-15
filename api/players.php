@@ -237,7 +237,7 @@ if ($method === 'POST') {
     $stmtLeague->execute([$teamId]);
     $teamLeague = strtoupper((string)$stmtLeague->fetchColumn());
     if ($teamLeague !== 'ELITE') {
-        jsonResponse(403, ['error' => 'Adi��o de jogador dispon�vel apenas para a liga ELITE.']);
+        jsonResponse(403, ['error' => 'Adi��o de jogador dispon�vel apenas para a liga SERIE A.']);
     }
 
     $prospectiveCap = capWithCandidate($pdo, $teamId, $ovr);
@@ -477,7 +477,7 @@ if ($method === 'DELETE') {
         $pdo->beginTransaction();
 
         $league = strtoupper($row['league'] ?? 'ELITE');
-        $validLeagues = ['ELITE','NEXT','RISE','ROOKIE'];
+        $validLeagues = ['ELITE'];
         if (!in_array($league, $validLeagues, true)) {
             $league = 'ELITE';
         }

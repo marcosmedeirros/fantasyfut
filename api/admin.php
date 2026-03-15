@@ -16,7 +16,7 @@ if (!$user || ($user['user_type'] ?? 'jogador') !== 'admin') {
 $pdo = db();
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
-$validLeagues = ['ELITE','NEXT','RISE','ROOKIE'];
+$validLeagues = ['ELITE'];
 
 // Helpers para colunas e OVR
 function columnExists(PDO $pdo, string $table, string $column): bool {

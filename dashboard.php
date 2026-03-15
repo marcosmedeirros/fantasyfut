@@ -1386,7 +1386,7 @@ try {
                 <div class="card bg-dark-panel border-orange">
                     <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-white">
-                            <i class="bi bi-trophy me-2 text-orange"></i>Quinteto Titular
+                            <i class="bi bi-trophy me-2 text-orange"></i>Time Titular
                         </h4>
                         <button class="btn btn-outline-orange btn-sm" onclick="window.location.href='/my-roster.php'">
                             <i class="bi bi-plus-circle me-1"></i>Gerenciar Elenco
@@ -1402,12 +1402,9 @@ try {
                                         if ($customPhoto !== '' && !preg_match('#^https?://#i', $customPhoto)) {
                                             $customPhoto = '/' . ltrim($customPhoto, '/');
                                         }
-                                        $nbaPlayerId = $player['nba_player_id'] ?? null;
                                         $playerPhoto = $customPhoto !== ''
                                             ? $customPhoto
-                                            : ($nbaPlayerId
-                                                ? 'https://cdn.nba.com/headshots/nba/latest/1040x760/' . rawurlencode((string)$nbaPlayerId) . '.png'
-                                                : 'https://ui-avatars.com/api/?name=' . rawurlencode($playerName) . '&background=121212&color=f17507&rounded=true&bold=true');
+                                            : 'https://ui-avatars.com/api/?name=' . rawurlencode($playerName) . '&background=121212&color=f17507&rounded=true&bold=true';
                                     ?>
                                     <div class="col-md-2">
                                         <div class="card bg-dark text-white h-100">

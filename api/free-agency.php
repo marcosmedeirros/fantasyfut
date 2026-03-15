@@ -77,7 +77,7 @@ if ($team_id) {
 
 $team_league = $team['league'] ?? ($_SESSION['user_league'] ?? null);
 $team_coins = (int)($team['moedas'] ?? 0);
-$valid_leagues = ['ELITE', 'NEXT', 'RISE', 'ROOKIE'];
+$valid_leagues = ['ELITE'];
 
 if (!$team && $user_id) {
     $stmt = $pdo->prepare('SELECT id, league, COALESCE(moedas, 0) as moedas, waivers_used, fa_signings_used FROM teams WHERE user_id = ? LIMIT 1');

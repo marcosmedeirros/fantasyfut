@@ -204,8 +204,7 @@ if ($method === 'GET') {
     }
     if ($action === 'leagues') {
         try {
-            $stmt = $pdo->query("SELECT name FROM leagues ORDER BY FIELD(name,'ELITE','NEXT','RISE','ROOKIE')");
-            $leagues = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $leagues = ['ELITE'];
             echo json_encode(['success' => true, 'leagues' => $leagues]);
         } catch (Exception $e) {
             echo json_encode(['success' => true, 'leagues' => []]);

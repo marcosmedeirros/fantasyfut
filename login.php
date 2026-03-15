@@ -38,8 +38,8 @@
                     <img src="/img/FUT-logo.png" alt="FUT Manager" class="img-fluid mb-4" style="max-height: 180px;">
                     <h1 class="display-4 fw-bold mb-3">FUT Manager Control</h1>
                     <p class="lead mb-4 text-light-gray">
-                        Sistema completo de gestão da sua franquia de basquete.<br>
-                        Gerencie times, jogadores, drafts e muito mais em um só lugar.
+                        Sistema completo de gestão da sua franquia de futebol.<br>
+                        Gerencie times, jogadores, temporadas e muito mais em um só lugar.
                     </p>
                     <div class="d-flex justify-content-center gap-5 mt-5">
                         <div>
@@ -48,7 +48,7 @@
                         </div>
                         <div>
                             <i class="bi bi-trophy-fill display-6 text-orange mb-2 d-block"></i>
-                            <p class="mb-0 text-light-gray">4 Ligas</p>
+                            <p class="mb-0 text-light-gray">Liga SERIE A</p>
                         </div>
                         <div>
                             <i class="bi bi-graph-up-arrow display-6 text-orange mb-2 d-block"></i>

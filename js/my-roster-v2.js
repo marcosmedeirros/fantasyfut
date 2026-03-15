@@ -36,9 +36,7 @@ function getPlayerPhotoUrl(player) {
     }
     return `/${customPhoto.replace(/^\/+/, '')}`;
   }
-  return player.nba_player_id
-    ? `https://cdn.nba.com/headshots/nba/latest/1040x760/${player.nba_player_id}.png`
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=080931&color=ffffff&rounded=true&bold=true`;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=080931&color=ffffff&rounded=true&bold=true`;
 }
 
 function convertToBase64(file) {
@@ -58,8 +56,8 @@ const positionLabels = {
   ATT: 'Ataque'
 };
 const lineupConfig = [
-  { key: 'ATT', label: 'Ataque', slots: 2 },
-  { key: 'MID', label: 'Meio', slots: 4 },
+  { key: 'ATT', label: 'Ataque', slots: 3 },
+  { key: 'MID', label: 'Meio', slots: 3 },
   { key: 'DEF', label: 'Defesa', slots: 4 },
   { key: 'GK', label: 'Goleiro', slots: 1 }
 ];
@@ -427,7 +425,7 @@ function updateRosterStats() {
     .sort((a, b) => Number(b.ovr) - Number(a.ovr))
     .slice(0, 8)
     .reduce((sum, p) => sum + Number(p.ovr), 0);
-  document.getElementById('total-players').textContent = totalPlayers;
+  document.getElementById('total-players').textContent = `${totalPlayers} / 16`;
   document.getElementById('cap-top8').textContent = topEight;
 }
 
@@ -449,16 +447,19 @@ async function loadPlayers() {
   }
   if (mobileCardsEl) mobileCardsEl.style.display = 'none';
   try {
-    let data = await api(`players.php?team_id=${teamId}`);
-    if (!Array.isArray(data.players) || data.players.length === 0) {
-      try {
-        const fallback = await api('team-players.php');
-        data = fallback || data;
-      } catch (fallbackErr) {
-        // ignore fallback errors
-      }
+    let data = null;
+    try {
+      data = await api(`team-players.php?team_id=${teamId}`);
+    } catch (err) {
+      data = null;
     }
-    allPlayers = data.players || [];
+    if (!data || data.success === false || !Array.isArray(data.players)) {
+      data = await api(`players.php?team_id=${teamId}`);
+    }
+    allPlayers = Array.isArray(data.players) ? data.players.map((player) => ({
+      ...player,
+      ovr: player.ovr ?? player.overall ?? 0
+    })) : [];
     currentSort = { field: 'position', ascending: true };
     renderPlayers(allPlayers);
     if (statusEl) statusEl.style.display = 'none';

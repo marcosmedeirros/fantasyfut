@@ -98,7 +98,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
                         <i class="bi bi-people-fill text-orange me-2"></i>Jogadores
                     </h1>
                     <span class="badge bg-dark border border-warning text-warning">
-                        <i class="bi bi-trophy me-1"></i><?= htmlspecialchars($user['league'] ?? 'ELITE') ?>
+                        <i class="bi bi-trophy me-1"></i>SERIE A
                     </span>
                 </div>
                 <p class="text-light-gray mb-0">Lista completa de jogadores da sua liga.</p>
@@ -240,9 +240,7 @@ $whatsappDefaultMessage = rawurlencode('Olá! Podemos conversar sobre nossas fra
             if (customPhoto) {
                 return customPhoto;
             }
-            return player.nba_player_id
-                ? `https://cdn.nba.com/headshots/nba/latest/1040x760/${player.nba_player_id}.png`
-                : `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=121212&color=f17507&rounded=true&bold=true`;
+            return `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=121212&color=f17507&rounded=true&bold=true`;
         }
 
         function renderPlayerCard(p, whatsappLink, teamName){

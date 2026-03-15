@@ -1,6 +1,6 @@
-﻿# FUT (Franchise Basketball Association)
+﻿# FUT (Franchise Football Association)
 
-Projeto PHP + JavaScript para gerenciar franquias da NBA (FUT) com cadastro de usuários, times, jogadores, drafts, divisões e picks. Inclui frontend estilizado (HTML/CSS/JS), APIs em PHP e script SQL do banco.
+Projeto PHP + JavaScript para gerenciar franquias de futebol (FUT) com cadastro de usuários, times, jogadores, temporadas e picks. Inclui frontend estilizado (HTML/CSS/JS), APIs em PHP e script SQL do banco.
 
 ## Estrutura
 - public/ — frontend e APIs

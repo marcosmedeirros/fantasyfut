@@ -13,7 +13,7 @@ $pdo = db();
 // Criar um novo time de teste
 $newTeam = [
     'user_id' => 2,  // Você pode ajustar isso
-    'league' => 'ROOKIE',
+    'league' => 'ELITE',
     'conference' => 'OESTE',
     'name' => 'Test Team',
     'city' => 'Test City',

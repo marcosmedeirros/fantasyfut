@@ -9,7 +9,7 @@ try {
     $checkCol = $pdo->query("SHOW COLUMNS FROM players LIKE 'foto_adicional'");
     if ($checkCol->rowCount() === 0) {
         echo "Adicionando coluna foto_adicional...\n";
-        $pdo->exec("ALTER TABLE players ADD COLUMN foto_adicional VARCHAR(255) NULL AFTER nba_player_id");
+        $pdo->exec("ALTER TABLE players ADD COLUMN foto_adicional VARCHAR(255) NULL AFTER name");
         echo "OK Coluna foto_adicional adicionada.\n";
     } else {
         echo "OK Coluna foto_adicional ja existe.\n";

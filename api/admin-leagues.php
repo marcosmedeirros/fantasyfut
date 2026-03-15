@@ -18,7 +18,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
     // Listar ligas com configura��es e times
-    $stmtLeagues = $pdo->query("SELECT name FROM leagues ORDER BY FIELD(name,'ELITE','NEXT','RISE','ROOKIE')");
+    $stmtLeagues = $pdo->query("SELECT name FROM leagues WHERE name = 'ELITE' ORDER BY FIELD(name,'ELITE')");
     $leagues = $stmtLeagues->fetchAll(PDO::FETCH_COLUMN);
 
     $result = [];
@@ -43,7 +43,7 @@ if ($method === 'GET') {
         }
 
         $result[] = [
-            'league' => $league,
+            'league' => 'SERIE A',
             'cap_min' => (int)$cfg['cap_min'],
             'cap_max' => (int)$cfg['cap_max'],
             'teams' => $teams,
