@@ -430,16 +430,12 @@ function updateRosterStats() {
 }
 
 async function loadPlayers() {
-  const teamId = window.__TEAM_ID__;
+  let teamId = window.__TEAM_ID__;
   const statusEl = document.getElementById('players-status');
   const mobileCardsEl = document.getElementById('players-mobile-cards');
-  if (!teamId) {
-    if (statusEl) {
-      statusEl.innerHTML = '<div class="alert alert-warning text-center"><i class="bi bi-exclamation-triangle me-2"></i>Você ainda não possui um time.</div>';
-      statusEl.style.display = 'block';
-    }
-    if (mobileCardsEl) mobileCardsEl.style.display = 'none';
-    return;
+  if (!teamId && statusEl) {
+    statusEl.innerHTML = '<div class="spinner-border text-orange" role="status"></div><p class="text-light-gray mt-2">Carregando jogadores...</p>';
+    statusEl.style.display = 'block';
   }
   if (statusEl) {
     statusEl.innerHTML = '<div class="spinner-border text-orange" role="status"></div><p class="text-light-gray mt-2">Carregando jogadores...</p>';
@@ -449,12 +445,17 @@ async function loadPlayers() {
   try {
     let data = null;
     try {
-      data = await api(`team-players.php?team_id=${teamId}`);
+      const query = teamId ? `?team_id=${teamId}` : '';
+      data = await api(`team-players.php${query}`);
     } catch (err) {
       data = null;
     }
     if (!data || data.success === false || !Array.isArray(data.players)) {
       data = await api(`players.php?team_id=${teamId}`);
+    }
+    if (!teamId && data && data.team_id) {
+      teamId = data.team_id;
+      window.__TEAM_ID__ = data.team_id;
     }
     allPlayers = Array.isArray(data.players) ? data.players.map((player) => ({
       ...player,

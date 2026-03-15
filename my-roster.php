@@ -12,6 +12,26 @@ $stmtTeam->execute([$user['id']]);
 $team = $stmtTeam->fetch() ?: null;
 $teamId = $team['id'] ?? null;
 
+if (!$teamId && isset($_SESSION['team_id'])) {
+  $sessionTeamId = (int)$_SESSION['team_id'];
+  if ($sessionTeamId > 0) {
+    $stmtTeamById = $pdo->prepare('SELECT * FROM teams WHERE id = ? LIMIT 1');
+    $stmtTeamById->execute([$sessionTeamId]);
+    $team = $stmtTeamById->fetch() ?: $team;
+    $teamId = $team['id'] ?? $teamId;
+  }
+}
+
+if (!$teamId && isset($_GET['team_id'])) {
+  $queryTeamId = (int)$_GET['team_id'];
+  if ($queryTeamId > 0) {
+    $stmtTeamById = $pdo->prepare('SELECT * FROM teams WHERE id = ? LIMIT 1');
+    $stmtTeamById->execute([$queryTeamId]);
+    $team = $stmtTeamById->fetch() ?: $team;
+    $teamId = $team['id'] ?? $teamId;
+  }
+}
+
 // Buscar contagem de jogadores separadamente
 $playerCount = 0;
 if ($teamId) {
@@ -344,8 +364,8 @@ if ($teamId) {
     </div>
 
     <?php if (!$teamId): ?>
-      <div class="alert alert-warning">Você ainda não possui um time. Crie um no onboarding.</div>
-    <?php else: ?>
+      <div class="alert alert-warning">Não foi possível identificar seu time. Informe o time no cadastro ou abra /my-roster.php?team_id=1 para testar.</div>
+    <?php endif; ?>
     
     <div class="card bg-dark-panel border-orange mb-4">
       <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -426,7 +446,7 @@ if ($teamId) {
         </div>
       </div>
     </div>
-    <?php endif; ?>
+
 
     <div class="card bg-dark-panel border-orange">
       <div class="card-header bg-transparent border-orange d-flex justify-content-between align-items-center flex-wrap gap-2">

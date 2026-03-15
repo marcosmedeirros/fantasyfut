@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt->execute([$teamId]);
         $players = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        echo json_encode(['success' => true, 'players' => $players]);
+        echo json_encode(['success' => true, 'team_id' => (int)$teamId, 'players' => $players]);
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode(['success' => false, 'error' => 'Erro ao carregar jogadores']);
